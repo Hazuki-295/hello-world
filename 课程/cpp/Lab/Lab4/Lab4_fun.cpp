@@ -1,4 +1,4 @@
-/* run º¯ÊıµÄ×Óº¯ÊıµÄÊµÏÖ */
+/* run å‡½æ•°çš„å­å‡½æ•°çš„å®ç° */
 #include "Lab4_fun.h"
 #include "Lab4_data.h"
 
@@ -12,9 +12,9 @@
 using namespace std;
 
 typedef struct DataItem {
-	int item1; //Êı¾İ¼ÇÂ¼ÈıÔª×éµÚÒ»¸öÔªËØ
-	int item2; //Êı¾İ¼ÇÂ¼ÈıÔª×éµÚ¶ş¸öÔªËØ
-	int item3; //Êı¾İ¼ÇÂ¼ÈıÔª×éµÚÈı¸öÔªËØ
+	int item1; //æ•°æ®è®°å½•ä¸‰å…ƒç»„ç¬¬ä¸€ä¸ªå…ƒç´ 
+	int item2; //æ•°æ®è®°å½•ä¸‰å…ƒç»„ç¬¬äºŒä¸ªå…ƒç´ 
+	int item3; //æ•°æ®è®°å½•ä¸‰å…ƒç»„ç¬¬ä¸‰ä¸ªå…ƒç´ 
 } DATAITEM;
 
 bool write_text(const char fname[], DATAITEM *data);
@@ -22,11 +22,11 @@ bool write_binary(const char fname[], DATAITEM *data);
 
 
 /*
-*º¯ÊıÃû³Æ£ºwrite
-*º¯Êı¹¦ÄÜ£ºÉú³ÉÊı¾İÎÄ¼şº¯Êı
-*ÊäÈë²ÎÊı£ºÎŞ
-*·µ»ØÖµ£ºÎŞ
-*°æ±¾ĞÅÏ¢£º
+*å‡½æ•°åç§°ï¼šwrite
+*å‡½æ•°åŠŸèƒ½ï¼šç”Ÿæˆæ•°æ®æ–‡ä»¶å‡½æ•°
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¿”å›å€¼ï¼šæ— 
+*ç‰ˆæœ¬ä¿¡æ¯ï¼š
 */
 void write()
 {
@@ -39,35 +39,35 @@ void write()
 	DATAITEM *p = data;
 	clock_t start1, finish1;
 
-	/* Éú³É¼ÇÂ¼²¢´æÈë½á¹¹ÌåÊı×é */
+	/* ç”Ÿæˆè®°å½•å¹¶å­˜å…¥ç»“æ„ä½“æ•°ç»„ */
 	start1 = clock();
 	for (int i = 0; i < configinfo.number; i++)
 	{
-		p->item1 = rand_num(configinfo.minvalue1, configinfo.maxvalue1); //Éú³ÉµÚÒ»¸öÔªËØ
+		p->item1 = rand_num(configinfo.minvalue1, configinfo.maxvalue1); //ç”Ÿæˆç¬¬ä¸€ä¸ªå…ƒç´ 
 		do
 		{
-			p->item2 = rand_num(configinfo.minvalue1, configinfo.maxvalue1); //Éú³ÉµÚ¶ş¸öÔªËØ£¨²»ÓëµÚÒ»¸öÔªËØÏàÍ¬£©
+			p->item2 = rand_num(configinfo.minvalue1, configinfo.maxvalue1); //ç”Ÿæˆç¬¬äºŒä¸ªå…ƒç´ ï¼ˆä¸ä¸ç¬¬ä¸€ä¸ªå…ƒç´ ç›¸åŒï¼‰
 		} while (p->item2 == p->item1);
-		p->item3 = rand_num(configinfo.minvalue2, configinfo.maxvalue2); //Éú³ÉµÚÈı¸öÔªËØ
+		p->item3 = rand_num(configinfo.minvalue2, configinfo.maxvalue2); //ç”Ÿæˆç¬¬ä¸‰ä¸ªå…ƒç´ 
 		p++;
 	}
 	finish1 = clock();
 	double time = (double)(finish1 - start1) / CLOCKS_PER_SEC;
-	cout << "\nÉú³É¼ÇÂ¼Íê³É¡£\n\t";
+	cout << "\nç”Ÿæˆè®°å½•å®Œæˆã€‚\n\t";
 	cout << "time:" << time << "s\n";
 
-	/* ·ÖÀëÎÄ¼şÃû */
-	char fname[_MAX_FNAME]; //ÎÄ¼şÃû
-	char ext[_MAX_EXT]; //À©Õ¹Ãû
+	/* åˆ†ç¦»æ–‡ä»¶å */
+	char fname[_MAX_FNAME]; //æ–‡ä»¶å
+	char ext[_MAX_EXT]; //æ‰©å±•å
 	_splitpath(configinfo.filename, NULL, NULL, fname, ext);
 
 
-	/* Ğ´ÈëÎÄ¼ş */
-	if (strcmp(configinfo.fileformat, "text") == 0) //Éú³ÉÎÄ±¾ÎÄ¼ş
+	/* å†™å…¥æ–‡ä»¶ */
+	if (strcmp(configinfo.fileformat, "text") == 0) //ç”Ÿæˆæ–‡æœ¬æ–‡ä»¶
 	{
 		write_text(fname, data);
 	}
-	else if (strcmp(configinfo.fileformat, "binary") == 0) //Éú³É¶ş½øÖÆÎÄ¼ş
+	else if (strcmp(configinfo.fileformat, "binary") == 0) //ç”ŸæˆäºŒè¿›åˆ¶æ–‡ä»¶
 	{
 		write_binary(fname, data);
 	}
@@ -83,41 +83,43 @@ void write()
 }
 
 /*
-*º¯ÊıÃû³Æ£ºinit_conf
-*º¯Êı¹¦ÄÜ£º³õÊ¼»¯ÅäÖÃ±äÁ¿º¯Êı
-*ÊäÈë²ÎÊı£ºÎŞ
-*·µ»ØÖµ£ºboolÀàĞÍ£º³õÊ¼»¯³É¹¦·µ»Ø1£¬·ñÔò·µ»Ø0
-*°æ±¾ĞÅÏ¢£º
+*å‡½æ•°åç§°ï¼šinit_conf
+*å‡½æ•°åŠŸèƒ½ï¼šåˆå§‹åŒ–é…ç½®å˜é‡å‡½æ•°
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¿”å›å€¼ï¼šboolç±»å‹ï¼šåˆå§‹åŒ–æˆåŠŸè¿”å›1ï¼Œå¦åˆ™è¿”å›0
+*ç‰ˆæœ¬ä¿¡æ¯ï¼š
 */
 bool init_conf()
 {
 	extern CONF configinfo;
 	configinfo.number = MAXNUM;
-	char curdir[MAX_STR_LEN]; //´æ·Åµ±Ç°Â·¾¶(²âÊÔÓÃ)
+	strcpy(configinfo.fileformat, "default"); //é»˜è®¤åŒæ—¶ç”Ÿæˆæ–‡æœ¬æ–‡ä»¶å’ŒäºŒè¿›åˆ¶æ–‡ä»¶
+	
+	char curdir[MAX_STR_LEN]; //å­˜æ”¾å½“å‰è·¯å¾„(æµ‹è¯•ç”¨)
 
-	/* ²âÊÔ´úÂë */
+	/* æµ‹è¯•ä»£ç  */
 	if (_getcwd(curdir, MAX_STR_LEN))
 	{
-		printf("µ±Ç°¹¤×÷Â·¾¶£º%s\n\n", curdir);
+		printf("å½“å‰å·¥ä½œè·¯å¾„ï¼š%s\n\n", curdir);
 	}
 
-	if (access("conf.ini", 00)) //Èç¹ûÅäÖÃÎÄ¼ş²»´æÔÚ
+	if (access("conf.ini", 00)) //å¦‚æœé…ç½®æ–‡ä»¶ä¸å­˜åœ¨
 	{
-		printf("³ÌĞòÂ·¾¶ÏÂÎ´·¢ÏÖÅäÖÃÎÄ¼ş£¬½«×Ô¶¯Éú³ÉÅäÖÃÎÄ¼ş¡£\n");
+		printf("ç¨‹åºè·¯å¾„ä¸‹æœªå‘ç°é…ç½®æ–‡ä»¶ï¼Œå°†è‡ªåŠ¨ç”Ÿæˆé…ç½®æ–‡ä»¶ã€‚\n");
 		FILE *fp = fopen("conf.ini", "w");
 		if (!fp)
 		{
-			printf("Éú³ÉÅäÖÃÎÄ¼şÊ§°Ü£¡");
+			printf("ç”Ÿæˆé…ç½®æ–‡ä»¶å¤±è´¥ï¼");
 			return false;
 		}
 
-		/* ³õÊ¼»¯ÎÄ¼şÃûºÍÂ·¾¶ */
-		strcpy(configinfo.filename, "dafault.txt"); //Ä¬ÈÏÎÄ¼şÃû
+		/* åˆå§‹åŒ–æ–‡ä»¶åå’Œè·¯å¾„ */
+		strcpy(configinfo.filename, "dafault.txt"); //é»˜è®¤æ–‡ä»¶å
 
-		strcat(curdir, "\\OutputData\\"); //Ä¬ÈÏÓë³ÌĞòÍ¬¼¶µÄOutputDataÄ¿Â¼
+		strcat(curdir, "\\OutputData\\"); //é»˜è®¤ä¸ç¨‹åºåŒçº§çš„OutputDataç›®å½•
 		strcpy(configinfo.filesavepath, curdir);
 
-		/* ³õÊ¼»¯ÆäËûÄ¬ÈÏÖµ */
+		/* åˆå§‹åŒ–å…¶ä»–é»˜è®¤å€¼ */
 		configinfo.maxvalue1 = MAXNUM;
 		configinfo.minvalue1 = MINNUM;
 		configinfo.maxvalue2 = MAXNUM;
@@ -125,110 +127,106 @@ bool init_conf()
 		configinfo.recordcount1 = MAXNUM;
 		configinfo.recordcount2 = MINNUM;
 
-		fprintf(fp, "%s\n", configinfo.filesavepath); // 1£ºÄ¬ÈÏ´æ´¢Ä¿Â¼
-		fprintf(fp, "%s\n", configinfo.filename); // 2£ºÄ¬ÈÏÎÄ¼şÃû
-		fprintf(fp, "%d\n", configinfo.maxvalue1); // 3£ºÊı¾İ¼ÇÂ¼ÈıÔª×éÖĞ1¡¢2ÔªËØÖµµÄÉÏÏŞ
-		fprintf(fp, "%d\n", configinfo.minvalue1); // 4£ºÊı¾İ¼ÇÂ¼ÈıÔª×éÖĞ1¡¢2ÔªËØÖµµÄÏÂÏŞ
-		fprintf(fp, "%d\n", configinfo.maxvalue2); // 5£ºÊı¾İ¼ÇÂ¼ÈıÔª×éÖĞµÚ3ÔªËØÖµµÄÉÏÏŞ
-		fprintf(fp, "%d\n", configinfo.minvalue2); // 6£ºÊı¾İ¼ÇÂ¼ÈıÔª×éÖĞµÚ3ÔªËØÖµµÄÏÂÏŞ
-		fprintf(fp, "%d\n", configinfo.recordcount1); // 7£ºÉú³ÉµÄ¼ÇÂ¼ÌõÊıÉÏÏŞ
-		fprintf(fp, "%d\n", configinfo.recordcount2); // 8£ºÉú³ÉµÄ¼ÇÂ¼ÌõÊıÏÂÏŞ
+		fprintf(fp, "%s\n", configinfo.filesavepath); // 1ï¼šé»˜è®¤å­˜å‚¨ç›®å½•
+		fprintf(fp, "%s\n", configinfo.filename); // 2ï¼šé»˜è®¤æ–‡ä»¶å
+		fprintf(fp, "%d\n", configinfo.maxvalue1); // 3ï¼šæ•°æ®è®°å½•ä¸‰å…ƒç»„ä¸­1ã€2å…ƒç´ å€¼çš„ä¸Šé™
+		fprintf(fp, "%d\n", configinfo.minvalue1); // 4ï¼šæ•°æ®è®°å½•ä¸‰å…ƒç»„ä¸­1ã€2å…ƒç´ å€¼çš„ä¸‹é™
+		fprintf(fp, "%d\n", configinfo.maxvalue2); // 5ï¼šæ•°æ®è®°å½•ä¸‰å…ƒç»„ä¸­ç¬¬3å…ƒç´ å€¼çš„ä¸Šé™
+		fprintf(fp, "%d\n", configinfo.minvalue2); // 6ï¼šæ•°æ®è®°å½•ä¸‰å…ƒç»„ä¸­ç¬¬3å…ƒç´ å€¼çš„ä¸‹é™
+		fprintf(fp, "%d\n", configinfo.recordcount1); // 7ï¼šç”Ÿæˆçš„è®°å½•æ¡æ•°ä¸Šé™
+		fprintf(fp, "%d\n", configinfo.recordcount2); // 8ï¼šç”Ÿæˆçš„è®°å½•æ¡æ•°ä¸‹é™
 
-		printf("ÅäÖÃÎÄ¼şÉú³É³É¹¦¡£\n\n");
+		printf("é…ç½®æ–‡ä»¶ç”ŸæˆæˆåŠŸã€‚\n\n");
 
 		fclose(fp);
 		return true;
 	}
-	else //ÅäÖÃÎÄ¼ş´æÔÚ£¬
+	else //é…ç½®æ–‡ä»¶å­˜åœ¨ï¼Œ
 	{
-		printf("³ÌĞòÂ·¾¶ÏÂ·¢ÏÖÅäÖÃÎÄ¼ş£¬¶ÁÈ¡ÅäÖÃÎÄ¼ş¡£\n");
-		FILE *fp = fopen("conf.ini", "r"); //¶ÁÈ¡ÅäÖÃÎÄ¼ş
+		printf("ç¨‹åºè·¯å¾„ä¸‹å‘ç°é…ç½®æ–‡ä»¶ï¼Œè¯»å–é…ç½®æ–‡ä»¶ã€‚\n");
+		FILE *fp = fopen("conf.ini", "r"); //è¯»å–é…ç½®æ–‡ä»¶
 		if (!fp)
 		{
-			printf("¶ÁÈ¡ÅäÖÃÎÄ¼şÊ§°Ü£¡");
+			printf("è¯»å–é…ç½®æ–‡ä»¶å¤±è´¥ï¼");
 			return false;
 		}
 
-		fscanf(fp, "%s", configinfo.filesavepath); // 1£ºÄ¬ÈÏ´æ´¢Ä¿Â¼
-		fscanf(fp, "%s", configinfo.filename); // 2£ºÄ¬ÈÏÎÄ¼şÃû
-		fscanf(fp, "%d", &configinfo.maxvalue1); // 3£ºÊı¾İ¼ÇÂ¼ÈıÔª×éÖĞ1¡¢2ÔªËØÖµµÄÉÏÏŞ
-		fscanf(fp, "%d", &configinfo.minvalue1); // 4£ºÊı¾İ¼ÇÂ¼ÈıÔª×éÖĞ1¡¢2ÔªËØÖµµÄÏÂÏŞ
-		fscanf(fp, "%d", &configinfo.maxvalue2); // 5£ºÊı¾İ¼ÇÂ¼ÈıÔª×éÖĞµÚ3ÔªËØÖµµÄÉÏÏŞ
-		fscanf(fp, "%d", &configinfo.minvalue2); // 6£ºÊı¾İ¼ÇÂ¼ÈıÔª×éÖĞµÚ3ÔªËØÖµµÄÏÂÏŞ
-		fscanf(fp, "%d", &configinfo.recordcount1); // 7£ºÉú³ÉµÄ¼ÇÂ¼ÌõÊıÉÏÏŞ
-		fscanf(fp, "%d", &configinfo.recordcount2); // 8£ºÉú³ÉµÄ¼ÇÂ¼ÌõÊıÏÂÏŞ
+		fscanf(fp, "%s", configinfo.filesavepath); // 1ï¼šé»˜è®¤å­˜å‚¨ç›®å½•
+		fscanf(fp, "%s", configinfo.filename); // 2ï¼šé»˜è®¤æ–‡ä»¶å
+		fscanf(fp, "%d", &configinfo.maxvalue1); // 3ï¼šæ•°æ®è®°å½•ä¸‰å…ƒç»„ä¸­1ã€2å…ƒç´ å€¼çš„ä¸Šé™
+		fscanf(fp, "%d", &configinfo.minvalue1); // 4ï¼šæ•°æ®è®°å½•ä¸‰å…ƒç»„ä¸­1ã€2å…ƒç´ å€¼çš„ä¸‹é™
+		fscanf(fp, "%d", &configinfo.maxvalue2); // 5ï¼šæ•°æ®è®°å½•ä¸‰å…ƒç»„ä¸­ç¬¬3å…ƒç´ å€¼çš„ä¸Šé™
+		fscanf(fp, "%d", &configinfo.minvalue2); // 6ï¼šæ•°æ®è®°å½•ä¸‰å…ƒç»„ä¸­ç¬¬3å…ƒç´ å€¼çš„ä¸‹é™
+		fscanf(fp, "%d", &configinfo.recordcount1); // 7ï¼šç”Ÿæˆçš„è®°å½•æ¡æ•°ä¸Šé™
+		fscanf(fp, "%d", &configinfo.recordcount2); // 8ï¼šç”Ÿæˆçš„è®°å½•æ¡æ•°ä¸‹é™
 
-		printf("ÅäÖÃÎÄ¼ş¶ÁÈ¡³É¹¦¡£\n\n");
+		printf("é…ç½®æ–‡ä»¶è¯»å–æˆåŠŸã€‚\n\n");
 
 		fclose(fp);
 		return true;
 	}
-
-	strcpy(configinfo.fileformat, "default"); //Ä¬ÈÏÍ¬Ê±Éú³ÉÎÄ±¾ÎÄ¼şºÍ¶ş½øÖÆÎÄ¼ş
-
-	return false;
 }
 
 /*
-*º¯ÊıÃû³Æ£ºillegal_number
-*º¯Êı¹¦ÄÜ£ºÅĞ¶ÏÃüÁîĞĞ²ÎÊıÊÇ·ñÎªºÏ·¨Êı×Ö
-*ÊäÈë²ÎÊı£ºconst char number[]£ºÊÓÎªÊı×ÖµÄÃüÁîĞĞ²ÎÊı
-*·µ»ØÖµ£ºboolÀàĞÍ£ºÊÇ·Ç·¨Êı×ÖÔò·µ»Ø1£¬·ñÔò·µ»Ø0
-*°æ±¾ĞÅÏ¢£º
+*å‡½æ•°åç§°ï¼šillegal_number
+*å‡½æ•°åŠŸèƒ½ï¼šåˆ¤æ–­å‘½ä»¤è¡Œå‚æ•°æ˜¯å¦ä¸ºåˆæ³•æ•°å­—
+*è¾“å…¥å‚æ•°ï¼šconst char number[]ï¼šè§†ä¸ºæ•°å­—çš„å‘½ä»¤è¡Œå‚æ•°
+*è¿”å›å€¼ï¼šboolç±»å‹ï¼šæ˜¯éæ³•æ•°å­—åˆ™è¿”å›1ï¼Œå¦åˆ™è¿”å›0
+*ç‰ˆæœ¬ä¿¡æ¯ï¼š
 */
 bool illegal_number(const char number[])
 {
-	if (strcmp(number, "") == 0) //¿Õ×Ö·û
+	if (strcmp(number, "") == 0) //ç©ºå­—ç¬¦
 	{
-		return true; //²»ÊÇºÏ·¨Êı×Ö
+		return true; //ä¸æ˜¯åˆæ³•æ•°å­—
 	}
 
 	int length = strlen(number);
 
-	for (int i = 0; i < length; i++) //±éÀúÃ¿¸ö×Ö·û
+	for (int i = 0; i < length; i++) //éå†æ¯ä¸ªå­—ç¬¦
 	{
-		if (!isdigit(number[i])) //Èç¹û¸Ã×Ö·û²»ÊÇÊı×Ö
+		if (!isdigit(number[i])) //å¦‚æœè¯¥å­—ç¬¦ä¸æ˜¯æ•°å­—
 		{
-			return true; //¸Ã²ÎÊı×Ö·û´®Òà²»ÊÇÊı×Ö
+			return true; //è¯¥å‚æ•°å­—ç¬¦ä¸²äº¦ä¸æ˜¯æ•°å­—
 		}
 	}
-	int num = atoi(number); //Ôİ´æÊı¾İ
+	int num = atoi(number); //æš‚å­˜æ•°æ®
 	if (num<MINNUM || num>MAXNUM)
 	{
-		printf("´íÎó£ºÊäÈëµÄÊı×Ö²»ÔÚÔÊĞíµÄ·¶Î§ÄÚ¡££¨ÔÊĞí·¶Î§1~100000£©\n");
-		return true; //ÊÇ·Ç·¨Êı×Ö
+		printf("é”™è¯¯ï¼šè¾“å…¥çš„æ•°å­—ä¸åœ¨å…è®¸çš„èŒƒå›´å†…ã€‚ï¼ˆå…è®¸èŒƒå›´1~100000ï¼‰\n");
+		return true; //æ˜¯éæ³•æ•°å­—
 	}
-	return false; //Í¨¹ıÁËËùÓĞ¼ìºË£¬ÊÇºÏ·¨Êı×Ö
+	return false; //é€šè¿‡äº†æ‰€æœ‰æ£€æ ¸ï¼Œæ˜¯åˆæ³•æ•°å­—
 }
 
 /*
-*º¯ÊıÃû³Æ£ºillegal_filepath
-*º¯Êı¹¦ÄÜ£ºÅĞ¶ÏÃüÁîĞĞ²ÎÊıÊÇ·ñÎªºÏ·¨Â·¾¶
-*ÊäÈë²ÎÊı£ºconst char number[]£ºÊÓÎªÂ·¾¶µÄÃüÁîĞĞ²ÎÊı
-*·µ»ØÖµ£ºboolÀàĞÍ£ºÊÇ·Ç·¨Â·¾¶Ôò·µ»Ø1£¬·ñÔò·µ»Ø0
-*°æ±¾ĞÅÏ¢£º
+*å‡½æ•°åç§°ï¼šillegal_filepath
+*å‡½æ•°åŠŸèƒ½ï¼šåˆ¤æ–­å‘½ä»¤è¡Œå‚æ•°æ˜¯å¦ä¸ºåˆæ³•è·¯å¾„
+*è¾“å…¥å‚æ•°ï¼šconst char number[]ï¼šè§†ä¸ºè·¯å¾„çš„å‘½ä»¤è¡Œå‚æ•°
+*è¿”å›å€¼ï¼šboolç±»å‹ï¼šæ˜¯éæ³•è·¯å¾„åˆ™è¿”å›1ï¼Œå¦åˆ™è¿”å›0
+*ç‰ˆæœ¬ä¿¡æ¯ï¼š
 */
 bool illegal_filepath(const char filepath[])
 {	
-	/* Ê×ÏÈ·ÖÀëÎÄ¼şÂ·¾¶ */
+	/* é¦–å…ˆåˆ†ç¦»æ–‡ä»¶è·¯å¾„ */
 	char drive[_MAX_DRIVE];
 	char dir[_MAX_DIR];
 	char fname[_MAX_FNAME];
 	char ext[_MAX_EXT];
 	_splitpath(filepath, drive, dir, fname, ext);
 
-	/* ÈôÀ©Õ¹Ãû´íÎó£¬Ö±½ÓÈ·¶¨ÊÇ·Ç·¨Â·¾¶ */
-	if (!strcmp(".txt", ext) || !strcmp(".dat", ext)) //À©Õ¹ÃûÕıÈ·£¨ÆäÖĞÒ»¸östrcmp()µÄ½á¹û½«Îª0£©
+	/* è‹¥æ‰©å±•åé”™è¯¯ï¼Œç›´æ¥ç¡®å®šæ˜¯éæ³•è·¯å¾„ */
+	if (!strcmp(".txt", ext) || !strcmp(".dat", ext)) //æ‰©å±•åæ­£ç¡®ï¼ˆå…¶ä¸­ä¸€ä¸ªstrcmp()çš„ç»“æœå°†ä¸º0ï¼‰
 	{
 		int length = strlen(fname);
-		for (int i = 0; i < length; i++) //±éÀúÎÄ¼şÃû£¬Èôº¬ÓĞ·Ç·¨×Ö·û£¬È·¶¨ÊÇ·Ç·¨Â·¾¶
+		for (int i = 0; i < length; i++) //éå†æ–‡ä»¶åï¼Œè‹¥å«æœ‰éæ³•å­—ç¬¦ï¼Œç¡®å®šæ˜¯éæ³•è·¯å¾„
 		{
 			switch (fname[i])
 			{
 			case':': case'*': case'?': case'\\': 
 			case'<': case'>': case'|':
-				printf("´íÎó£ºÎÄ¼şÃû·Ç·¨£º%s\n", fname);
-				return true; //·Ç·¨
+				printf("é”™è¯¯ï¼šæ–‡ä»¶åéæ³•ï¼š%s\n", fname);
+				return true; //éæ³•
 
 			default:
 				break;
@@ -236,26 +234,26 @@ bool illegal_filepath(const char filepath[])
 		}
 
 	}
-	else //À©Õ¹Ãû²»·û
+	else //æ‰©å±•åä¸ç¬¦
 	{
-		printf("´íÎó£ºÀ©Õ¹Ãû²»·û£º%s\n", ext);
+		printf("é”™è¯¯ï¼šæ‰©å±•åä¸ç¬¦ï¼š%s\n", ext);
 		return true;
 	}
 
-	/* Î´Ê¶±ğ³öÆäËû´íÎó */
-	return false; //ÔİÈÏÎªÕıÈ·¸ñÊ½
+	/* æœªè¯†åˆ«å‡ºå…¶ä»–é”™è¯¯ */
+	return false; //æš‚è®¤ä¸ºæ­£ç¡®æ ¼å¼
 }
 
 /*
-*º¯ÊıÃû³Æ£ºseparate_filepath
-*º¯Êı¹¦ÄÜ£º·ÖÀëÂ·¾¶£¬½«Æä·ÖÎªÎÄ¼ş´æ´¢Ä¿Â¼ºÍÎÄ¼şÃû³Æ£¬´æÈëÅäÖÃ
-*ÊäÈë²ÎÊı£ºconst char filepath[]£ºÎÄ¼şÂ·¾¶
-*·µ»ØÖµ£ºÎŞ
-*°æ±¾ĞÅÏ¢£º
+*å‡½æ•°åç§°ï¼šseparate_filepath
+*å‡½æ•°åŠŸèƒ½ï¼šåˆ†ç¦»è·¯å¾„ï¼Œå°†å…¶åˆ†ä¸ºæ–‡ä»¶å­˜å‚¨ç›®å½•å’Œæ–‡ä»¶åç§°ï¼Œå­˜å…¥é…ç½®
+*è¾“å…¥å‚æ•°ï¼šconst char filepath[]ï¼šæ–‡ä»¶è·¯å¾„
+*è¿”å›å€¼ï¼šæ— 
+*ç‰ˆæœ¬ä¿¡æ¯ï¼š
 */
 void separate_filepath(const char filepath[])
 {
-	/* Ê×ÏÈ·ÖÀëÎÄ¼şÂ·¾¶ */
+	/* é¦–å…ˆåˆ†ç¦»æ–‡ä»¶è·¯å¾„ */
 	char drive[_MAX_DRIVE];
 	char dir[_MAX_DIR];
 	char fname[_MAX_FNAME];
@@ -264,210 +262,210 @@ void separate_filepath(const char filepath[])
 
 	extern CONF configinfo;
 	
-	memset(configinfo.filesavepath, '\0', sizeof(configinfo.filesavepath)); //Ô­±¾´æ·ÅÄ¬ÈÏÖµ£¬ÖÃ¿Õ
+	memset(configinfo.filesavepath, '\0', sizeof(configinfo.filesavepath)); //åŸæœ¬å­˜æ”¾é»˜è®¤å€¼ï¼Œç½®ç©º
 	memset(configinfo.filename, '\0', sizeof(configinfo.filename));
 
-	strcat(configinfo.filesavepath, drive); //´æÈëÎÄ¼ş´æ´¢Ä¿Â¼
+	strcat(configinfo.filesavepath, drive); //å­˜å…¥æ–‡ä»¶å­˜å‚¨ç›®å½•
 	strcat(configinfo.filesavepath, dir);
 
-	strcat(configinfo.filename, fname); //´æÈëÎÄ¼şÃû
+	strcat(configinfo.filename, fname); //å­˜å…¥æ–‡ä»¶å
 	strcat(configinfo.filename, ext);
 
 }
 
 /*
-*º¯ÊıÃû³Æ£ºprocess_dir
-*º¯Êı¹¦ÄÜ£º´¦ÀíÂ·¾¶¡£Í¨¹ı½«Â·¾¶·Ö½âÎªÈô¸É×ÓÂ·¾¶£¬Öğ¸ö×ªÈë¡£
-*ÊäÈë²ÎÊı£ºÎŞ
-*·µ»ØÖµ£ºÎŞ
-*°æ±¾ĞÅÏ¢£º
+*å‡½æ•°åç§°ï¼šprocess_dir
+*å‡½æ•°åŠŸèƒ½ï¼šå¤„ç†è·¯å¾„ã€‚é€šè¿‡å°†è·¯å¾„åˆ†è§£ä¸ºè‹¥å¹²å­è·¯å¾„ï¼Œé€ä¸ªè½¬å…¥ã€‚
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¿”å›å€¼ï¼šæ— 
+*ç‰ˆæœ¬ä¿¡æ¯ï¼š
 */
 void process_dir()
 {
-	char curdir[MAX_STR_LEN]; //´æ·Åµ±Ç°Â·¾¶(²âÊÔÓÃ)
+	char curdir[MAX_STR_LEN]; //å­˜æ”¾å½“å‰è·¯å¾„(æµ‹è¯•ç”¨)
 	extern CONF configinfo;
 
-	if (strcmp(configinfo.filesavepath, "") != 0) //Èç¹ûÂ·¾¶²»Îª¿Õ
+	if (strcmp(configinfo.filesavepath, "") != 0) //å¦‚æœè·¯å¾„ä¸ä¸ºç©º
 	{
-		if (_access(configinfo.filesavepath, 00) == -1) //Èç¹ûÎÄ¼ş¼Ğ²»´æÔÚ
+		if (_access(configinfo.filesavepath, 00) == -1) //å¦‚æœæ–‡ä»¶å¤¹ä¸å­˜åœ¨
 		{
-			printf("ÉèÖÃµÄÂ·¾¶²»´æÔÚ£¬½«´´½¨Â·¾¶¡£\n");
+			printf("è®¾ç½®çš„è·¯å¾„ä¸å­˜åœ¨ï¼Œå°†åˆ›å»ºè·¯å¾„ã€‚\n");
 
-			/* ÒÔÏÂ½øĞĞÂ·¾¶´¦Àí */
+			/* ä»¥ä¸‹è¿›è¡Œè·¯å¾„å¤„ç† */
 			char drive[_MAX_DRIVE];
 			char dir[_MAX_DIR];
 			_splitpath(configinfo.filesavepath, drive, dir, NULL, NULL);
 			printf("  Drive: %s\n", drive);
 			printf("  Dir: %s\n", dir);
-			printf("×¢Òâ£ººÏ·¨µÄÄ¿Â¼·Ö¸ô·ûÎª¡°/¡±»ò¡°\\¡±¡£\n\n");
+			printf("æ³¨æ„ï¼šåˆæ³•çš„ç›®å½•åˆ†éš”ç¬¦ä¸ºâ€œ/â€æˆ–â€œ\\â€ã€‚\n\n");
 
-			if (strcmp(drive, "") == 0) //Î´ÉèÖÃÅÌ·û
+			if (strcmp(drive, "") == 0) //æœªè®¾ç½®ç›˜ç¬¦
 			{
-				printf("Î´ÉèÖÃÅÌ·û£¬Ïà¶ÔÂ·¾¶¡£\n");
+				printf("æœªè®¾ç½®ç›˜ç¬¦ï¼Œç›¸å¯¹è·¯å¾„ã€‚\n");
 			}
-			else //ÉèÖÃÁËÅÌ·û
+			else //è®¾ç½®äº†ç›˜ç¬¦
 			{
-				printf("ÉèÖÃÁËÅÌ·û£¬¾ø¶ÔÂ·¾¶¡£\n");
-				if (!isalpha(drive[0])) //µÚÒ»¸ö×Ö·û²»ÊÇ×ÖÄ¸
+				printf("è®¾ç½®äº†ç›˜ç¬¦ï¼Œç»å¯¹è·¯å¾„ã€‚\n");
+				if (!isalpha(drive[0])) //ç¬¬ä¸€ä¸ªå­—ç¬¦ä¸æ˜¯å­—æ¯
 				{
-					printf("ÅÌ·û´íÎó£¡%s\n", drive);
+					printf("ç›˜ç¬¦é”™è¯¯ï¼%s\n", drive);
 					return;
 				}
 				char cm[MAX_STR_LEN];
-				sprintf(cm, "%s/", drive); //×é³ÉÃüÁî
-				_chdir(cm); //½øÈëÅÌ·û
+				sprintf(cm, "%s/", drive); //ç»„æˆå‘½ä»¤
+				_chdir(cm); //è¿›å…¥ç›˜ç¬¦
 
-				/* ²âÊÔ´úÂë */
+				/* æµ‹è¯•ä»£ç  */
 				if (_getcwd(curdir, MAX_STR_LEN))
 				{
-					printf("µ±Ç°¹¤×÷Â·¾¶£º%s\n", curdir);
+					printf("å½“å‰å·¥ä½œè·¯å¾„ï¼š%s\n", curdir);
 				}
 			}
 
-			char *head, *tail; //Â·¾¶´¦ÀíÓÎ±ê
-			char path[MAX_STR_LEN]; //´æ·Å´ı×ªµ½µÄÂ·¾¶
-			head = dir; //head³õÊ¼Ê±Ö¸ÏòÍ·²¿
+			char *head, *tail; //è·¯å¾„å¤„ç†æ¸¸æ ‡
+			char path[MAX_STR_LEN]; //å­˜æ”¾å¾…è½¬åˆ°çš„è·¯å¾„
+			head = dir; //headåˆå§‹æ—¶æŒ‡å‘å¤´éƒ¨
 
-			/* ´¦ÀíÂ·¾¶Ç°µ¼·û */
-			tail = head; //tailÖ¸Õë´Óhead´¦¿ªÊ¼ÒÆ¶¯
-			while (*tail != '\\' && *tail != '/') //Ñ°ÕÒÄ¿Â¼·Ö¸ô·û'\\'»ò'/'µÄÎ»ÖÃ
+			/* å¤„ç†è·¯å¾„å‰å¯¼ç¬¦ */
+			tail = head; //tailæŒ‡é’ˆä»headå¤„å¼€å§‹ç§»åŠ¨
+			while (*tail != '\\' && *tail != '/') //å¯»æ‰¾ç›®å½•åˆ†éš”ç¬¦'\\'æˆ–'/'çš„ä½ç½®
 			{
 				tail++;
 			}
 			int i;
-			for (i = 0; head < tail; head++) //¿½±´Ò»¼¶Â·¾¶¡£½áÊøºóhead == tail¡£
+			for (i = 0; head < tail; head++) //æ‹·è´ä¸€çº§è·¯å¾„ã€‚ç»“æŸåhead == tailã€‚
 			{
 				path[i] = *head;
 				i++;
 			}
-			path[i] = '\0'; //×Ö·û´®½áÊø·û
+			path[i] = '\0'; //å­—ç¬¦ä¸²ç»“æŸç¬¦
 
-			if (strcmp(path, "") == 0) //ËµÃ÷µÚÒ»¸ö×Ö·ûÎª'/'
+			if (strcmp(path, "") == 0) //è¯´æ˜ç¬¬ä¸€ä¸ªå­—ç¬¦ä¸º'/'
 			{
 
 				if (strcmp(drive, "") == 0)
 				{
-					printf("µÚÒ»¸ö×Ö·ûÎª¡°/¡±£¬Ìø×ªµ½ÅÌ·û¸ùÄ¿Â¼\n");
+					printf("ç¬¬ä¸€ä¸ªå­—ç¬¦ä¸ºâ€œ/â€ï¼Œè·³è½¬åˆ°ç›˜ç¬¦æ ¹ç›®å½•\n");
 					_chdir("/");
 
-					/* ²âÊÔ´úÂë */
+					/* æµ‹è¯•ä»£ç  */
 					if (_getcwd(curdir, MAX_STR_LEN))
 					{
-						printf("µ±Ç°¹¤×÷Â·¾¶£º%s\n", curdir);
+						printf("å½“å‰å·¥ä½œè·¯å¾„ï¼š%s\n", curdir);
 					}
 				}
 			}
 			else if (strcmp(path, "..") == 0)
 			{
-				printf("·µ»ØÉÏÒ»¼¶Â·¾¶\n");
+				printf("è¿”å›ä¸Šä¸€çº§è·¯å¾„\n");
 				_chdir("..");
 
-				/* ²âÊÔ´úÂë */
+				/* æµ‹è¯•ä»£ç  */
 				if (_getcwd(curdir, MAX_STR_LEN))
 				{
-					printf("µ±Ç°¹¤×÷Â·¾¶£º%s\n", curdir);
+					printf("å½“å‰å·¥ä½œè·¯å¾„ï¼š%s\n", curdir);
 				}
 			}
-			else if (_access(path, 00) == -1) //Èç¹ûÕâÒ»¼¶ÎÄ¼ş¼Ğ²»´æÔÚ
+			else if (_access(path, 00) == -1) //å¦‚æœè¿™ä¸€çº§æ–‡ä»¶å¤¹ä¸å­˜åœ¨
 			{
-				if (_mkdir(path) == -1) //´´½¨
+				if (_mkdir(path) == -1) //åˆ›å»º
 				{
-					printf("´´½¨ÎÄ¼ş¼ĞÊ§°Ü£¡%s\n", path);
+					printf("åˆ›å»ºæ–‡ä»¶å¤¹å¤±è´¥ï¼%s\n", path);
 					return;
 				}
-				_chdir(path); //Ìø×ª cd path 
+				_chdir(path); //è·³è½¬ cd path 
 
-				/* ²âÊÔ´úÂë */
+				/* æµ‹è¯•ä»£ç  */
 				if (_getcwd(curdir, MAX_STR_LEN))
 				{
-					printf("µ±Ç°¹¤×÷Â·¾¶£º%s\n", curdir);
+					printf("å½“å‰å·¥ä½œè·¯å¾„ï¼š%s\n", curdir);
 				}
 			}
-			else //ÎÄ¼ş¼Ğ´æÔÚ¡£cd path 
+			else //æ–‡ä»¶å¤¹å­˜åœ¨ã€‚cd path 
 			{
-				_chdir(path); //Ìø×ª cd path 
+				_chdir(path); //è·³è½¬ cd path 
 
-				/* ²âÊÔ´úÂë */
+				/* æµ‹è¯•ä»£ç  */
 				if (_getcwd(curdir, MAX_STR_LEN))
 				{
-					printf("µ±Ç°¹¤×÷Â·¾¶£º%s\n", curdir);
+					printf("å½“å‰å·¥ä½œè·¯å¾„ï¼š%s\n", curdir);
 				}
 			}
 
-			/* Ç°µ¼·û´¦ÀíÍê±Ï */
+			/* å‰å¯¼ç¬¦å¤„ç†å®Œæ¯• */
 
-			/* ´¦ÀíÂ·¾¶ÎÄ¼ş¼Ğ */
+			/* å¤„ç†è·¯å¾„æ–‡ä»¶å¤¹ */
 			while (*(tail + 1) != '\0')
 			{
 				head = tail + 1;
 				tail = tail + 1;
-				while (*tail != '\\' && *tail != '/' && *tail != '\0') //Ñ°ÕÒÄ¿Â¼·Ö¸ô·û'\\'»ò'/'µÄÎ»ÖÃ£¬»ò½áÎ²
+				while (*tail != '\\' && *tail != '/' && *tail != '\0') //å¯»æ‰¾ç›®å½•åˆ†éš”ç¬¦'\\'æˆ–'/'çš„ä½ç½®ï¼Œæˆ–ç»“å°¾
 				{
 					tail++;
 				}
 				int i;
-				for (i = 0; head < tail; head++) //¿½±´Ò»¼¶Â·¾¶¡£½áÊøºóhead == tail¡£
+				for (i = 0; head < tail; head++) //æ‹·è´ä¸€çº§è·¯å¾„ã€‚ç»“æŸåhead == tailã€‚
 				{
 					path[i] = *head;
 					i++;
 				}
-				path[i] = '\0'; //×Ö·û´®½áÊø·û
+				path[i] = '\0'; //å­—ç¬¦ä¸²ç»“æŸç¬¦
 				if (strcmp(path, "") == 0)
 				{
-					printf("´íÎó£¡´æÔÚ¶àÓàµÄÄ¿Â¼·Ö¸ô·û¡°/¡±»ò¡°\\¡±¡£\n\n");
+					printf("é”™è¯¯ï¼å­˜åœ¨å¤šä½™çš„ç›®å½•åˆ†éš”ç¬¦â€œ/â€æˆ–â€œ\\â€ã€‚\n\n");
 				}
 				if (strcmp(path, "..") == 0)
 				{
-					printf("·µ»ØÉÏÒ»¼¶Â·¾¶\n");
+					printf("è¿”å›ä¸Šä¸€çº§è·¯å¾„\n");
 					_chdir("..");
 				}
-				else if (_access(path, 00) == -1) //Èç¹ûÕâÒ»¼¶ÎÄ¼ş¼Ğ²»´æÔÚ
+				else if (_access(path, 00) == -1) //å¦‚æœè¿™ä¸€çº§æ–‡ä»¶å¤¹ä¸å­˜åœ¨
 				{
-					if (_mkdir(path) == -1) //´´½¨
+					if (_mkdir(path) == -1) //åˆ›å»º
 					{
-						printf("´´½¨ÎÄ¼ş¼ĞÊ§°Ü£¡\n%s", path);
+						printf("åˆ›å»ºæ–‡ä»¶å¤¹å¤±è´¥ï¼\n%s", path);
 						return;
 					}
-					_chdir(path); //Ìø×ª cd path 
+					_chdir(path); //è·³è½¬ cd path 
 
-					/* ²âÊÔ´úÂë */
+					/* æµ‹è¯•ä»£ç  */
 					if (_getcwd(curdir, MAX_STR_LEN))
 					{
-						printf("µ±Ç°¹¤×÷Â·¾¶£º%s\n", curdir);
+						printf("å½“å‰å·¥ä½œè·¯å¾„ï¼š%s\n", curdir);
 					}
 				}
-				else //ÎÄ¼ş¼Ğ´æÔÚ¡£cd path 
+				else //æ–‡ä»¶å¤¹å­˜åœ¨ã€‚cd path 
 				{
-					_chdir(path); //Ìø×ª cd path 
+					_chdir(path); //è·³è½¬ cd path 
 
-					/* ²âÊÔ´úÂë */
+					/* æµ‹è¯•ä»£ç  */
 					if (_getcwd(curdir, MAX_STR_LEN))
 					{
-						printf("µ±Ç°¹¤×÷Â·¾¶£º%s\n", curdir);
+						printf("å½“å‰å·¥ä½œè·¯å¾„ï¼š%s\n", curdir);
 					}
 				}
 			}
-			printf("´´½¨Â·¾¶³É¹¦¡£\n");
+			printf("åˆ›å»ºè·¯å¾„æˆåŠŸã€‚\n");
 		}
-		else //ÎÄ¼ş¼Ğ´æÔÚ »ò Ã»ÓĞÂ·¾¶Ö»ÓĞÎÄ¼şÃû
+		else //æ–‡ä»¶å¤¹å­˜åœ¨ æˆ– æ²¡æœ‰è·¯å¾„åªæœ‰æ–‡ä»¶å
 		{
-			printf("ÉèÖÃµÄÂ·¾¶´æÔÚ£¬Ìø×ª¡£\n");
+			printf("è®¾ç½®çš„è·¯å¾„å­˜åœ¨ï¼Œè·³è½¬ã€‚\n");
 			_chdir(configinfo.filesavepath);
-			/* ²âÊÔ´úÂë */
+			/* æµ‹è¯•ä»£ç  */
 			if (_getcwd(curdir, MAX_STR_LEN))
 			{
-				printf("µ±Ç°¹¤×÷Â·¾¶£º%s\n", curdir);
+				printf("å½“å‰å·¥ä½œè·¯å¾„ï¼š%s\n", curdir);
 			}
 		}
 	}
 }
 
 /*
-*º¯ÊıÃû³Æ£ºrand_num
-*º¯Êı¹¦ÄÜ£ºÉú³ÉÖÆ¶¨·¶Î§ÄÚµÄËæ»úÊı
-*ÊäÈë²ÎÊı£ºint minvalue£ºÊıÖµÏÂÏŞ, int maxvalue£ºÊıÖµÉÏÏŞ
-*·µ»ØÖµ£ºÉú³ÉµÄËæ»úÊı
-*°æ±¾ĞÅÏ¢£º
+*å‡½æ•°åç§°ï¼šrand_num
+*å‡½æ•°åŠŸèƒ½ï¼šç”Ÿæˆåˆ¶å®šèŒƒå›´å†…çš„éšæœºæ•°
+*è¾“å…¥å‚æ•°ï¼šint minvalueï¼šæ•°å€¼ä¸‹é™, int maxvalueï¼šæ•°å€¼ä¸Šé™
+*è¿”å›å€¼ï¼šç”Ÿæˆçš„éšæœºæ•°
+*ç‰ˆæœ¬ä¿¡æ¯ï¼š
 */
 int rand_num(int minvalue, int maxvalue)
 {
@@ -475,11 +473,11 @@ int rand_num(int minvalue, int maxvalue)
 }
 
 /*
-*º¯ÊıÃû³Æ£ºwrite_text
-*º¯Êı¹¦ÄÜ£ºÒÔÎÄ±¾ÎÄ¼şĞÎÊ½Ğ´ÈëÊı¾İÎÄ¼ş¡£
-*ÊäÈë²ÎÊı£ºconst char fname[]£ºÎÄ¼şÃû³Æ, DATAITEM *data£º½á¹¹Êı×é»ùµØÖ·
-*·µ»ØÖµ£ºboolÀàĞÍ£ºÉú³É³É¹¦·µ»Ø1£¬·ñÔò·µ»Ø0
-*°æ±¾ĞÅÏ¢£º
+*å‡½æ•°åç§°ï¼šwrite_text
+*å‡½æ•°åŠŸèƒ½ï¼šä»¥æ–‡æœ¬æ–‡ä»¶å½¢å¼å†™å…¥æ•°æ®æ–‡ä»¶ã€‚
+*è¾“å…¥å‚æ•°ï¼šconst char fname[]ï¼šæ–‡ä»¶åç§°, DATAITEM *dataï¼šç»“æ„æ•°ç»„åŸºåœ°å€
+*è¿”å›å€¼ï¼šboolç±»å‹ï¼šç”ŸæˆæˆåŠŸè¿”å›1ï¼Œå¦åˆ™è¿”å›0
+*ç‰ˆæœ¬ä¿¡æ¯ï¼š
 */
 bool write_text(const char fname[], DATAITEM *data)
 {
@@ -493,13 +491,13 @@ bool write_text(const char fname[], DATAITEM *data)
 
 	start2 = clock();
 
-	FILE *fp = fopen(filename, "w"); //´ò¿ªÎÄ¼ş
-	if (NULL == fp) //ÎÄ¼ş´ò¿ªÊ§°Ü
+	FILE *fp = fopen(filename, "w"); //æ‰“å¼€æ–‡ä»¶
+	if (NULL == fp) //æ–‡ä»¶æ‰“å¼€å¤±è´¥
 	{
-		printf("ÎÄ¼ş´ò¿ªÊ§°Ü!\n");
+		printf("æ–‡ä»¶æ‰“å¼€å¤±è´¥!\n");
 		return false;
 	}
-	fprintf(fp, "%d\n", configinfo.number); //´òÓ¡¼ÇÂ¼ÌõÊı
+	fprintf(fp, "%d\n", configinfo.number); //æ‰“å°è®°å½•æ¡æ•°
 	for (int i = 0; i < configinfo.number; i++)
 	{
 		fprintf(fp, "%d,%d,%d\n", data[i].item1, data[i].item2, data[i].item3);
@@ -508,17 +506,17 @@ bool write_text(const char fname[], DATAITEM *data)
 
 	finish2 = clock();
 	double time = (double)(finish2 - start2) / CLOCKS_PER_SEC;
-	cout << "Êı¾İÎÄ¼şÉú³É³É¹¦¡££¨ÎÄ±¾ÎÄ¼ş£©\n\t";
+	cout << "æ•°æ®æ–‡ä»¶ç”ŸæˆæˆåŠŸã€‚ï¼ˆæ–‡æœ¬æ–‡ä»¶ï¼‰\n\t";
 	cout << "time:" << time << "s\n";
 	return true;
 }
 
 /*
-*º¯ÊıÃû³Æ£ºwrite_binary
-*º¯Êı¹¦ÄÜ£ºÒÔÎÄ±¾ÎÄ¼şĞÎÊ½Ğ´ÈëÊı¾İÎÄ¼ş¡£
-*ÊäÈë²ÎÊı£ºconst char fname[]£ºÎÄ¼şÃû³Æ, DATAITEM *data£º½á¹¹Êı×é»ùµØÖ·
-*·µ»ØÖµ£ºboolÀàĞÍ£ºÉú³É³É¹¦·µ»Ø1£¬·ñÔò·µ»Ø0
-*°æ±¾ĞÅÏ¢£º
+*å‡½æ•°åç§°ï¼šwrite_binary
+*å‡½æ•°åŠŸèƒ½ï¼šä»¥æ–‡æœ¬æ–‡ä»¶å½¢å¼å†™å…¥æ•°æ®æ–‡ä»¶ã€‚
+*è¾“å…¥å‚æ•°ï¼šconst char fname[]ï¼šæ–‡ä»¶åç§°, DATAITEM *dataï¼šç»“æ„æ•°ç»„åŸºåœ°å€
+*è¿”å›å€¼ï¼šboolç±»å‹ï¼šç”ŸæˆæˆåŠŸè¿”å›1ï¼Œå¦åˆ™è¿”å›0
+*ç‰ˆæœ¬ä¿¡æ¯ï¼š
 */
 bool write_binary(const char fname[], DATAITEM *data)
 {
@@ -532,10 +530,10 @@ bool write_binary(const char fname[], DATAITEM *data)
 
 	start3 = clock();
 
-	FILE *fp = fopen(filename, "wb"); //´ò¿ªÎÄ¼ş
-	if (NULL == fp) //ÎÄ¼ş´ò¿ªÊ§°Ü
+	FILE *fp = fopen(filename, "wb"); //æ‰“å¼€æ–‡ä»¶
+	if (NULL == fp) //æ–‡ä»¶æ‰“å¼€å¤±è´¥
 	{
-		printf("ÎÄ¼ş´ò¿ªÊ§°Ü!\n");
+		printf("æ–‡ä»¶æ‰“å¼€å¤±è´¥!\n");
 		return false;
 	}
 
@@ -546,7 +544,7 @@ bool write_binary(const char fname[], DATAITEM *data)
 
 	finish3 = clock();
 	double time = (double)(finish3 - start3) / CLOCKS_PER_SEC;
-	cout << "Êı¾İÎÄ¼şÉú³É³É¹¦¡££¨¶ş½øÖÆÎÄ¼ş£©\n\t";
+	cout << "æ•°æ®æ–‡ä»¶ç”ŸæˆæˆåŠŸã€‚ï¼ˆäºŒè¿›åˆ¶æ–‡ä»¶ï¼‰\n\t";
 	cout << "time:" << time << "s\n";
 	return true;
 }
