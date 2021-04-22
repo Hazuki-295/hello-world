@@ -3,55 +3,55 @@ typedef int ElemType;
 #include <iostream>
 using namespace std;
 
-/* Õ»µÄË³Ğò´æ´¢ÀàĞÍ */
+/* æ ˆçš„é¡ºåºå­˜å‚¨ç±»å‹ */
 struct SqStack {
 
-	ElemType *data; // ´æ·ÅÕ»ÖĞÔªËØ
-	int top;        // Õ»¶¥Ö¸Õë
-	int maxsize;	// Õ»µÄ×î´óÔªËØ¸öÊı
+	ElemType *data; // å­˜æ”¾æ ˆä¸­å…ƒç´ 
+	int top;        // æ ˆé¡¶æŒ‡é’ˆ
+	int maxsize;	// æ ˆçš„æœ€å¤§å…ƒç´ ä¸ªæ•°
 
 public:
-	/* ³õÊ¼»¯ */
+	/* åˆå§‹åŒ– */
 	void InitStack(int size)
 	{
 		maxsize = size; 
-		data = new ElemType[maxsize]; // Êı¾İÓò
-		top = -1; // ³õÊ¼»¯Õ»¶¥Ö¸Õë
+		data = new ElemType[maxsize]; // æ•°æ®åŸŸ
+		top = -1; // åˆå§‹åŒ–æ ˆé¡¶æŒ‡é’ˆ
 	}
 
-	/* ÅĞÕ»¿Õ */
+	/* åˆ¤æ ˆç©º */
 	bool StackEmpty()
 	{
-		if (top == -1)  // Õ»¿Õ
+		if (top == -1)  // æ ˆç©º
 			return true;
-		else              // Õ»²»¿Õ
+		else              // æ ˆä¸ç©º
 			return false;
 	}
 
-	/* ½øÕ» */
+	/* è¿›æ ˆ */
 	bool Push(ElemType x)
 	{
-		if (top == maxsize - 1)  // Õ»Âú£¬±¨´í
+		if (top == maxsize - 1)  // æ ˆæ»¡ï¼ŒæŠ¥é”™
 			return false;
-		data[++top] = x;       // Ö¸ÕëÏÈ¼Ó1£¬ÔÙÈëÕ»
+		data[++top] = x;       // æŒ‡é’ˆå…ˆåŠ 1ï¼Œå†å…¥æ ˆ
 		return true;
 	}
 
-	/* ³öÕ» */
+	/* å‡ºæ ˆ */
 	bool Pop(ElemType &x)
 	{
-		if (top == -1)     // Õ»¿Õ£¬±¨´í
+		if (top == -1)     // æ ˆç©ºï¼ŒæŠ¥é”™
 			return false;
-		x = data[top--]; // ÏÈ³öÕ»£¬Ö¸ÕëÔÙ¼õ1
+		x = data[top--]; // å…ˆå‡ºæ ˆï¼ŒæŒ‡é’ˆå†å‡1
 		return true;
 	}
 
-	/* ¶ÁÕ»¶¥ÔªËØ */
+	/* è¯»æ ˆé¡¶å…ƒç´  */
 	bool GetTop(ElemType &x)
 	{
-		if (top == -1)     // Õ»¿Õ£¬±¨´í
+		if (top == -1)     // æ ˆç©ºï¼ŒæŠ¥é”™
 			return false;
-		x = data[top];   // x¼ÇÂ¼Õ»¶¥ÔªËØ
+		x = data[top];   // xè®°å½•æ ˆé¡¶å…ƒç´ 
 		return true;
 	}
 
@@ -78,63 +78,63 @@ public:
 	}
 };
 
-/* ¶ÓÁĞµÄË³Ğò´æ´¢ÀàĞÍ */
+/* é˜Ÿåˆ—çš„é¡ºåºå­˜å‚¨ç±»å‹ */
 struct SqQueue {
 
-	ElemType *data;  // ´æ·Å¶ÓÁĞÔªËØ
-	int front, rear; // ¶ÓÍ·Ö¸ÕëºÍ¶ÓÎ²Ö¸Õë
-	int maxsize;	 // ¶ÓÁĞµÄ×î´óÔªËØ¸öÊı
+	ElemType *data;  // å­˜æ”¾é˜Ÿåˆ—å…ƒç´ 
+	int front, rear; // é˜Ÿå¤´æŒ‡é’ˆå’Œé˜Ÿå°¾æŒ‡é’ˆ
+	int maxsize;	 // é˜Ÿåˆ—çš„æœ€å¤§å…ƒç´ ä¸ªæ•°
 
 public:
-	/* ³õÊ¼»¯¶ÓÁĞ£¬¹¹ÔìÒ»¸ö¿Õ¶ÓÁĞQ */
+	/* åˆå§‹åŒ–é˜Ÿåˆ—ï¼Œæ„é€ ä¸€ä¸ªç©ºé˜Ÿåˆ—Q */
 	void InitQueue(int size)
 	{
 		maxsize = size;
-		data = new ElemType[maxsize]; // Êı¾İÓò
-		rear = front = 0;			  // ³õÊ¼»¯¶ÓÊ×¡¢¶ÓÎ²Ö¸Õë
+		data = new ElemType[maxsize]; // æ•°æ®åŸŸ
+		rear = front = 0;			  // åˆå§‹åŒ–é˜Ÿé¦–ã€é˜Ÿå°¾æŒ‡é’ˆ
 	}
 
-	/* ÅĞ¶ÓÁĞ¿Õ£¬Èô¶ÓÁĞQÎª¿Õ£¬·µ»Øtrue£¬·ñÔò·µ»Øfalse */
+	/* åˆ¤é˜Ÿåˆ—ç©ºï¼Œè‹¥é˜Ÿåˆ—Qä¸ºç©ºï¼Œè¿”å›trueï¼Œå¦åˆ™è¿”å›false */
 	bool QueueEmpty()
 	{
-		if (rear == front) //¶Ó¿ÕÌõ¼ş
+		if (rear == front) //é˜Ÿç©ºæ¡ä»¶
 			return true;
 		else
 			return false;
 	}
 
-	/* Èë¶Ó£¬Èô¶ÓÁĞQÎ´Âú£¬½«x¼ÓÈë£¬Ê¹Ö®³ÉÎªĞÂµÄ¶ÓÎ² */
+	/* å…¥é˜Ÿï¼Œè‹¥é˜Ÿåˆ—Qæœªæ»¡ï¼Œå°†xåŠ å…¥ï¼Œä½¿ä¹‹æˆä¸ºæ–°çš„é˜Ÿå°¾ */
 	bool EnQueue(ElemType x)
 	{
-		if ((rear + 1) % maxsize == front) // ¶ÓÂúÔò±¨´í
+		if ((rear + 1) % maxsize == front) // é˜Ÿæ»¡åˆ™æŠ¥é”™
 			return false;
 		data[rear] = x;
-		rear = (rear + 1) % maxsize; // ¶ÓÎ²Ö¸Õë¼Ó1È¡Ä£
+		rear = (rear + 1) % maxsize; // é˜Ÿå°¾æŒ‡é’ˆåŠ 1å–æ¨¡
 		return true;
 	}
 
-	/* ³ö¶Ó£¬Èô¶ÓÁĞQ·Ç¿Õ£¬É¾³ı¶ÓÍ·ÔªËØ£¬²¢ÓÃx·µ»Ø */
+	/* å‡ºé˜Ÿï¼Œè‹¥é˜Ÿåˆ—Qéç©ºï¼Œåˆ é™¤é˜Ÿå¤´å…ƒç´ ï¼Œå¹¶ç”¨xè¿”å› */
 	bool DeQueue(ElemType &x)
 	{
-		if (rear == front) // ¶Ó¿ÕÔò±¨´í
+		if (rear == front) // é˜Ÿç©ºåˆ™æŠ¥é”™
 			return false;
 		x = data[front];
-		front = (front + 1) % maxsize; // ¶ÓÍ·Ö¸Õë¼Ó1È¡Ä£
+		front = (front + 1) % maxsize; // é˜Ÿå¤´æŒ‡é’ˆåŠ 1å–æ¨¡
 		return true;
 	}
 
-	/* ´Ó¶ÓÍ·µ½¶ÓÎ²£¬Êä³öÑ­»·¶ÓÁĞ */
+	/* ä»é˜Ÿå¤´åˆ°é˜Ÿå°¾ï¼Œè¾“å‡ºå¾ªç¯é˜Ÿåˆ— */
 	void print()
 	{
 		cout << "waiting queue:";
-		if (rear == front) // Èô¶Ó¿Õ
+		if (rear == front) // è‹¥é˜Ÿç©º
 		{
 			printf("\n");
 			return;
 		}
 
-		int i = front;		// ¶Ó²»¿Õ
-		while (i != rear)	// ×¢Òâ£¬¶ÓÎ²Ö¸ÕëÖ¸Ïò¶ÓÎ²µÄÏÂÒ»¸öÔªËØ
+		int i = front;		// é˜Ÿä¸ç©º
+		while (i != rear)	// æ³¨æ„ï¼Œé˜Ÿå°¾æŒ‡é’ˆæŒ‡å‘é˜Ÿå°¾çš„ä¸‹ä¸€ä¸ªå…ƒç´ 
 		{
 			printf(" %d", data[i]);
 			i = (i + 1) % maxsize;	// i++
@@ -144,7 +144,7 @@ public:
 
 	bool GetElem(ElemType x)
 	{
-		if (x<1 || x>(rear - front + maxsize) % maxsize) // ¶ÓÁĞÔªËØ
+		if (x<1 || x>(rear - front + maxsize) % maxsize) // é˜Ÿåˆ—å…ƒç´ 
 		{
 			cout << -1 << endl;
 			return false;
@@ -158,50 +158,50 @@ public:
 
 int main()
 {
-	int n, m, q; // Õ»µÄ´óĞ¡£¬¶ÓÁĞ´óĞ¡£¬²Ù×÷¸öÊı
+	int n, m, q; // æ ˆçš„å¤§å°ï¼Œé˜Ÿåˆ—å¤§å°ï¼Œæ“ä½œä¸ªæ•°
 	cin >> n >> m >> q;
 	
 	SqStack S; SqQueue Q;
 	S.InitStack(n); Q.InitQueue(m);
 
-	char op; int x; // op:ÔËËã 1~4 x:³µÅÆºÅ »ò Î»ÖÃ
+	char op; int x; // op:è¿ç®— 1~4 x:è½¦ç‰Œå· æˆ– ä½ç½®
 
 	for (int i = 0; i < q; i++)
 	{
 		cin >> op >> x;
 		switch (op)
 		{
-		case'1'://Ò»Á¾³µÅÆºÅÎªxµÄÆû³µÏ£Íû½øÈëÍ£³µ³¡£¨Èç¹ûÍ£³µ³¡ÒÑÂú½øÈëµÈ´ı¶ÓÎé£¬Èç¹ûµÈ´ı¶ÓÎéÒ²ÒÑ¾­ÂúÈİÁ¿£¬Ôò²»½øĞĞÈÎºÎ²Ù×÷£© 
-			if (S.Push(x) == false) // ÈëÕ»
+		case'1'://ä¸€è¾†è½¦ç‰Œå·ä¸ºxçš„æ±½è½¦å¸Œæœ›è¿›å…¥åœè½¦åœºï¼ˆå¦‚æœåœè½¦åœºå·²æ»¡è¿›å…¥ç­‰å¾…é˜Ÿä¼ï¼Œå¦‚æœç­‰å¾…é˜Ÿä¼ä¹Ÿå·²ç»æ»¡å®¹é‡ï¼Œåˆ™ä¸è¿›è¡Œä»»ä½•æ“ä½œï¼‰ 
+			if (S.Push(x) == false) // å…¥æ ˆ
 			{
-					Q.EnQueue(x); // ÈôÕ»Âú£¬Èë¶Ó
+					Q.EnQueue(x); // è‹¥æ ˆæ»¡ï¼Œå…¥é˜Ÿ
 			}
 			S.print(); Q.print();
 			break;
 
-		case'2'://Í£³µ³¡ÖĞ³µÅÆºÅÎªxµÄÆû³µÀë¿ªÍ£³µ³¡ (Õ»£¬°´Öµ²éÕÒ)
-			SqStack temp; // ÖĞ×ªÕ»
+		case'2'://åœè½¦åœºä¸­è½¦ç‰Œå·ä¸ºxçš„æ±½è½¦ç¦»å¼€åœè½¦åœº (æ ˆï¼ŒæŒ‰å€¼æŸ¥æ‰¾)
+			SqStack temp; // ä¸­è½¬æ ˆ
 			temp.InitStack(n);
 			
-			int elem; // Ôİ´æÊı¾İ
+			int elem; // æš‚å­˜æ•°æ®
 			if (S.GetTop(elem))
 			{
-				while (elem != x) // ²éÕÒ³µÅÆÎªxµÄ³µ
+				while (elem != x) // æŸ¥æ‰¾è½¦ç‰Œä¸ºxçš„è½¦
 				{
-					S.Pop(elem); // ³öÕ»
-					temp.Push(elem); // ½øÕ» 
+					S.Pop(elem); // å‡ºæ ˆ
+					temp.Push(elem); // è¿›æ ˆ 
 					S.GetTop(elem);
 				}
-				S.Pop(elem); // ³µÅÆÎªxµÄ³µ³öÕ»
-				while (!temp.StackEmpty()) //ÈëÕ»
+				S.Pop(elem); // è½¦ç‰Œä¸ºxçš„è½¦å‡ºæ ˆ
+				while (!temp.StackEmpty()) //å…¥æ ˆ
 				{
 					temp.Pop(elem);
 					S.Push(elem);
 				}
-				if (!Q.QueueEmpty()) //¶Ó·Ç¿Õ
+				if (!Q.QueueEmpty()) //é˜Ÿéç©º
 				{
-					Q.DeQueue(elem); //³ö¶Ó
-					S.Push(elem); //ÈëÕ»
+					Q.DeQueue(elem); //å‡ºé˜Ÿ
+					S.Push(elem); //å…¥æ ˆ
 				}
 			}
 
@@ -218,6 +218,7 @@ int main()
 			break;
 		}
 	}
+	delete S.data; delete Q.data;
 
 	return 0;
 }
