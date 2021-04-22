@@ -204,6 +204,7 @@ int main()
 					S.Push(elem); //入栈
 				}
 			}
+			delete temp.data;
 
 			S.print(); Q.print();
 			break;
