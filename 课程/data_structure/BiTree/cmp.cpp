@@ -12,7 +12,7 @@ typedef struct {
 int Depth(BiTree &T, int i)
 {
 	int depthval, depthLeft, depthRight;
-	if (T[i].lchild == 0 && T[i].rchild == 0) // 如果(子树)是叶子结点 或 进入了空分支
+	if (T[i].lchild == 0 && T[i].rchild == 0) // 如果(子树)是叶子结点 或 进入了单侧空分支
 		depthval = 1; // 深度为1
 	else
 	{
