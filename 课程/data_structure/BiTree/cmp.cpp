@@ -1,23 +1,23 @@
 #include <iostream>
 using namespace std;
 
-/* ¶ş²æÊ÷µÄ¾²Ì¬Á´±íÊµÏÖ */
+/* äºŒå‰æ ‘çš„é™æ€é“¾è¡¨å®ç° */
 typedef struct {
 	unsigned int number;
 	unsigned int lchild, rchild;
 } BiTNode, *BiTree;
-/* Ò¶×Ó½áµã£ºT[i].lchild == 0 && T[i].rchild == 0 */
+/* å¶å­ç»“ç‚¹ï¼šT[i].lchild == 0 && T[i].rchild == 0 */
 
-/* Çó¶ş²æÊ÷µÄÉî¶È */
+/* æ±‚äºŒå‰æ ‘çš„æ·±åº¦ */
 int Depth(BiTree &T, int i)
 {
 	int depthval, depthLeft, depthRight;
-	if (T[i].lchild == 0 && T[i].rchild == 0) // Èç¹û(×ÓÊ÷)ÊÇÒ¶×Ó½áµã
-		depthval = 1; // Éî¶ÈÎª1
+	if (T[i].lchild == 0 && T[i].rchild == 0) // å¦‚æœ(å­æ ‘)æ˜¯å¶å­ç»“ç‚¹ æˆ– è¿›å…¥äº†ç©ºåˆ†æ”¯
+		depthval = 1; // æ·±åº¦ä¸º1
 	else
 	{
-		depthLeft = Depth(T, T[i].lchild); // Çó×ó×ÓÊ÷Éî
-		depthRight = Depth(T, T[i].rchild); // ÇóÓÒ×ÓÊ÷Éî
+		depthLeft = Depth(T, T[i].lchild); // æ±‚å·¦å­æ ‘æ·±
+		depthRight = Depth(T, T[i].rchild); // æ±‚å³å­æ ‘æ·±
 		depthval = 1 + (depthLeft > depthRight ? depthLeft : depthRight);
 	}
 	return depthval;
@@ -35,10 +35,10 @@ int cmp(const void *a, const void *b)
 
 int main()
 {
-	int n, r; // ¶ş²æÊ÷½áµãÊıÁ¿ Óë ¸ù½Úµã±àºÅ
+	int n, r; // äºŒå‰æ ‘ç»“ç‚¹æ•°é‡ ä¸ æ ¹èŠ‚ç‚¹ç¼–å·
 	cin >> n >> r;
 
-	BiTree T = new BiTNode[n + 1]; // 0ºÅµ¥ÔªÎ´ÓÃ
+	BiTree T = new BiTNode[n + 1]; // 0å·å•å…ƒæœªç”¨
 	T[0] = { 0,0,0 };
 
 	for (int i = 1; i <= n; i++)
@@ -46,10 +46,10 @@ int main()
 		cin >> T[i].number >> T[i].lchild >> T[i].rchild;
 	}
 
-	/* ¸ù¾İ±àºÅÅÅĞò */
+	/* æ ¹æ®ç¼–å·æ’åº */
 	qsort(T, n + 1, sizeof(BiTNode), cmp);
 
-	/* ´Ó¸ù½áµã³ö·¢£¬ÇóÉî¶È */
+	/* ä»æ ¹ç»“ç‚¹å‡ºå‘ï¼Œæ±‚æ·±åº¦ */
 	int depth = Depth(T, r);
 
 	cout << depth << endl;
