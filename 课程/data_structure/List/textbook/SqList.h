@@ -27,7 +27,7 @@ bool InitList(SqList &L)
     return true;
 }
 
-/* 插入操作，在表L中第i个位置之前插入新的数据元素e */
+/* 插入操作，在表L中第x个位置之前插入新的数据元素e */
 bool ListInsert(SqList &L, int x, ElemType e)
 {
     if (x<1 || x>L.length + 1) // 插入的位置非法
@@ -52,7 +52,7 @@ bool ListInsert(SqList &L, int x, ElemType e)
     return true;
 }
 
-/* 删除操作，删除表L中第i个位置的元素，并用e返回删除元素的值 */
+/* 删除操作，删除表L中第x个位置的元素，并用e返回删除元素的值 */
 bool ListDelete(SqList &L, int x, Elemtype &e)
 {
     if (x<1 || x>L.length) // 删除的位置非法
