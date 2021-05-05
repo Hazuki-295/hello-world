@@ -110,12 +110,12 @@ bool ListDelete(LinkList L, int x, ElemType &e)
 {
 	LNode *p, *q;
 	p = GetElem(L, x - 1); // 查找删除位置的前驱结点
-	if (!p) // 删除位置不合法
+	if (!p || p->next == nullptr) // 删除位置不合法 或 GetElem得到尾结点
 		return false;
 
-	q = p->next;		       // 令q指向被删除结点
-	p->next = q->next;	   // 将*q结点从链中“断开”
-	e = q->data;           // 被删除元素的值赋给e
-	free(q);			         // 释放结点的存储空间
+	q = p->next;       // 令q指向被删除结点
+	p->next = q->next; // 将*q结点从链中“断开”
+	e = q->data;       // 被删除元素的值赋给e
+	free(q);           // 释放结点的存储空间
 	return true;
 }
