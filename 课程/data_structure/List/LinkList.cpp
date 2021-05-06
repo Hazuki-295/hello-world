@@ -17,8 +17,10 @@ private:
 
 public:
 	// 构造函数
+	List() { InitList(); }; // 默认构造一个空链表
 
-	List() // 默认构造一个空链表
+	/* 初始化一个空链表 */
+	void InitList() // 默认构造一个空链表
 	{
 		L = (LinkList)malloc(sizeof(LNode));  // 创建头结点
 		L->next = nullptr;                    // 初始为空链表

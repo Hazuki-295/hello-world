@@ -18,8 +18,8 @@ SqList L; // 声明一个顺序表L(它是一个结构体变量)
 /* 初始化一个空的顺序表(为顺序表分配存储空间) */
 bool InitList(SqList &L)
 {
-    L.elem = (ElemType *)malloc(InitSize * sizeof(ElemType)); // 分配存储空间
-    if (!L.elem) // 存储分配失败
+    L.data = (ElemType *)malloc(InitSize * sizeof(ElemType)); // 分配存储空间
+    if (!L.data) // 存储分配失败
         exit(OVERFLOW);
 
     L.length = 0;         // 空表长度为0
@@ -34,12 +34,12 @@ bool ListInsert(SqList &L, int x, ElemType e)
         return false;
 
     ElemType *newbase, *p, *q; // newbase存放新的基地址，p和q为辅助指针 
-    if (L.length == L.MaxSize) //当前存储空间已满，增加分配
+    if (L.length == L.MaxSize) // 当前存储空间已满，增加分配
     {
-        newbase = (ElemType *)realloc(L.elem, (L.MaxSize + LISTINCREMENT) * sizeof(ElemType));
+        newbase = (ElemType *)realloc(L.data, (L.MaxSize + LISTINCREMENT) * sizeof(ElemType));
         if (!newbase)
             exit(OVERFLOW);         // 存储分配失败
-        L.elem = newbase;           // 新基址
+        L.data = newbase;           // 新基址
         L.MaxSize += LISTINCREMENT; // 增加存储容量
     }
     q = &(L.data[x - 1]); // q为插入位置
@@ -53,16 +53,16 @@ bool ListInsert(SqList &L, int x, ElemType e)
 }
 
 /* 删除操作，删除表L中第x个位置的元素，并用e返回删除元素的值 */
-bool ListDelete(SqList &L, int x, Elemtype &e)
+bool ListDelete(SqList &L, int x, ElemType &e)
 {
     if (x<1 || x>L.length) // 删除的位置非法
         return false;
 
     ElemType *p, *q; // p和q为辅助指针 
 
-    p = &(L.elem[x - 1]);        // p为被删除元素的位置
+    p = &(L.data[x - 1]);        // p为被删除元素的位置
     e = *p;                      // 被删除元素的值赋给e
-    q = &(L.elem[L.length - 1]); // 表尾元素的位置
+    q = &(L.data[L.length - 1]); // 表尾元素的位置
     for (p++; p <= q; p++)       // 被删除元素之后的元素左移
     {
         *(p - 1) = *p;
@@ -85,6 +85,6 @@ bool GetElem(SqList &L, int x, ElemType &e)
 {
     if (x<1 || x>L.length)
         return false;
-    e = L.elem[x - 1]; // 位序为i的元素，其下标为i-1
+    e = L.data[x - 1]; // 位序为i的元素，其下标为i-1
     return true;
 }

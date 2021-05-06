@@ -42,7 +42,7 @@ public:
             return false;
 
         ElemType *newbase, *p, *q; // newbase存放新的基地址，p和q为辅助指针 
-        if (L.length == L.MaxSize) //当前存储空间已满，增加分配
+        if (L.length == L.MaxSize) // 当前存储空间已满，增加分配
         {
             newbase = (ElemType *)realloc(L.data, (L.MaxSize + LISTINCREMENT) * sizeof(ElemType));
             if (!newbase)

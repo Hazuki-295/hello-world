@@ -4,13 +4,13 @@ using namespace std;
 typedef int ElemType;
 
 /* 栈的顺序存储类型 */
-#define MAXSIZE 50   //定义栈中元素的最大个数
+#define MaxSize 50   //定义栈中元素的最大个数
 typedef struct {
-    ElemType data[MAXSIZE];  // 存放栈中元素
+    ElemType data[MaxSize];  // 存放栈中元素
     int top;                 // 栈顶指针
-} SqStack;
+} SqStack;                   // 顺序栈的类型定义
 
-SqStack S;
+SqStack S; // 声明一个顺序栈S(它是一个结构体变量)
 
 /*
 * 栈顶下标：S.top，初始时设置 S.top = -1
