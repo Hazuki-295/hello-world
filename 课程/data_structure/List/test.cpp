@@ -139,11 +139,12 @@ public:
 
 int main()
 {
-	int n, temp, hazuki = 295;
-	cout << "请输入链表结点个数：\n";
-	cin >> n;
-	cout << '\n';
+	int n, temp;
+
 	List<int> L;
+
+	cout << "请输入链表结点个数：\n";
+	cin >> n; cout << '\n';
 
 	cout << "请输入" << n << "个链表元素：\n";
 	L.List_TailInsert(n); //初始化链表
@@ -154,10 +155,24 @@ int main()
 	cout << "当前链表长度为：\n" << L.LinkLength() << '\n';
 	cout << "当前链表元素为：\n"; L.PrintList(); cout << "\n\n";
 
-	int delete1, insert1;
+	int delete1, insert1, insert2;
+	int index;
 
 	while (true)
 	{
+		/* 插入测试 */
+		cout << "插入元素：位置 元素\n";
+		cin >> index >> insert1;
+		if (!L.ListInsert(index, insert1))
+		{
+			cout << "插入失败。\n";
+		}
+		/* 测试代码 */
+		cout << "当前链表长度为：\n" << L.LinkLength() << '\n';
+		cout << "当前链表元素为：\n"; L.PrintList(); cout << "\n\n";
+
+
+		/* 删除测试 */
 		cout << "删除元素：\n";
 		cin >> delete1;
 		if (!L.ListDelete(delete1, temp))
@@ -168,22 +183,55 @@ int main()
 		cout << "当前链表长度为：\n" << L.LinkLength() << '\n';
 		cout << "当前链表元素为：\n"; L.PrintList(); cout << "\n\n";
 
-		cout << "出栈\n";
+
+		/* 入栈测试 */
+		cout << "入栈：\n";
+		cin >> insert2;
+		L.ListInsert(L.LinkLength() + 1, insert2);
+		/* 测试代码 */
+		cout << "当前链表长度为：\n" << L.LinkLength() << '\n';
+		cout << "当前链表元素为：\n"; L.PrintList(); cout << "\n\n";
+
+		/* 入栈测试 */
+		cout << "入栈：\n";
+		cin >> insert2;
+		L.ListInsert(L.LinkLength() + 1, insert2);
+		/* 测试代码 */
+		cout << "当前链表长度为：\n" << L.LinkLength() << '\n';
+		cout << "当前链表元素为：\n"; L.PrintList(); cout << "\n\n";
+
+
+		/* 出栈测试 */
+		cout << "出栈。\n";
 		L.ListDelete(L.LinkLength(), temp);
 		/* 测试代码 */
 		cout << "当前链表长度为：\n" << L.LinkLength() << '\n';
 		cout << "当前链表元素为：\n"; L.PrintList(); cout << "\n\n";
 
-		cout << "入栈：\n";
-		cin >> insert1;
-		L.ListInsert(L.LinkLength() + 1, insert1);
+
+		/* 按序号查找测试 */
+		cout << "按位查找：\n";
+		cin >> index;
+
+		cout << L.GetElem(index)->data << '\n';
+
 		/* 测试代码 */
 		cout << "当前链表长度为：\n" << L.LinkLength() << '\n';
 		cout << "当前链表元素为：\n"; L.PrintList(); cout << "\n\n";
+
+
+		/* 按值查找测试 */
+		cout << "按值查找：\n";
+		cin >> temp;
+
+		cout << L.LocateElem(temp)->data << '\n';
+
+		/* 测试代码 */
+		cout << "当前链表长度为：\n" << L.LinkLength() << '\n';
+		cout << "当前链表元素为：\n"; L.PrintList(); cout << "\n\n";
+
+
 	}
-
-
-
 
 	return 0;
 
