@@ -89,80 +89,39 @@ typedef struct CSNode {
 } CSNode, *CSTree;
 
 /* 建立树的孩子-兄弟链表结点 */
-CSTree GetTreeNode(ElemType e)
+CSNode *GetTreeNode(ElemType e)
 {
     CSTree p;
     p = (CSTree)malloc(sizeof(CSNode));
     if (!p)
         exit(1);
-
     p->data = e;
-    p->firstchild = NULL;
-    p->nextsibling = NULL;
+    p->firstchild = nullptr;
+    p->nextsibling = nullptr;
     return p;
-}
-
-/* 建立树的孩子-兄弟链表 */
-bool CreatTree(CSTree &T)
-{
-    char first = ' ', second = ' ';
-    int result = 0;
-
-    Queue<CSTree> Q;
-    Q.InitQueue();
-
-    CSTree p, s, r;
-
-    T = NULL;
-    for (scanf("%c%c", &first, &second); second != '#'; result = scanf("%c%c", &first, &second))
-    {
-        p = GetTreeNode(second);
-        Q.EnQueue(p);
-        if (first == '#') T = p;
-        else {
-            Q.GetHead(s);
-            while (s->data != first) {
-                Q.DeQueue(s); Q.GetHead(s);
-            }
-            if (!(s->firstchild)) {
-                s->firstchild = p;
-                r = p;
-            }
-            else {
-                r->nextsibling = p;
-                r = p;
-
-            }
-        }
-    }
-    return true;
 }
 
 /* 求树的深度 */
 int TreeDepth(CSTree T)
 {
-    int h1, h2;
+    int depth1, depth2;
     if (!T)
         return 0;
     else {
-        h1 = TreeDepth(T->firstchild);
-        h2 = TreeDepth(T->nextsibling);
-        return(((h1 + 1) > h2) ? (h1 + 1) : h2);
+        depth1 = TreeDepth(T->firstchild);
+        depth2 = TreeDepth(T->nextsibling);
+        return(((depth1 + 1) > depth2) ? (depth1 + 1) : depth2);
     }
 }
 
-typedef struct Node
-{
+typedef struct Node {
     char value; // 结点的值
     int degree; // 结点的度
-
 } Node, *pNode;
-
 
 int main()
 {
-    int num;
-    cin >> num;
+    int num; cin >> num;
 
     pNode data = (Node *)malloc(sizeof(Node) * num);
     for (int i = 0; i < num; i++)
@@ -170,49 +129,52 @@ int main()
         cin >> data[i].value >> data[i].degree;
     }
 
-    CSTree T;  T = NULL;
-
     Queue<Node> Q; Q.InitQueue();
     Queue<CSTree> Treequeue; Treequeue.InitQueue();
 
-    pNode q = data;
+    CSTree T;
+    pNode q = data; // 结构指针
     T = GetTreeNode(q->value);
 
-    CSNode *Treenode = T, *first; // 游标
+    CSNode *Treenode, *firstchild, *sibling; // 游标
 
     Q.EnQueue(*q); // 树根入队列
-    Treequeue.EnQueue(Treenode);
+    Treequeue.EnQueue(T);
 
     while (!Q.QueueEmpty())
     {
-        Treenode = Treenode->firstchild;
         Node temp;
+
         Q.DeQueue(temp);// 队头出列
         Treequeue.DeQueue(Treenode);
 
         if (temp.degree != 0) // 第一个孩子
         {
-            q++; Q.EnQueue(*q); // 孩子结点入队列
-            Treenode->firstchild = GetTreeNode(q->value);
-            Treequeue.EnQueue(Treenode->firstchild);
-            first = Treenode->firstchild;
+            q++; Q.EnQueue(*q); // 第一个孩子结点入队列
+            firstchild = GetTreeNode(q->value);
+            Treequeue.EnQueue(firstchild);
+
+            Treenode->firstchild = firstchild; // 第一个孩子
+
+            sibling = firstchild;
         }
 
         for (int i = 2; i <= temp.degree; i++) // 第一个孩子的兄弟
         {
+
+
             q++; Q.EnQueue(*q); // 孩子的兄弟结点入队列
-            first->nextsibling = GetTreeNode(q->value);
-            Treequeue.EnQueue(first->nextsibling);
-            first = first->nextsibling;
+            sibling->nextsibling = GetTreeNode(q->value);
+            Treequeue.EnQueue(sibling->nextsibling);
+
+            sibling = sibling->nextsibling;
         }
 
     }
 
-    int level;
-    level = TreeDepth(T);
+    int level = TreeDepth(T);
 
-    printf("%d", level);
-    printf("\n");
+    printf("%d\n", level);
 
     return 0;
 }
