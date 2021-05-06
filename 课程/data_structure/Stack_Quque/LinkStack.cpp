@@ -12,7 +12,7 @@ public:
 	Stack() { InitStack(); } //默认
 
 	/* 初始化一个空栈 */
-	void InitStack() { List<T>::List(); }
+	void InitStack() {}
 
 	/* 判栈空 */
 	bool StackEmpty() { return List<T>::LinkLength() == 0; }
