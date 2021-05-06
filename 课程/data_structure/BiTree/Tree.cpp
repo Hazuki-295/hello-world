@@ -13,7 +13,7 @@ private:
     /* 队列的顺序存储类型 */
     typedef struct {
         ElemType *data;      // 存放队列元素
-        int front, rear; // 队头指针和队尾指针
+        int front, rear;     // 队头指针和队尾指针
     } SqQueue;               // 顺序队列的类型定义
 
     int maxsize;	         // 队列的最大元素个数
@@ -68,16 +68,6 @@ public:
             return false;
         x = Q.data[Q.front];
         Q.front = (Q.front + 1) % maxsize; // 队头指针加1取模
-        return true;
-    }
-
-    /* 读队头 */
-    bool GetHead(ElemType &e)
-    {
-        if (Q.rear == Q.front) // 队空则报错
-            return false;
-        e = Q.data[Q.front];
-
         return true;
     }
 }; // SqQueue
