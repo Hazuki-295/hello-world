@@ -16,6 +16,14 @@ private:
 	LinkList L; // L为单链表的头指针 // 结构指针类型，指向链表的第一个结点
 
 public:
+	// 构造函数
+
+	List() // 默认构造一个空链表
+	{
+		L = (LinkList)malloc(sizeof(LNode));  // 创建头结点
+		L->next = nullptr;                    // 初始为空链表
+	}
+
 	/* 头插法，逆向建立单链表 */
 	LinkList List_HeadInsert(int n)
 	{
