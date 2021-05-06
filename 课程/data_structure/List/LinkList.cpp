@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+/* Á´±íÄ£°åÀà */
 template <typename T> class List {
 
 private:
