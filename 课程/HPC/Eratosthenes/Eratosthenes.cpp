@@ -1,6 +1,8 @@
 #include <omp.h>
 #include <time.h>
 #include <math.h>
+
+#include <Windows.h>
 #include <iostream>
 using namespace std;
 
@@ -52,7 +54,7 @@ int countPrimes2(int n) // 埃拉托斯特尼筛法 Sieve of Eratosthenes
     clock_t start1, finish1;
 
     start1 = clock();
-#pragma omp parallel for num_threads(NUM_THREADS)
+    #pragma omp parallel for num_threads(NUM_THREADS)
     for (int i = 2; i < finish; i++) // 素数从 2 开始算
     {
         if (isPrime[i])
@@ -65,7 +67,7 @@ int countPrimes2(int n) // 埃拉托斯特尼筛法 Sieve of Eratosthenes
     }
 
     int count = 0;
-#pragma omp parallel for num_threads(NUM_THREADS) reduction(+:count)
+    #pragma omp parallel for num_threads(NUM_THREADS) reduction(+:count)
     for (int i = 2; i < n; i++)
     {
         if (isPrime[i])
@@ -87,8 +89,10 @@ int main(int argc, char *argv[])
     cout << "origin:\n"; countPrimes(n); cout << "\n\n";
     cout << "improve:\n"; countPrimes2(n); cout << "\n\n";
 
-    cout << "origin:\n"; countPrimes(n); cout << "\n\n";
-    cout << "improve:\n"; countPrimes2(n); cout << '\n';
+    Sleep(10000);
+
+    cout << "improve:\n"; countPrimes2(n); cout << "\n\n";
+    cout << "origin:\n"; countPrimes(n); cout << '\n';
     /* 50000000 */
     /* 100000000 */
 
