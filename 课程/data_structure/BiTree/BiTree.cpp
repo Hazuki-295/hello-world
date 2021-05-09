@@ -257,18 +257,38 @@ void PostOrder(BiTree T, void(*visit)(ElemType &e))
 void InOrder2(BiTree T, void(*visit)(ElemType &e))
 {
     Stack<BiTree> S; S.InitStack(); BiTree p = T; // 初始化栈S; p是遍历指针
-
-    while (p || !S.StackEmpty()) // 栈不空 或 p不空 时循环
+    while (p || !S.StackEmpty()) // 栈不空(存在待访问结点) 或 p不空(中序遍历的树不是空树) 时循环
     {
-        if (p) // 一路向左
+        if (p) // 一路向左 (或 右子树不空，中序遍历之)
         {
-            S.Push(p); // 当前结点入栈
+            S.Push(p);     // 当前结点入栈
             p = p->lchild; // 左孩子不空，一直向左走
         }
-        else // 出栈
+        else // 出栈，并转向出栈结点的右子树
         {
             S.Pop(p); visit(p->data); // 栈顶元素出栈，访问出栈结点
-            p = p->rchild; // 向右子树走，p赋值为当前节点的右孩子
+            p = p->rchild;            // 向右子树走，p赋值为当前结点的右孩子
+                                      // 若右孩子为空，该出栈结点遍历完毕，则继续出栈
+        } // 返回while循环，继续进入if-else语句
+    }
+}
+
+/* 先序遍历二叉树(非递归算法) */
+void PreOrder2(BiTree T, void(*visit)(ElemType &e))
+{
+    Stack<BiTree> S; S.InitStack(); BiTree p = T; // 初始化栈S; p是遍历指针
+    while (p || !S.StackEmpty()) // 栈不空(存在待访问结点) 或 p不空(先序遍历的树不是空树) 时循环
+    {
+        if (p) // 一路向左 (或 右子树不空，先序遍历之)
+        {
+            visit(p->data); S.Push(p); // 访问当前结点，并入栈
+            p = p->lchild;             // 左孩子不空，一直向左走
+        }
+        else // 出栈，并转向出栈结点的右子树
+        {
+            S.Pop(p);       // 栈顶元素出栈
+            p = p->rchild;  // 向右子树走，p赋值为当前结点的右孩子
+                            // 若右孩子为空，该出栈结点遍历完毕，则继续出栈
         } // 返回while循环，继续进入if-else语句
     }
 }
@@ -281,7 +301,7 @@ void LevelOrder(BiTree T, void(*visit)(ElemType &e))
     Q.EnQueue(T); // 将根结点入队
     while (!Q.QueueEmpty()) // 队列不空则循环
     {
-        Q.DeQueue(p); // 队头结点出队
+        Q.DeQueue(p);   // 队头结点出队
         visit(p->data); // 访问出队结点
 
         if (p->lchild != NULL)
