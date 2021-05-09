@@ -223,38 +223,38 @@ int Depth(BiTree T)
 }
 
 /* 先序遍历二叉树 */
-void Preorder(BiTree T, void(*visit)(ElemType &e))
+void PreOrder(BiTree T, void(*visit)(ElemType &e))
 {
     if (T) {
         visit(T->data);             // 访问根结点
-        Preorder(T->lchild, visit); // 遍历左子树
-        Preorder(T->rchild, visit); // 遍历右子树
+        PreOrder(T->lchild, visit); // 遍历左子树
+        PreOrder(T->rchild, visit); // 遍历右子树
     }
 }
 
 /* 中序遍历二叉树 */
-void Inorder(BiTree T, void(*visit)(ElemType &e))
+void InOrder(BiTree T, void(*visit)(ElemType &e))
 {
     if (T) {
-        Inorder(T->lchild, visit); // 遍历左子树
+        InOrder(T->lchild, visit); // 遍历左子树
         visit(T->data);            // 访问根结点
-        Inorder(T->rchild, visit); // 遍历右子树
+        InOrder(T->rchild, visit); // 遍历右子树
     }
 }
 
 /* 后序遍历二叉树 */
-void Postorder(BiTree T, void(*visit)(ElemType &e))
+void PostOrder(BiTree T, void(*visit)(ElemType &e))
 {
     if (T) {
-        Postorder(T->lchild, visit); // 遍历左子树
-        Postorder(T->rchild, visit); // 遍历右子树
+        PostOrder(T->lchild, visit); // 遍历左子树
+        PostOrder(T->rchild, visit); // 遍历右子树
         visit(T->data);              // 访问根结点
     }
 }
 
 
 /* 中序遍历二叉树(非递归算法) */
-void Inorder2(BiTree T, void(*visit)(ElemType &e))
+void InOrder2(BiTree T, void(*visit)(ElemType &e))
 {
     Stack<BiTree> S; S.InitStack(); BiTree p = T; // 初始化栈S; p是遍历指针
 
@@ -297,7 +297,7 @@ int main()
     BiTree T = new BiTNode; // 创建根结点
     CreateBiTree(T);
 
-    Inorder2(T, PrintElement); cout << '\n';
+    InOrder2(T, PrintElement); cout << '\n';
     LevelOrder(T, PrintElement); cout << '\n';
 
     delete T;
