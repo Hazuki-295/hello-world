@@ -6,12 +6,12 @@ void hexadecimal(int number)
 {
 	stack<char> S; int index;
 
-	char hexa[17];
+	char hexa[16];
 	for (int i = 0; i <= 9; i++)
 	{
 		hexa[i] = '0' + i;
 	}
-	for (int i = 10; i <= 16; i++)
+	for (int i = 10; i <= 15; i++)
 	{
 		hexa[i] = 'a' + (i - 10);
 	}
@@ -33,8 +33,8 @@ void hexadecimal(int number)
 
 int main()
 {
-	cout << "请输入一个十进制数，它将被转换成十六进制数。\n";
-	int n; cin >> n;// 41775
+	cout << "请输入一个十进制整数，它将被转换成十六进制数。\n";
+	int n; cin >> n; // 41775
 	cout << "转换成的十六进制数：\n";
 	hexadecimal(n);
 	cout << "cout输出结果为：\n";
