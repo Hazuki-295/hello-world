@@ -47,7 +47,7 @@ void process(int heap) // heap堆气球
 			colors[i] = eachline[i + 1][colornum].num;
 		}
 		sort(colors, colors + heap); // 任意两堆气球中该颜色的气球数量相差不超过一个
-		int div = colors[heap - 1] - colors[0]; // 其实，排完序后，若最大值和最小值能够不>1，就可以保证整体不>1
+		int	div = colors[heap - 1] - colors[0]; // 其实，排完序后，若最大值和最小值能够不>1，就可以保证整体不>1
 		if (div > 1) { right = false; break; }
 	}
 
