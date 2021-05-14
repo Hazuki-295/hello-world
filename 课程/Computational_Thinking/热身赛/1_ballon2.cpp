@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <algorithm>
 using namespace std;
 
@@ -8,15 +9,17 @@ void process(int heap) // heap堆气球
 	/* 先想好如何组织数据，需要存入输入的哪些信息 */
 	struct Ball { int color; int num; }; // 主要用于检验，输入处理是否正确
 
-	// Ball ballon[heap][101]; // heap堆气球的颜色及数量信息。由于颜色有缺省，故指定为最大长度101
+	// Ball eachline[heap][101]; // heap堆气球的颜色及数量信息。由于颜色有缺省，故指定为最大长度101
 
-	using Ballon = Ball[101]; // 每堆气球的颜色及数量信息，1到100，0号未用
+	// using Ballon = Ball[101]; // 每堆气球的颜色及数量信息，1到100，0号未用
+	// Ballon *eachline = new Ballon[heap + 1]; // heap堆气球，0号未用
 
-	Ballon *eachline = new Ballon[heap + 1]; // heap堆气球，0号未用
+	vector<vector<Ball>> eachline(heap + 1); // heap堆气球，0号未用
 
 	/* 每行的数据为：一堆气球中，每个气球的颜色 */
 	for (int line = 1; line <= heap; line++)
 	{
+		eachline[line] = vector<Ball>(101); // 每堆气球的颜色及数量信息，1到100，0号未用
 		for (int i = 0; i < 101; i++) // 每一行都是 Ball[101]
 		{
 			eachline[line][i].color = i; // 初始化颜色为1,2,3,...
@@ -52,8 +55,6 @@ void process(int heap) // heap堆气球
 		cout << "YES" << endl;
 	else
 		cout << "NO" << endl;
-
-	delete[] eachline;
 }
 
 
