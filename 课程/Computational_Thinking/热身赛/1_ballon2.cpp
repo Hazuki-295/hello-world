@@ -3,51 +3,51 @@
 #include <algorithm>
 using namespace std;
 
-/* Problem B. ÆøÇò ¼ò»¯ÊäÈë´¦Àí */
-void process(int heap) // heap¶ÑÆøÇò
+/* Problem B. æ°”çƒ ç®€åŒ–è¾“å…¥å¤„ç† */
+void process(int heap) // heapå †æ°”çƒ
 {
-	/* ÏÈÏëºÃÈçºÎ×éÖ¯Êı¾İ£¬ĞèÒª´æÈëÊäÈëµÄÄÄĞ©ĞÅÏ¢ */
-	struct Ball { int color; int num; }; // Ö÷ÒªÓÃÓÚ¼ìÑé£¬ÊäÈë´¦ÀíÊÇ·ñÕıÈ·
+	/* å…ˆæƒ³å¥½å¦‚ä½•ç»„ç»‡æ•°æ®ï¼Œéœ€è¦å­˜å…¥è¾“å…¥çš„å“ªäº›ä¿¡æ¯ */
+	struct Ball { int color; int num; }; // ä¸»è¦ç”¨äºæ£€éªŒï¼Œè¾“å…¥å¤„ç†æ˜¯å¦æ­£ç¡®
 
-	// Ball eachline[heap][101]; // heap¶ÑÆøÇòµÄÑÕÉ«¼°ÊıÁ¿ĞÅÏ¢¡£ÓÉÓÚÑÕÉ«ÓĞÈ±Ê¡£¬¹ÊÖ¸¶¨Îª×î´ó³¤¶È101
+	// Ball eachline[heap][101]; // heapå †æ°”çƒçš„é¢œè‰²åŠæ•°é‡ä¿¡æ¯ã€‚ç”±äºé¢œè‰²æœ‰ç¼ºçœï¼Œæ•…æŒ‡å®šä¸ºæœ€å¤§é•¿åº¦101
 
-	// using Ballon = Ball[101]; // Ã¿¶ÑÆøÇòµÄÑÕÉ«¼°ÊıÁ¿ĞÅÏ¢£¬1µ½100£¬0ºÅÎ´ÓÃ
-	// Ballon *eachline = new Ballon[heap + 1]; // heap¶ÑÆøÇò£¬0ºÅÎ´ÓÃ
+	// using Ballon = Ball[101]; // æ¯å †æ°”çƒçš„é¢œè‰²åŠæ•°é‡ä¿¡æ¯ï¼Œ1åˆ°100ï¼Œ0å·æœªç”¨
+	// Ballon *eachline = new Ballon[heap + 1]; // heapå †æ°”çƒï¼Œ0å·æœªç”¨
 
-	vector<vector<Ball>> eachline(heap + 1); // heap¶ÑÆøÇò£¬0ºÅÎ´ÓÃ
+	vector<vector<Ball>> eachline(heap + 1); // heapå †æ°”çƒï¼Œ0å·æœªç”¨
 
-	/* Ã¿ĞĞµÄÊı¾İÎª£ºÒ»¶ÑÆøÇòÖĞ£¬Ã¿¸öÆøÇòµÄÑÕÉ« */
+	/* æ¯è¡Œçš„æ•°æ®ä¸ºï¼šä¸€å †æ°”çƒä¸­ï¼Œæ¯ä¸ªæ°”çƒçš„é¢œè‰² */
 	for (int line = 1; line <= heap; line++)
 	{
-		eachline[line] = vector<Ball>(101); // Ã¿¶ÑÆøÇòµÄÑÕÉ«¼°ÊıÁ¿ĞÅÏ¢£¬1µ½100£¬0ºÅÎ´ÓÃ
-		for (int i = 0; i < 101; i++) // Ã¿Ò»ĞĞ¶¼ÊÇ Ball[101]
+		eachline[line] = vector<Ball>(101); // æ¯å †æ°”çƒçš„é¢œè‰²åŠæ•°é‡ä¿¡æ¯ï¼Œ1åˆ°100ï¼Œ0å·æœªç”¨
+		for (int i = 0; i < 101; i++) // æ¯ä¸€è¡Œéƒ½æ˜¯ Ball[101]
 		{
-			eachline[line][i].color = i; // ³õÊ¼»¯ÑÕÉ«Îª1,2,3,...
-			eachline[line][i].num = 0;   // ³õÊ¼»¯ÊıÁ¿Îª0
+			eachline[line][i].color = i; // åˆå§‹åŒ–é¢œè‰²ä¸º1,2,3,...
+			eachline[line][i].num = 0;   // åˆå§‹åŒ–æ•°é‡ä¸º0
 		}
 
-		/* ´¦ÀíÊäÈë */
+		/* å¤„ç†è¾“å…¥ */
 		char c; int color;
-		while ((c = getchar()) != '\n') // Ã¿¶ÑÆøÇòÊı¾İ¼ÇÈë
+		while ((c = getchar()) != '\n') // æ¯å †æ°”çƒæ•°æ®è®°å…¥
 		{
 			ungetc(c, stdin);
 
 			cin >> color;
-			eachline[line][color].num++;  // ¸ÃcolorÑÕÉ«µÄÇòÊı+1
+			eachline[line][color].num++;  // è¯¥coloré¢œè‰²çš„çƒæ•°+1
 		}
 	}
 
-	/* É¨ÃèÒ»±éËùÓĞÑÕÉ« */
-	bool right = true; // ÊÇ·ñ·ûºÏ¹æÔò
-	for (int colornum = 1; colornum <= 100; colornum++) // ËùÓĞÑÕÉ«
+	/* æ‰«æä¸€éæ‰€æœ‰é¢œè‰² */
+	bool right = true; // æ˜¯å¦ç¬¦åˆè§„åˆ™
+	for (int colornum = 1; colornum <= 100; colornum++) // æ‰€æœ‰é¢œè‰²
 	{
-		int *colors = new int[heap]; // ¸¨ÖúÊı×é
-		for (int i = 0; i < heap; i++) // heap¶ÑÖĞ£¬Ã¿¶Ñ¸ÃÑÕÉ«ÇòµÄĞÅÏ¢
+		int *colors = new int[heap]; // è¾…åŠ©æ•°ç»„
+		for (int i = 0; i < heap; i++) // heapå †ä¸­ï¼Œæ¯å †è¯¥é¢œè‰²çƒçš„ä¿¡æ¯
 		{
 			colors[i] = eachline[i + 1][colornum].num;
 		}
-		sort(colors, colors + heap); // ÈÎÒâÁ½¶ÑÆøÇòÖĞ¸ÃÑÕÉ«µÄÆøÇòÊıÁ¿Ïà²î²»³¬¹ıÒ»¸ö
-		int	div = colors[heap - 1] - colors[0]; // ÆäÊµ£¬ÅÅÍêĞòºó£¬Èô×î´óÖµºÍ×îĞ¡ÖµÄÜ¹»²»>1£¬¾Í¿ÉÒÔ±£Ö¤ÕûÌå²»>1
+		sort(colors, colors + heap); // ä»»æ„ä¸¤å †æ°”çƒä¸­è¯¥é¢œè‰²çš„æ°”çƒæ•°é‡ç›¸å·®ä¸è¶…è¿‡ä¸€ä¸ª
+		int div = colors[heap - 1] - colors[0]; // å…¶å®ï¼Œæ’å®Œåºåï¼Œè‹¥æœ€å¤§å€¼å’Œæœ€å°å€¼èƒ½å¤Ÿä¸>1ï¼Œå°±å¯ä»¥ä¿è¯æ•´ä½“ä¸>1
 		if (div > 1) { right = false; break; }
 	}
 
@@ -60,11 +60,11 @@ void process(int heap) // heap¶ÑÆøÇò
 
 int main()
 {
-	int heap; char c; // heapÎªÇòµÄ¶ÑÊı
+	int heap; char c; // heapä¸ºçƒçš„å †æ•°
 
 	while (cin >> heap)
 	{
-		c = getchar(); // ´¦Àí»º³åÇøµÄ»»ĞĞ
+		c = getchar(); // å¤„ç†ç¼“å†²åŒºçš„æ¢è¡Œ
 		process(heap);
 	}
 
