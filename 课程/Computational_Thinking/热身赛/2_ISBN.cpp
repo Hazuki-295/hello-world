@@ -8,50 +8,50 @@ int main()
 {
 	string str;
 
-	while (getline(cin, str)) // ¶ÁÈ¡Ò»ĞĞ
+	while (getline(cin, str)) // è¯»å–ä¸€è¡Œ
 	{
-		vector<int> result; // ´æ·Å½á¹û
+		vector<int> result; // å­˜æ”¾ç»“æœ
 
-		bool right = true;  // ¸ñÊ½ÕıÈ·
-		bool single = true; // ÆæÊıĞĞ
+		bool right = true;  // æ ¼å¼æ­£ç¡®
+		bool single = true; // å¥‡æ•°è¡Œ
 
-		for (auto temp : str) // ½«×Ö·û×ª»»³ÉÊı×Ö£¬´æÈëresult
+		for (auto temp : str) // å°†å­—ç¬¦è½¬æ¢æˆæ•°å­—ï¼Œå­˜å…¥result
 		{
-			if (temp == ' ') // Ìø¹ı¿Õ°×·û
+			if (temp == ' ') // è·³è¿‡ç©ºç™½ç¬¦
 				continue;
-			else if (!isdigit(temp)) // ²»ÊÇÊı×Ö
+			else if (!isdigit(temp)) // ä¸æ˜¯æ•°å­—
 			{
 				right = false;
 				break;
 			}
 			else
-				result.push_back(temp - '0'); // ×ª»»³ÉÊı×Ö£¬´æÈëresult
+				result.push_back(temp - '0'); // è½¬æ¢æˆæ•°å­—ï¼Œå­˜å…¥result
 		}
 
-		if (result.size() != 12) // ³¤¶ÈÓĞÎó
+		if (result.size() != 12) // é•¿åº¦æœ‰è¯¯
 			right = false;
 
-		if (right) // ¸ñÊ½ÕıÈ·£¬´¦Àí
+		if (right) // æ ¼å¼æ­£ç¡®ï¼Œå¤„ç†
 		{
-			int sum = 0; // ²î
-			for (auto temp : result) // Çó²î
+			int sum = 0; // å·®
+			for (auto temp : result) // æ±‚å·®
 			{
-				if (single) // ÆæÊıÏî
+				if (single) // å¥‡æ•°é¡¹
 					sum += temp;
-				else        // Å¼ÊıÏî
+				else        // å¶æ•°é¡¹
 					sum += 3 * temp;
 
-				single = !single; // ÆæÅ¼·´×ª
+				single = !single; // å¥‡å¶åè½¬
 			}
 
-			int d13 = 10 - sum % 10; // Ğ£ÑéºÍ
+			int d13 = 10 - sum % 10; // æ ¡éªŒå’Œ
 
 			if (d13 == 10)
-				result.push_back(0); // ÈôĞ£ÑéºÍÎª10£¬ÔòÈ¡0¡£
+				result.push_back(0); // è‹¥æ ¡éªŒå’Œä¸º10ï¼Œåˆ™å–0ã€‚
 			else
 				result.push_back(d13);
 
-			for (auto temp : result) // Êä³ö½á¹û
+			for (auto temp : result) // è¾“å‡ºç»“æœ
 				cout << temp;
 			cout << endl;
 		}
