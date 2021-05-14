@@ -5,7 +5,7 @@ int main()
 {
 	long long temp, sum; char c;
 
-	while ((c = getchar()) != '0') // Ã¿ÌË´¦ÀíÒ»ĞĞ
+	while ((c = getchar()) != '0') // æ¯è¶Ÿå¤„ç†ä¸€è¡Œ
 	{
 		ungetc(c, stdin);
 
@@ -14,11 +14,9 @@ int main()
 		{
 			sum += temp;
 
-			if ((c = getchar()) == '\n') // getcharÒÑ¾­°ÑÄÚ´æ¶ÁÈë£¬´ËÊ±ÅĞ¶ÏÊÇ·ñÎª»»ĞĞ£¬Èç¹ûÊÇ£¬ÔòÍË³ö
-			{
+			if ((c = getchar()) == '\n') // getcharå·²ç»æŠŠå†…å­˜è¯»å…¥ï¼Œæ­¤æ—¶åˆ¤æ–­æ˜¯å¦ä¸ºæ¢è¡Œï¼Œå¦‚æœæ˜¯ï¼Œåˆ™é€€å‡º
 				break;
-			}
-			ungetc(c, stdin);            // ´ËÓï¾äÓÃÓÚ°Ñgetchar´ÓÊäÈëÁ÷È¡³öµÄ×Ö·û·Å»ØÊäÈëÁ÷
+			ungetc(c, stdin);            // æ­¤è¯­å¥ç”¨äºæŠŠgetcharä»è¾“å…¥æµå–å‡ºçš„å­—ç¬¦æ”¾å›è¾“å…¥æµ
 		}
 		cout << sum << endl;
 	}
