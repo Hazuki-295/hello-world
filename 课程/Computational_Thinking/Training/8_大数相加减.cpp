@@ -44,7 +44,7 @@ void bigSubtract(const string num1, const string num2, vector<int> &result)
 
 int main()
 {
-	string line; stringstream buffer;
+	string line;
 
 	while (getline(cin, line)) // 处理一行
 	{
