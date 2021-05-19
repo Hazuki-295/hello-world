@@ -20,8 +20,8 @@ void bigAdd(const string num1, const string num2, vector<int> &result) // Á½´óÕı
 				result[i + 1] = 1; // ½øÎ»
 				result[i] %= 10;   // ÓàÊı
 			}
+			p1++; p2++;
 		}
-		p1++; p2++;
 	}
 }
 
@@ -40,8 +40,8 @@ void bigSubtract(const string num1, const string num2, vector<int> &result) // Á
 				result[i + 1] = -1;  // ½èÎ»
 				result[i] += 10;     // ÓàÊı
 			}
+			p1++; p2++;
 		}
-		p1++; p2++;
 	}
 }
 
