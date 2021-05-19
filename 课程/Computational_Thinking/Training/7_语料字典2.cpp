@@ -32,10 +32,10 @@ int main()
 			else if (!isgraph(c) || isspace(c))
 				c = ' ';
 			//else if (!isalpha(c) && ispunct(c))
-				//c = '-'; // 错误5 6
-				//c = '.'; // 错误5 6
-				//c = ' '; // 错误3 5
-			/* 错误 3 和 6 与连字符有关 */
+			//c = '-'; // 错误5 6
+			//c = '.'; // 错误5 6
+			//c = ' '; // 错误3 5
+		/* 错误 3 和 6 与连字符有关 */
 			else if (isalpha(c))
 				c = tolower(c);    // 小写形式
 		}
@@ -56,7 +56,7 @@ int main()
 				if (ispunct(*c))         // 去掉标点符号
 				{
 					word.erase(c);
-					if (c == word.end()) // 删掉结尾赶紧退出
+					if (c == word.end()) // 删掉结尾退出
 						break;
 					else
 						continue;
