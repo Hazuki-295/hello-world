@@ -36,11 +36,11 @@ int main()
 				line.erase(line.begin() + i);
 				i--;
 			}
-			else if (isblank(line[i]) || isdigit(line[i]))
+			else if (isblank(line[i]) || isdigit(line[i])) // 空格及数字置空
 			{
 				line[i] = ' ';
 			}
-			else if (ispunct(line[i]) && line[i] != '\'')
+			else if (ispunct(line[i]) && line[i] != '\'')  // 统一格式化标点
 			{
 				line[i] = '-';
 			}
