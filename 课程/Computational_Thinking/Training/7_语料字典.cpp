@@ -29,7 +29,7 @@ int main()
 		vector<string> words; // 存放提取的一行单词
 		line.push_back(' ');  // 补上结尾便于处理
 
-		for (int i = 0; i < line.size(); i++) // 错误3-5
+		for (int i = 0; i < line.size(); i++)
 		{
 			if (line[i] == '-')
 			{
