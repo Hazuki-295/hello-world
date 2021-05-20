@@ -1,11 +1,11 @@
 ﻿#include <iostream>
 #include <vector>
+#include <queue>
 #include <string>
-#include <sstream>
 #include <algorithm>
 using namespace std;
 
-typedef struct { string word; unsigned count; } record, *precord;
+typedef struct { string word; unsigned count; } record, *precord; // 单词及其出现次数
 
 bool operator> (const record &a, const record &b) // 按单词出现次数及字典顺序排序
 {
@@ -17,17 +17,17 @@ bool operator> (const record &a, const record &b) // 按单词出现次数及字
 	return false;
 }
 
-bool cmp(record a, record b) { return a > b; } // 降序
+bool compear(record a, record b) { return a > b; } // 降序
 
 int main()
 {
-	string line; vector<record> dictionary;
+	string line; vector<record> dictionary; // 存放最终单词
 
 	while (getline(cin, line)) // 处理一行
 	{
 		string word; // 单个单词
-		vector<string> words; // 存放提取的一行单词
-		line.push_back(' ');  // 补上结尾便于处理
+		queue<string> Q;   // 存放提取的一行待处理单词
+		line.push_back(' ');    // 补上结尾便于处理
 
 		for (int i = 0; i < line.size(); i++)
 		{
@@ -68,14 +68,14 @@ int main()
 				end = i;              // 确认单词终止位置的下一个位置
 				entry = false;        // 结束单词区间
 
-				word = line.substr(start, end - start);
-				words.push_back(word);
+				word = line.substr(start, end - start); // 分离出单词
+				Q.push(word);
 			}
 		}
 
-		for (auto word : words) // 处理每个单词
+		while (!Q.empty()) // 处理每个单词 Trim words
 		{
-			/* trim */
+			word = Q.front(); Q.pop();
 			for (int i = 0; i < word.size(); i++)
 			{
 				word[i] = tolower(word[i]); // 小写格式
@@ -91,8 +91,7 @@ int main()
 				}
 			}
 
-			if (word.size() == 0)
-				continue;
+			if (word.size() == 0) continue;
 
 			vector<record>::iterator it;
 			for (it = dictionary.begin(); it != dictionary.end() && it->word != word; it++);
@@ -103,7 +102,7 @@ int main()
 		}
 	}
 
-	sort(dictionary.begin(), dictionary.end(), cmp);  // 按单词出现次数及字典顺序排序
+	sort(dictionary.begin(), dictionary.end(), compear);  // 按单词出现次数及字典顺序排序
 
 	for (auto temp : dictionary)
 		cout << temp.word << endl;
