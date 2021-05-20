@@ -17,7 +17,7 @@ bool operator> (const record &a, const record &b) // 按单词出现次数及字
 	return false;
 }
 
-bool compear(record a, record b) { return a > b; } // 降序
+bool compare(record a, record b) { return a > b; } // 降序
 
 int main()
 {
@@ -102,7 +102,7 @@ int main()
 		}
 	}
 
-	sort(dictionary.begin(), dictionary.end(), compear);  // 按单词出现次数及字典顺序排序
+	sort(dictionary.begin(), dictionary.end(), compare);  // 按单词出现次数及字典顺序排序
 
 	for (auto temp : dictionary)
 		cout << temp.word << endl;
