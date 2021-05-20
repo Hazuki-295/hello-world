@@ -21,48 +21,58 @@ bool cmp(record a, record b) { return a > b; } // 降序
 
 int main()
 {
-	string line;
-	vector<record> dictionary;
+	string line; vector<record> dictionary;
 
 	while (getline(cin, line)) // 处理一行
 	{
 		string word; // 单个单词
+		vector<string> words; // 存放提取的一行单词
+		line.push_back(' ');  // 补上结尾便于处理
 
-		/* 预处理 */
-		for (auto &c : line)
+		for (int i = 0; i < line.size(); i++) // 错误3-5
+			if (line[i] == '-')
+				line.erase(line.begin() + i);
+
+		int start = 0;       // 单词在字符串里的起始位置
+		int end = 0;         // 单词在字符串里的终止位置
+		bool entry = false;  // 标记遍历字符串的过程中是否已经进入了单词区间
+
+		for (int i = 0; i < line.size(); i++)  // 开始提取单词
 		{
-			if (c == '\'' || c == '-')
-				continue;
-			else if (isdigit(c) || iscntrl(c)) // 去掉数字、控制符
-				c = ' ';
-			else if (!isgraph(c) || isspace(c))
-				c = ' ';
-			else if (isalpha(c))
-				c = tolower(c);    // 小写形式
+			if (!entry)
+			{
+				if (isalpha(line[i])) // 确定单词起始位置
+				{
+					start = i;
+					entry = true;         // 进入单词区间
+				}
+			}
+			if (entry && !isalpha(line[i]) && line[i] != '\'' && line[i] != '-')
+			{
+				end = i;              // 确认单词终止位置的下一个位置
+				entry = false;        // 结束单词区间
+
+				word = line.substr(start, end - start);
+				words.push_back(word);
+			}
 		}
 
-		stringstream buffer(line);  // 将buffer绑定到刚读入的行
-
-		while (buffer >> word)
+		for (auto word : words) // 处理每个单词
 		{
-			/* 提取单词 */
-			auto c = word.begin();
-			while (c != word.end())
+			/* trim */
+			for (int i = 0; i < word.size(); i++)
 			{
-				if (*c == '\'') // 去掉所有格
+				word[i] = tolower(word[i]); // 小写格式
+
+				if (word[i] == '\''/* && word[i + 1] == 's'*/) // 去掉所有格
 				{
-					word.erase(c, word.end());
-					break;
+					word.erase(word.begin() + i, word.end());
 				}
-				if (ispunct(*c))         // 去掉标点符号
+				if (word[i] == '-') // 去掉连字符
 				{
-					word.erase(c);
-					if (c == word.end()) // 删掉结尾退出
-						break;
-					else
-						continue;
+					word.erase(word.begin() + i);
+					//process_words(word, words);
 				}
-				c++;
 			}
 
 			vector<record>::iterator it;
