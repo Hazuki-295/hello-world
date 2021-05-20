@@ -28,9 +28,9 @@ int main()
 		for (int i = 0; i < line.size(); i++) // 错误3-5
 		{
 			if (isalpha(line[i])) line[i] = tolower(line[i]);
-			else if (line[i] == '\'' && line[i + 1] == 's')
+			else if (line[i] == '\'')
 			{
-				line[i] = ' '; line[i + 1] = ' ';
+				//line[i] = ' '; line[i + 1] = ' ';
 			}
 			else if (line[i] == '-')
 			{
@@ -48,13 +48,14 @@ int main()
 			/* trim */
 			for (int i = 0; i < word.size(); i++)
 			{
-				if (word[i] == '\''/* && word[i + 1] == 's'*/) // 去掉所有格
+				if (word[i] == '\'' && word[i + 1] == 's') // 去掉所有格
 				{
 					word.erase(word.begin() + i, word.end());
 				}
 				if (word[i] == '-') // 去掉连字符
 				{
 					word.erase(word.begin() + i);
+					i--;
 				}
 			}
 

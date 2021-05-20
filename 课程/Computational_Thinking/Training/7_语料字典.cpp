@@ -30,8 +30,24 @@ int main()
 		line.push_back(' ');  // 补上结尾便于处理
 
 		for (int i = 0; i < line.size(); i++) // 错误3-5
+		{
 			if (line[i] == '-')
+			{
 				line.erase(line.begin() + i);
+				i--;
+			}
+			else if (isblank(line[i]) || isdigit(line[i]))
+			{
+				line[i] = ' ';
+			}
+			else if (ispunct(line[i]) && line[i] != '\'')
+			{
+				line[i] = '-';
+			}
+			else if (isalpha(line[i]) || line[i] == '\'')
+				continue;
+			else return 0;
+		}
 
 		int start = 0;       // 单词在字符串里的起始位置
 		int end = 0;         // 单词在字符串里的终止位置
@@ -71,9 +87,12 @@ int main()
 				if (word[i] == '-') // 去掉连字符
 				{
 					word.erase(word.begin() + i);
-					//process_words(word, words);
+					i--;
 				}
 			}
+
+			if (word.size() == 0)
+				continue;
 
 			vector<record>::iterator it;
 			for (it = dictionary.begin(); it != dictionary.end() && it->word != word; it++);
