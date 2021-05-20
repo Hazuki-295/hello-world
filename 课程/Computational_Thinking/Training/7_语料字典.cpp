@@ -63,7 +63,7 @@ int main()
 					entry = true;         // 进入单词区间
 				}
 			}
-			if (entry && !isalpha(line[i]) && line[i] != '\'' && line[i] != '-')
+			if (entry && !isalpha(line[i]) && line[i] != '\'' && line[i] != '-') // 两符号视为单词的一部分
 			{
 				end = i;              // 确认单词终止位置的下一个位置
 				entry = false;        // 结束单词区间
