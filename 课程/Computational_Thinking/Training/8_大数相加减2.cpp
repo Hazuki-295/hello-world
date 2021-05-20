@@ -45,6 +45,7 @@ void bigSubtract(const string num1, const string num2, vector<int> &result) // Á
 	}
 }
 
+/* ×¢Òâ¸ÃËã·¨°üº¬´íÎó£¬¸ÄÕı¼ûÁíÒ»´úÂë¡£ */
 int main()
 {
 	string line;
