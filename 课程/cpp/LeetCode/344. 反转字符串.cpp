@@ -19,6 +19,17 @@ public:
 			swap(s[i], s[j]);
 		}
 	}
+
+	// 反转字符串s中左闭又闭的区间[start, end]
+	void reverse(string &s, int start, int end) 
+	{
+		for (int i = start, j = end; i < j; i++, j--) 
+		{
+			swap(s[i], s[j]);
+		}
+	}
+
+	reverse(s, 0, s.size() - 1); // 将字符串全部反转
 };
 
 int main() {
