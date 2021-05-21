@@ -1,27 +1,25 @@
 ﻿#include <iostream>
 #include <vector>
-#include <queue>
 #include <string>
+#include <map>
+#include <queue>
 #include <algorithm>
 using namespace std;
 
-typedef struct { string word; unsigned count; } record, *precord; // 单词及其出现次数
-
-bool operator> (const record &a, const record &b) // 按单词出现次数及字典顺序排序
+bool compareWords(const pair<string, size_t> &a, const pair<string, size_t> &b)
 {
-	if (a.count > b.count) return true; // 按单词出现次数
-	else if (a.count == b.count)
-		if (a.word < b.word) // 按字典序
+	/* return a > b  降序 */
+	if (a.second > b.second) return true; // 按单词出现次数
+	else if (a.second == b.second)
+		if (a.first < b.first) // 按字典序
 			return true;
 
 	return false;
 }
 
-bool compare(record a, record b) { return a > b; } // 降序
-
 int main()
 {
-	string line; vector<record> dictionary; // 存放最终单词
+	string line; map<string, size_t> dictionary; // 存放最终单词
 
 	while (getline(cin, line)) // 处理一行
 	{
@@ -92,20 +90,16 @@ int main()
 			}
 
 			if (word.size() == 0) continue;
-
-			vector<record>::iterator it;
-			for (it = dictionary.begin(); it != dictionary.end() && it->word != word; it++);
-			if (it == dictionary.end()) // 第一次出现
-				dictionary.push_back({ word , 1 });
-			else
-				it->count++;
+			dictionary[word]++;
 		}
 	}
 
-	sort(dictionary.begin(), dictionary.end(), compare);  // 按单词出现次数及字典顺序排序
+	vector<pair<string, size_t>> result(dictionary.begin(), dictionary.end());
 
-	for (auto temp : dictionary)
-		cout << temp.word << endl;
+	sort(result.begin(), result.end(), compareWords); // 按单词出现次数及字典顺序排序
+
+	for (auto temp : result)
+		cout << temp.first << endl;
 
 	return 0;
 }
