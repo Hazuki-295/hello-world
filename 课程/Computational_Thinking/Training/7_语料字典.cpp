@@ -1,9 +1,9 @@
 ﻿#include <iostream>
 #include <vector>
 #include <string>
-#include <map>
 #include <queue>
 #include <algorithm>
+#include <unordered_map>
 using namespace std;
 
 bool compareWords(const pair<string, size_t> &a, const pair<string, size_t> &b)
@@ -19,7 +19,7 @@ bool compareWords(const pair<string, size_t> &a, const pair<string, size_t> &b)
 
 int main()
 {
-	string line; map<string, size_t> dictionary; // 存放最终单词
+	string line; unordered_map<string, size_t> dictionary; // 存放最终单词
 
 	while (getline(cin, line)) // 处理一行
 	{
