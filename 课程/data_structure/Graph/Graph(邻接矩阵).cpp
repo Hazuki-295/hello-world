@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
 #include <queue>
 using namespace std;
 
@@ -19,29 +19,35 @@ private:
 
 	queue<int> Q; // 辅助队列Q
 
+	/* 辅助数组，对当前V－U集中的每个顶点，记录和顶点集U中顶点相连接的代价最小的边 */
+	struct Closedge { VertexType adjvex; EdgeType lowcost; } closedge[MaxVertexNum];
+
 public:
 	stringstream ss; // 用于处理结果
 
 	Graph(int Vexnum, int Edgenum) :vexnum(Vexnum), arcnum(Edgenum)
 	{
 		/* 初始化 */
-		for (int i = 0; i < vexnum; i++) Vex[i] = i + 1; // 顶点信息从1计起
+		for (int i = 0; i < vexnum; i++) Vex[i] = i; // 顶点信息从0计起
+		for (int i = 0; i < vexnum; i++)
+			for (int j = 0; j < vexnum; j++)
+				Edge[i][j] = INT_MAX;
 
-		int x, y; // 邻接的两个顶点
+		int x, y, w; // 邻接的两个顶点、权值
 		for (int i = 0; i < arcnum; i++) // 输入每条边
 		{
-			cin >> x >> y;
-			if (Edge[x - 1][y - 1] != 0)
-			{
-				i--; 
-				continue;
-			}
-			else
-			{
-				Edge[x - 1][y - 1] = 1;
-				Edge[y - 1][x - 1] = 1;
-			}
+			cin >> x >> y >> w;
+			Edge[x - 1][y - 1] = w;
+			Edge[y - 1][x - 1] = w;
 		}
+	}
+
+	int LocateVex(int u)
+	{
+		if (u >= vexnum)
+			return -1;
+		else
+			return u;
 	}
 
 	/* 求图G中顶点x的第一个邻接点，若有则返回顶点号。若x没有邻接点或图中不存在x，则返回-1 */
@@ -131,6 +137,77 @@ public:
 			}
 		}
 	}
+
+	/* closedge[k].lowcost = min{closedge[vi].lowcost | closedge[vi].lowcost>0, vi属于V-U} */
+	int minimum()
+	{
+
+		int index = -1, min;
+		/* 找到第一个连通的点 */
+		for (int i = 0; i < vexnum; i++)
+		{
+			if (closedge[i].lowcost > 0)
+			{
+				index = i;
+				min = closedge[i].lowcost;
+				break;
+			}
+		}
+		if (index == -1)
+			return -1;
+
+		for (int i = index + 1; i < vexnum; i++)
+		{
+			if (closedge[i].lowcost > 0)
+			{
+				if (closedge[i].lowcost < min)
+				{
+					index = i;
+					min = closedge[i].lowcost;
+				}
+			}
+		}
+
+		return index;
+	}
+
+	void MiniSpanTree_PRIM(int u)
+	{
+		// 用普里姆算法从第u个顶点出发构造网G的最小生成树T，输出T的各条边。
+		// 记录从顶点集U到V-U的代价最小的边的辅助数组定义：
+		// struct { VertexType adjvex; EdgeType lowcost; } closedge[MaxVertexNum];
+		// closedge[j].lowcost表示在集合U中顶点与第j个顶点对应最小权值
+
+		int k = LocateVex(u); int sum = 0;
+		for (int j = 0; j < vexnum; j++) // 辅助数组的初始化
+		{
+			if (j != k)
+			{
+				closedge[j] = { u ,Edge[k][j] }; // {adjvex, lowcost}
+			}
+		}
+		closedge[k].lowcost = 0; // 初始，U = {u}
+
+		for (int i = 1; i < vexnum; i++) // 选择其余vexnum-1个顶点，因此i从1开始循环
+		{
+			k = minimum(); // 求出最小生成树T的下一个结点：第k顶点
+			if (k == -1) break;
+			/* 此时closedge[k].lowcost = min{closedge[vi].lowcost | closedge[vi].lowcost>0, vi属于V-U} */
+			cout << closedge[k].adjvex + 1 << ' ' << Vex[k] + 1 << ' ' << closedge[k].lowcost << endl; // 输出生成树的边
+			sum += closedge[k].lowcost;
+
+			closedge[k].lowcost = 0; // 第k顶点并入U集
+			for (int j = 0; j < vexnum; j++)
+			{
+				if (Edge[k][j] <= closedge[j].lowcost) // 新顶点并入U后重新选择最小边
+				{
+					closedge[j] = { Vex[k] ,Edge[k][j] };
+				}
+
+			}
+		}
+		cout << sum << endl;
+	}
 };
 
 int main()
@@ -145,16 +222,5 @@ int main()
 	if (StartVex > n)
 		cout << "起始顶点不存在" << endl;
 	else
-	{
-		string result;
-		G.BFSTraverse(StartVex - 1);
-		getline(G.ss, result); result.pop_back();
-		cout << result << endl;
-
-		G.ss.clear(); G.ss.str(string());
-
-		G.DFSTraverse(StartVex - 1);
-		getline(G.ss, result); result.pop_back();
-		cout << result << endl;
-	}
+		G.MiniSpanTree_PRIM(StartVex - 1);
 }
