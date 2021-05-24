@@ -4,7 +4,7 @@
 #include <queue>
 using namespace std;
 
-#define MaxVertexNum 500 // 顶点数目的最大值
+#define MaxVertexNum 100 // 顶点数目的最大值
 
 /* 图Graph模板类（邻接矩阵） */
 template <typename VertexType, typename EdgeType> class Graph { // VertexType：顶点的数据类型，EdgeType：带权图中"边上权值"的数据类型
