@@ -10,8 +10,8 @@ template <typename T> struct ListNode {
 	T data; ListNode *next; // 数据域、指针域
 	// 构造函数
 	ListNode() : data(0), next(nullptr) {}
-	ListNode(int x) : data(x), next(nullptr) {}
-	ListNode(int x, ListNode *next) : data(x), next(next) {}
+	ListNode(T x) : data(x), next(nullptr) {}
+	ListNode(T x, ListNode *next) : data(x), next(next) {}
 };
 template <typename T> using LinkList = ListNode<T> *; // 单链表(头指针)
 
