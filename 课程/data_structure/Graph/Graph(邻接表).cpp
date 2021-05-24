@@ -161,10 +161,12 @@ public:
 
 template <typename T> using ArcNode = ListNode<T>; // 边(表)结点
 
-template <typename VertexType> struct VNode // 顶点(表)结点
+template <typename T> struct VNode // 顶点(表)结点
 {
-	VertexType data;      // 顶点信息
-	ArcNode *first;       // 指向第一条依附该顶点的弧的指针
+	// 成员
+	T data; ArcNode *first; // 顶点信息、指向第一条依附该顶点的弧的指针
+	// 构造函数
+	VNode() :data(0), first(nullptr) {}
 };
 template <typename T> using AdjList = VNode<T>[MaxVertexNum]; // 邻接表
 
@@ -173,8 +175,8 @@ template <typename VertexType> class Graph { // VertexType：顶点的数据类型
 
 private:
 	/* 图的邻接表存储结构 */
-	AdjList vertices;   // 邻接表
-	int vexnum, arcnum; // 图的顶点数和弧数
+	AdjList<VertexType> vertices;   // 邻接表
+	int vexnum, arcnum;             // 图的顶点数和弧数
 
 	bool visited[MaxVertexNum]; // 访问标记数组
 
@@ -183,27 +185,27 @@ private:
 public:
 	stringstream ss; // 用于处理结果
 
-	Graph(int Vexnum, int Edgenum) :vexnum(Vexnum), arcnum(Edgenum)
-	{
-		/* 初始化 */
-		for (int i = 0; i < vexnum; i++) Vex[i] = i + 1; // 顶点信息从1计起
+	//Graph(int Vexnum, int Edgenum) :vexnum(Vexnum), arcnum(Edgenum)
+	//{
+	//	/* 初始化 */
+	//	for (int i = 0; i < vexnum; i++) Vex[i] = i + 1; // 顶点信息从1计起
 
-		int x, y; // 邻接的两个顶点
-		for (int i = 0; i < arcnum; i++) // 输入每条边
-		{
-			cin >> x >> y;
-			if (Edge[x - 1][y - 1] != 0)
-			{
-				i--;
-				continue;
-			}
-			else
-			{
-				Edge[x - 1][y - 1] = 1;
-				Edge[y - 1][x - 1] = 1;
-			}
-		}
-	}
+	//	int x, y; // 邻接的两个顶点
+	//	for (int i = 0; i < arcnum; i++) // 输入每条边
+	//	{
+	//		cin >> x >> y;
+	//		if (Edge[x - 1][y - 1] != 0)
+	//		{
+	//			i--;
+	//			continue;
+	//		}
+	//		else
+	//		{
+	//			Edge[x - 1][y - 1] = 1;
+	//			Edge[y - 1][x - 1] = 1;
+	//		}
+	//	}
+	//}
 
 	/* 求图G中顶点x的第一个邻接点，若有则返回顶点号。若x没有邻接点或图中不存在x，则返回-1 */
 	int FirstNeighbor(int x)
@@ -213,6 +215,11 @@ public:
 		for (int i = 0; i < vexnum; i++)
 			if (Edge[x][i] != 0)    // 若存在第一个邻接点，则返回顶点号
 				return i;
+		if (vertices[x])
+		{
+
+		}
+
 
 		return -1; // 若x没有邻接点，返回-1
 	}
