@@ -22,19 +22,19 @@ private:
 public:
 	stringstream ss; // 用于处理结果
 
-	Graph(int Vexnum, int Edgenum)
+	Graph(int Vexnum, int Edgenum) :vexnum(Vexnum), arcnum(Edgenum)
 	{
-		/* 初始化图 */
-		vexnum = Vexnum; // 图的当前顶点数
-		for (int i = 0; i < MaxVertexNum; i++) Vex[i] = i + 1;
+		/* 初始化 */
+		for (int i = 0; i < vexnum; i++) Vex[i] = i + 1; // 顶点信息从1计起
 
 		int x, y; // 邻接的两个顶点
-		for (int i = 0; i < Edgenum; i++)
+		for (int i = 0; i < arcnum; i++) // 输入每条边
 		{
 			cin >> x >> y;
 			if (Edge[x - 1][y - 1] != 0)
 			{
-				i--; continue;
+				i--; 
+				continue;
 			}
 			else
 			{
