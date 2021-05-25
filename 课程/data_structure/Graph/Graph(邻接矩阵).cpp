@@ -94,10 +94,13 @@ public:
 	/* 深度优先遍历，从给定顶点v出发 */
 	void DFSTraverse(VertexType v)
 	{
-		int index = LocateVex(v);        // 找到起始顶点的位置
 		for (int i = 0; i < vexnum; i++) // 初始化访问标记数组
 			visited[i] = false;
-		for (int i = index; i < vexnum; i++)
+
+		int index = LocateVex(v);        // 找到起始顶点的位置
+		DFS(index);                      // 首先深度优先遍历该顶点(所在的连通分量)
+
+		for (int i = 0; i < vexnum; i++) // 遍历其他连通分量
 			if (!visited[i]) DFS(i);
 	}
 	/* 从位置为v的顶点出发，递归地深度优先遍历图G */
@@ -122,14 +125,16 @@ public:
 	/* 广度优先遍历，从给定顶点v出发 */
 	void BFSTraverse(VertexType v)
 	{
-		int index = LocateVex(v);         // 找到起始顶点的位置
 		for (int i = 0; i < vexnum; i++)  // 初始化访问标记数组
 			visited[i] = false;
 
 		Q = queue<int>();                 // 初始化辅助队列Q
 
-		for (int i = index; i < vexnum; i++)
-			if (!visited[i]) BFS(i);      // 对每个连通分量调用一次BFS
+		int index = LocateVex(v);         // 找到起始顶点的位置
+		BFS(index);                       // 首先广度优先遍历该顶点(所在的连通分量)
+
+		for (int i = 0; i < vexnum; i++)  // 遍历其他连通分量
+			if (!visited[i]) BFS(i);
 	}
 	/* 从位置为v的顶点出发，非递归地广度优先遍历图G */
 	void BFS(int v)
