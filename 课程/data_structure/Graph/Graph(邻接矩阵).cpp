@@ -23,7 +23,7 @@ private:
 	struct Closedge { VertexType adjvex; EdgeType lowcost; } closedge[MaxVertexNum];
 
 public:
-	stringstream ss; // 用于处理结果
+	queue<int> print; // 用于处理输出结果
 
 	/* (带权)无向图构造 */
 	Graph(int _vexnum, int _arcnum) :vexnum(_vexnum), arcnum(_arcnum)
@@ -76,7 +76,7 @@ public:
 	}
 
 	/* 访问图中位置为x的顶点 */
-	void visit(int x) { ss << Vex[x] << " "; }
+	void visit(int x) { print.push(Vex[x]); }
 
 	/* 深度优先遍历，从第一个顶点出发 */
 	void DFSTraverse()
@@ -218,15 +218,23 @@ int main()
 	}
 	else
 	{
-		string result; cout << endl;
+		stringstream result; cout << endl;
 
-		G.BFSTraverse(StartVex); // 广度优先搜索
-		getline(G.ss, result); cout << "BFS:" << result << endl << endl;
+		G.BFSTraverse(StartVex); cout << "BFS:";// 广度优先搜索
+		for (int i = 0; i < n - 1; i++)
+		{
+			cout << G.print.front() << ' ';
+			G.print.pop();
+		}
+		cout << G.print.front() << endl << endl; G.print.pop();
 
-		G.ss.clear(); G.ss.str(string());
-
-		G.DFSTraverse(StartVex); // 深度优先搜索
-		getline(G.ss, result); cout << "DFS:" << result << endl << endl;
+		G.DFSTraverse(StartVex); cout << "DFS:";// 深度优先搜索
+		for (int i = 0; i < n - 1; i++)
+		{
+			cout << G.print.front() << ' ';
+			G.print.pop();
+		}
+		cout << G.print.front() << endl << endl; G.print.pop();
 
 		cout << "MST:" << endl;
 		G.MiniSpanTree_Prim(StartVex); // 最小生成树
