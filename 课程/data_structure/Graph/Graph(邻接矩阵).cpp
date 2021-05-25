@@ -25,80 +25,90 @@ private:
 public:
 	stringstream ss; // 用于处理结果
 
-	Graph(int Vexnum, int Edgenum) :vexnum(Vexnum), arcnum(Edgenum)
+	/* (带权)无向图构造 */
+	Graph(int _vexnum, int _arcnum) :vexnum(_vexnum), arcnum(_arcnum)
 	{
-		/* 初始化 */
-		for (int i = 0; i < vexnum; i++) Vex[i] = i; // 顶点信息从0计起
+		/* 初始化顶点集、边集 */
+		for (int i = 0; i < vexnum; i++) Vex[i] = i + 1; // 顶点信息从1计起
 		for (int i = 0; i < vexnum; i++)
 			for (int j = 0; j < vexnum; j++)
-				Edge[i][j] = INT_MAX;
+				Edge[i][j] = 0/*INT_MAX*/; // 无权图(带权图)
 
-		int x, y, w; // 邻接的两个顶点、权值
+		int x, y, index_x, index_y;    // 邻接的两个顶点、边权值
 		for (int i = 0; i < arcnum; i++) // 输入每条边
 		{
-			cin >> x >> y >> w;
-			Edge[x - 1][y - 1] = w;
-			Edge[y - 1][x - 1] = w;
+			cin >> x >> y;
+			index_x = LocateVex(x); index_y = LocateVex(y);
+			if (Edge[index_x][index_y] == 1)
+			{
+				i--;
+				continue;
+			}
+			Edge[index_x][index_y] = 1;
+			Edge[index_y][index_x] = 1;
 		}
 	}
 
-	int LocateVex(int u)
+	/* 按值查找。若图G中存在值为val的顶点，则返回该顶点在图中的位置，否则返回-1 */
+	int LocateVex(VertexType val)
 	{
-		if (u >= vexnum)
-			return -1;
-		else
-			return u;
+		for (int i = 0; i < vexnum; i++) // 顶点集中查找值为val的顶点
+			if (Vex[i] == val)
+				return i;
+		return -1; // 不存在则返回-1
 	}
 
-	/* 求图G中顶点x的第一个邻接点，若有则返回顶点号。若x没有邻接点或图中不存在x，则返回-1 */
+	/* 求图G中位置为x的顶点的第一个邻接点，若有则返回顶点号。若其没有邻接点或在图中不存在，则返回-1 */
 	int FirstNeighbor(int x)
 	{
-		if (x >= vexnum) return -1; // 图中不存在x，返回-1
+		if (x < 0 || x >= vexnum) return -1;  // 图中不存在位置为x的顶点，返回-1
 
-		for (int i = 0; i < vexnum; i++)
-			if (Edge[x][i] != 0)    // 若存在第一个邻接点，则返回顶点号
+		for (int i = 0; i < vexnum; i++)      // 在边集中查找其邻接点
+			if (Edge[x][i] != 0/*INT_MAX*/)   // 若存在第一个邻接点，则返回顶点号
 				return i;
 
-		return -1; // 若x没有邻接点，返回-1
+		return -1; // 若位置为x的顶点没有邻接点，返回-1
 	}
 
-	/* 假设图G中顶点y是顶点x的一个邻接点，则返回除y外顶点x的下一个邻接点的顶点号。若y是x的最后一个邻接点，则返回-1 */
+	/* 求图G中位置为x的顶点(相对于y处的)下一个邻接点的位置。若y是x的最后一个邻接点，则返回-1 */
 	int NextNeighbor(int x, int y)
 	{
-		if (y == vexnum - 1) return -1; // 越界，y+1将会等于vexnum，则循环不会执行
-		for (int i = y + 1; i < vexnum; i++)
-			if (Edge[x][i] != 0) // 除y外顶点x的下一个邻接点
+		for (int i = y + 1; i < vexnum; i++) // 在边集中查找除y外顶点x的下一个邻接点
+			if (Edge[x][i] != 0/*INT_MAX*/)  // 若存在下一个邻接点，则返回顶点号
 				return i;
 
 		return -1; // 若y是x的最后一个邻接点，则返回-1
 	}
 
-	/* 访问图中的顶点v */
-	void visit(int v) { ss << Vex[v] << " "; }
+	/* 访问图中位置为x的顶点 */
+	void visit(int x) { ss << Vex[x] << " "; }
 
-	/* 对图G进行深度优先遍历 */
+	/* 深度优先遍历，从第一个顶点出发 */
 	void DFSTraverse()
 	{
-		for (int v = 0; v < vexnum; v++) // 初始化访问标记数组
-			visited[v] = false;
-		for (int v = 0; v < vexnum; v++) // 本代码中是从v=0开始遍历
-			if (!visited[v]) DFS(v);
+		for (int i = 0; i < vexnum; i++) // 初始化访问标记数组
+			visited[i] = false;
+		for (int i = 0; i < vexnum; i++) // 本代码中是从v=0(第一个顶点)开始遍历
+			if (!visited[i]) DFS(i);
 	}
-	void DFSTraverse(int x)
+	/* 深度优先遍历，从给定顶点v出发 */
+	void DFSTraverse(VertexType v)
 	{
-		for (int v = 0; v < vexnum; v++) // 初始化访问标记数组
-			visited[v] = false;
-		for (int v = x; v < vexnum; v++) // 本代码中是从v=x开始遍历
-			if (!visited[v]) DFS(v);
+		int index = LocateVex(v);        // 找到起始顶点的位置
+		for (int i = 0; i < vexnum; i++) // 初始化访问标记数组
+			visited[i] = false;
+		for (int i = index; i < vexnum; i++)
+			if (!visited[i]) DFS(i);
 	}
-	void DFS(int v) // 从顶点v出发，深度优先遍历图G
+	/* 从位置为v的顶点出发，递归地深度优先遍历图G */
+	void DFS(int v)
 	{
 		visit(v); visited[v] = true; // 访问顶点v
-		for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w))
-			if (!visited[w]) DFS(w); //w为v的尚未访问的邻接顶点
+		for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w)) // w为v的尚未访问的邻接点
+			if (!visited[w]) DFS(w); // 递归地遍历其邻接点(深度优先)
 	}
 
-	/* 对图G进行广度优先遍历 */
+	/* 广度优先遍历，从第一个顶点出发 */
 	void BFSTraverse()
 	{
 		for (int i = 0; i < vexnum; i++)  // 初始化访问标记数组
@@ -107,23 +117,27 @@ public:
 		Q = queue<int>();                 // 初始化辅助队列Q
 
 		for (int i = 0; i < vexnum; i++)  // 从0号顶点开始遍历
-			if (!visited[i]) BFS(i);      // 对每个连通分量调用一次BFS
+			if (!visited[i]) BFS(i);      // 对每个"连通分量"调用一次BFS
 	}
-	void BFSTraverse(int x)
+	/* 广度优先遍历，从给定顶点v出发 */
+	void BFSTraverse(VertexType v)
 	{
+		int index = LocateVex(v);         // 找到起始顶点的位置
 		for (int i = 0; i < vexnum; i++)  // 初始化访问标记数组
 			visited[i] = false;
 
 		Q = queue<int>();                 // 初始化辅助队列Q
 
-		for (int i = x; i < vexnum; i++)  // 从x号顶点开始遍历
+		for (int i = index; i < vexnum; i++)
 			if (!visited[i]) BFS(i);      // 对每个连通分量调用一次BFS
 	}
-	void BFS(int v) // 从顶点v出发，广度优先遍历图G
+	/* 从位置为v的顶点出发，非递归地广度优先遍历图G */
+	void BFS(int v)
 	{
 		visit(v); visited[v] = true; // 访问顶点v
-		Q.push(v);                   // 顶点v入队列Q
+		Q.push(v);                   // 顶点v入队列Q(以检测其所有邻接点)
 
+		/* 开始迭代访问与v有路径相通且路径长度为1,2,3...的顶点 */
 		while (!Q.empty())
 		{
 			v = Q.front(); Q.pop(); // 顶点v出队列
@@ -131,8 +145,8 @@ public:
 			{
 				if (!visited[w]) // w为v的尚未访问的邻接点
 				{
-					visit(w); visited[w] = true;
-					Q.push(w); // 顶点w入队列(下一批被访问的顶点)
+					visit(w); visited[w] = true; // 访问顶点w
+					Q.push(w); // 顶点w入队列(其邻接点为下一批被访问的顶点)
 				}
 			}
 		}
@@ -217,10 +231,24 @@ int main()
 
 	Graph<int, int> G(n, m); // 构造图
 
-	int StartVex;
-	cin >> StartVex;
-	if (StartVex > n)
+	int StartVex; cin >> StartVex;
+	if (G.LocateVex(StartVex) == -1)
 		cout << "起始顶点不存在" << endl;
 	else
-		G.MiniSpanTree_PRIM(StartVex - 1);
+		// G.MiniSpanTree_PRIM(StartVex - 1);
+	{
+		string result;
+
+		G.BFSTraverse(StartVex);
+		getline(G.ss, result); result.pop_back();
+		cout << result << endl;
+
+		G.ss.clear(); G.ss.str(string());
+
+		G.DFSTraverse(StartVex);
+		getline(G.ss, result); result.pop_back();
+		cout << result << endl;
+	}
+
+
 }
