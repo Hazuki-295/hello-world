@@ -171,7 +171,7 @@ public:
 	void MiniSpanTree_Prim(VertexType u)
 	{
 		int k = LocateVex(u); int sum = 0; // 顶点u的位置、生成树权值之和
-		for (int j = 0; j < vexnum; j++)   // 辅助数组的初始化
+		for (int j = 0; j < vexnum; j++)   // 辅助数组初始化
 		{
 			/* 初始时，U仅包含顶点u，即 U = {u} */
 			if (j != k) closedge[j] = { u ,Edge[k][j] }; // 此时V-U中顶点优先级即为顶点与u邻接的边权值(不存在边则为INT_MAX)
