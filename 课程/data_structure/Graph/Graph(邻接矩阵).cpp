@@ -174,7 +174,7 @@ public:
 		for (int j = 0; j < vexnum; j++)   // 辅助数组初始化
 		{
 			/* 初始时，U仅包含顶点u，即 U = {u} */
-			if (j != k) closedge[j] = { u ,Edge[k][j] }; // 此时V-U中顶点优先级即为顶点与u邻接的边权值(不存在边则为INT_MAX)
+			if (j != k) closedge[j] = { u ,Edge[k][j] }; // 此时V-U集的顶点优先级即为顶点与u邻接的边权值(不存在边则为INT_MAX)
 		}
 		closedge[k].lowcost = 0; // lowcost置为0则表示已并入U集
 
@@ -197,7 +197,7 @@ public:
 			{
 				if (Edge[k][v] < closedge[v].lowcost) // 若边kv的权值 小于 当前的优先级数(之前的其他跨越边的权值，如uv)
 				{
-					closedge[v] = { Vex[k] ,Edge[k][v] }; // 更新顶点优先级
+					closedge[v] = { Vex[k] ,Edge[k][v] }; // 则更新顶点优先级
 				}
 			}
 		}
