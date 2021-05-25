@@ -4,38 +4,38 @@
 #include <queue>
 using namespace std;
 
-#define MaxVertexNum 100 // ¶¥µãÊıÄ¿µÄ×î´óÖµ
+#define MaxVertexNum 100 // é¡¶ç‚¹æ•°ç›®çš„æœ€å¤§å€¼
 
-/* Í¼GraphÄ£°åÀà£¨ÁÚ½Ó¾ØÕó£© */
-template <typename VertexType, typename EdgeType> class Graph { // VertexType£º¶¥µãµÄÊı¾İÀàĞÍ£¬EdgeType£º´øÈ¨Í¼ÖĞ"±ßÉÏÈ¨Öµ"µÄÊı¾İÀàĞÍ
+/* å›¾Graphæ¨¡æ¿ç±»ï¼ˆé‚»æ¥çŸ©é˜µï¼‰ */
+template <typename VertexType, typename EdgeType> class Graph { // VertexTypeï¼šé¡¶ç‚¹çš„æ•°æ®ç±»å‹ï¼ŒEdgeTypeï¼šå¸¦æƒå›¾ä¸­"è¾¹ä¸Šæƒå€¼"çš„æ•°æ®ç±»å‹
 
 private:
-	/* Í¼µÄÁÚ½Ó¾ØÕó´æ´¢½á¹¹ */
-	VertexType Vex[MaxVertexNum];              // ¶¥µã±í
-	EdgeType Edge[MaxVertexNum][MaxVertexNum]; // ÁÚ½Ó¾ØÕó£¬±ß±í
-	int vexnum, arcnum;                        // Í¼µÄµ±Ç°¶¥µãÊıºÍ»¡Êı
+	/* å›¾çš„é‚»æ¥çŸ©é˜µå­˜å‚¨ç»“æ„ */
+	VertexType Vex[MaxVertexNum];              // é¡¶ç‚¹è¡¨
+	EdgeType Edge[MaxVertexNum][MaxVertexNum]; // é‚»æ¥çŸ©é˜µï¼Œè¾¹è¡¨
+	int vexnum, arcnum;                        // å›¾çš„å½“å‰é¡¶ç‚¹æ•°å’Œå¼§æ•°
 
-	bool visited[MaxVertexNum]; // ·ÃÎÊ±ê¼ÇÊı×é
+	bool visited[MaxVertexNum]; // è®¿é—®æ ‡è®°æ•°ç»„
 
-	queue<int> Q; // ¸¨Öú¶ÓÁĞQ
+	queue<int> Q; // è¾…åŠ©é˜Ÿåˆ—Q
 
-	/* ¸¨ÖúÊı×é£¬¶Ôµ±Ç°V£­U¼¯ÖĞµÄÃ¿¸ö¶¥µã£¬¼ÇÂ¼ºÍ¶¥µã¼¯UÖĞ¶¥µãÏàÁ¬½ÓµÄ´ú¼Û×îĞ¡µÄ±ß */
+	/* è¾…åŠ©æ•°ç»„ï¼Œå¯¹å½“å‰Vï¼Ué›†ä¸­çš„æ¯ä¸ªé¡¶ç‚¹ï¼Œè®°å½•å’Œé¡¶ç‚¹é›†Uä¸­é¡¶ç‚¹ç›¸è¿æ¥çš„ä»£ä»·æœ€å°çš„è¾¹ */
 	struct Closedge { VertexType adjvex; EdgeType lowcost; } closedge[MaxVertexNum];
 
 public:
-	stringstream ss; // ÓÃÓÚ´¦Àí½á¹û
+	stringstream ss; // ç”¨äºå¤„ç†ç»“æœ
 
-	/* (´øÈ¨)ÎŞÏòÍ¼¹¹Ôì */
+	/* (å¸¦æƒ)æ— å‘å›¾æ„é€  */
 	Graph(int _vexnum, int _arcnum) :vexnum(_vexnum), arcnum(_arcnum)
 	{
-		/* ³õÊ¼»¯¶¥µã¼¯¡¢±ß¼¯ */
-		for (int i = 0; i < vexnum; i++) Vex[i] = i + 1; // ¶¥µãĞÅÏ¢´Ó1¼ÆÆğ
+		/* åˆå§‹åŒ–é¡¶ç‚¹é›†ã€è¾¹é›† */
+		for (int i = 0; i < vexnum; i++) Vex[i] = i + 1; // é¡¶ç‚¹ä¿¡æ¯ä»1è®¡èµ·
 		for (int i = 0; i < vexnum; i++)
 			for (int j = 0; j < vexnum; j++)
-				Edge[i][j] = 0/*INT_MAX*/; // ÎŞÈ¨Í¼(´øÈ¨Í¼)
+				Edge[i][j] = 0/*INT_MAX*/; // æ— æƒå›¾(å¸¦æƒå›¾)
 
-		int x, y, index_x, index_y;    // ÁÚ½ÓµÄÁ½¸ö¶¥µã¡¢±ßÈ¨Öµ
-		for (int i = 0; i < arcnum; i++) // ÊäÈëÃ¿Ìõ±ß
+		int x, y, index_x, index_y;    // é‚»æ¥çš„ä¸¤ä¸ªé¡¶ç‚¹ã€è¾¹æƒå€¼
+		for (int i = 0; i < arcnum; i++) // è¾“å…¥æ¯æ¡è¾¹
 		{
 			cin >> x >> y;
 			index_x = LocateVex(x); index_y = LocateVex(y);
@@ -49,120 +49,120 @@ public:
 		}
 	}
 
-	/* °´Öµ²éÕÒ¡£ÈôÍ¼GÖĞ´æÔÚÖµÎªvalµÄ¶¥µã£¬Ôò·µ»Ø¸Ã¶¥µãÔÚÍ¼ÖĞµÄÎ»ÖÃ£¬·ñÔò·µ»Ø-1 */
+	/* æŒ‰å€¼æŸ¥æ‰¾ã€‚è‹¥å›¾Gä¸­å­˜åœ¨å€¼ä¸ºvalçš„é¡¶ç‚¹ï¼Œåˆ™è¿”å›è¯¥é¡¶ç‚¹åœ¨å›¾ä¸­çš„ä½ç½®ï¼Œå¦åˆ™è¿”å›-1 */
 	int LocateVex(VertexType val)
 	{
-		for (int i = 0; i < vexnum; i++) // ¶¥µã¼¯ÖĞ²éÕÒÖµÎªvalµÄ¶¥µã
+		for (int i = 0; i < vexnum; i++) // é¡¶ç‚¹é›†ä¸­æŸ¥æ‰¾å€¼ä¸ºvalçš„é¡¶ç‚¹
 			if (Vex[i] == val)
 				return i;
-		return -1; // ²»´æÔÚÔò·µ»Ø-1
+		return -1; // ä¸å­˜åœ¨åˆ™è¿”å›-1
 	}
 
-	/* ÇóÍ¼GÖĞÎ»ÖÃÎªxµÄ¶¥µãµÄµÚÒ»¸öÁÚ½Óµã£¬ÈôÓĞÔò·µ»Ø¶¥µãºÅ¡£ÈôÆäÃ»ÓĞÁÚ½Óµã»òÔÚÍ¼ÖĞ²»´æÔÚ£¬Ôò·µ»Ø-1 */
+	/* æ±‚å›¾Gä¸­ä½ç½®ä¸ºxçš„é¡¶ç‚¹çš„ç¬¬ä¸€ä¸ªé‚»æ¥ç‚¹ï¼Œè‹¥æœ‰åˆ™è¿”å›é¡¶ç‚¹å·ã€‚è‹¥å…¶æ²¡æœ‰é‚»æ¥ç‚¹æˆ–åœ¨å›¾ä¸­ä¸å­˜åœ¨ï¼Œåˆ™è¿”å›-1 */
 	int FirstNeighbor(int x)
 	{
-		if (x < 0 || x >= vexnum) return -1;  // Í¼ÖĞ²»´æÔÚÎ»ÖÃÎªxµÄ¶¥µã£¬·µ»Ø-1
+		if (x < 0 || x >= vexnum) return -1;  // å›¾ä¸­ä¸å­˜åœ¨ä½ç½®ä¸ºxçš„é¡¶ç‚¹ï¼Œè¿”å›-1
 
-		for (int i = 0; i < vexnum; i++)      // ÔÚ±ß¼¯ÖĞ²éÕÒÆäÁÚ½Óµã
-			if (Edge[x][i] != 0/*INT_MAX*/)   // Èô´æÔÚµÚÒ»¸öÁÚ½Óµã£¬Ôò·µ»Ø¶¥µãºÅ
+		for (int i = 0; i < vexnum; i++)      // åœ¨è¾¹é›†ä¸­æŸ¥æ‰¾å…¶é‚»æ¥ç‚¹
+			if (Edge[x][i] != 0/*INT_MAX*/)   // è‹¥å­˜åœ¨ç¬¬ä¸€ä¸ªé‚»æ¥ç‚¹ï¼Œåˆ™è¿”å›é¡¶ç‚¹å·
 				return i;
 
-		return -1; // ÈôÎ»ÖÃÎªxµÄ¶¥µãÃ»ÓĞÁÚ½Óµã£¬·µ»Ø-1
+		return -1; // è‹¥ä½ç½®ä¸ºxçš„é¡¶ç‚¹æ²¡æœ‰é‚»æ¥ç‚¹ï¼Œè¿”å›-1
 	}
 
-	/* ÇóÍ¼GÖĞÎ»ÖÃÎªxµÄ¶¥µã(Ïà¶ÔÓÚy´¦µÄ)ÏÂÒ»¸öÁÚ½ÓµãµÄÎ»ÖÃ¡£ÈôyÊÇxµÄ×îºóÒ»¸öÁÚ½Óµã£¬Ôò·µ»Ø-1 */
+	/* æ±‚å›¾Gä¸­ä½ç½®ä¸ºxçš„é¡¶ç‚¹(ç›¸å¯¹äºyå¤„çš„)ä¸‹ä¸€ä¸ªé‚»æ¥ç‚¹çš„ä½ç½®ã€‚è‹¥yæ˜¯xçš„æœ€åä¸€ä¸ªé‚»æ¥ç‚¹ï¼Œåˆ™è¿”å›-1 */
 	int NextNeighbor(int x, int y)
 	{
-		for (int i = y + 1; i < vexnum; i++) // ÔÚ±ß¼¯ÖĞ²éÕÒ³ıyÍâ¶¥µãxµÄÏÂÒ»¸öÁÚ½Óµã
-			if (Edge[x][i] != 0/*INT_MAX*/)  // Èô´æÔÚÏÂÒ»¸öÁÚ½Óµã£¬Ôò·µ»Ø¶¥µãºÅ
+		for (int i = y + 1; i < vexnum; i++) // åœ¨è¾¹é›†ä¸­æŸ¥æ‰¾é™¤yå¤–é¡¶ç‚¹xçš„ä¸‹ä¸€ä¸ªé‚»æ¥ç‚¹
+			if (Edge[x][i] != 0/*INT_MAX*/)  // è‹¥å­˜åœ¨ä¸‹ä¸€ä¸ªé‚»æ¥ç‚¹ï¼Œåˆ™è¿”å›é¡¶ç‚¹å·
 				return i;
 
-		return -1; // ÈôyÊÇxµÄ×îºóÒ»¸öÁÚ½Óµã£¬Ôò·µ»Ø-1
+		return -1; // è‹¥yæ˜¯xçš„æœ€åä¸€ä¸ªé‚»æ¥ç‚¹ï¼Œåˆ™è¿”å›-1
 	}
 
-	/* ·ÃÎÊÍ¼ÖĞÎ»ÖÃÎªxµÄ¶¥µã */
+	/* è®¿é—®å›¾ä¸­ä½ç½®ä¸ºxçš„é¡¶ç‚¹ */
 	void visit(int x) { ss << Vex[x] << " "; }
 
-	/* Éî¶ÈÓÅÏÈ±éÀú£¬´ÓµÚÒ»¸ö¶¥µã³ö·¢ */
+	/* æ·±åº¦ä¼˜å…ˆéå†ï¼Œä»ç¬¬ä¸€ä¸ªé¡¶ç‚¹å‡ºå‘ */
 	void DFSTraverse()
 	{
-		for (int i = 0; i < vexnum; i++) // ³õÊ¼»¯·ÃÎÊ±ê¼ÇÊı×é
+		for (int i = 0; i < vexnum; i++) // åˆå§‹åŒ–è®¿é—®æ ‡è®°æ•°ç»„
 			visited[i] = false;
-		for (int i = 0; i < vexnum; i++) // ±¾´úÂëÖĞÊÇ´Óv=0(µÚÒ»¸ö¶¥µã)¿ªÊ¼±éÀú
+		for (int i = 0; i < vexnum; i++) // æœ¬ä»£ç ä¸­æ˜¯ä»v=0(ç¬¬ä¸€ä¸ªé¡¶ç‚¹)å¼€å§‹éå†
 			if (!visited[i]) DFS(i);
 	}
-	/* Éî¶ÈÓÅÏÈ±éÀú£¬´Ó¸ø¶¨¶¥µãv³ö·¢ */
+	/* æ·±åº¦ä¼˜å…ˆéå†ï¼Œä»ç»™å®šé¡¶ç‚¹vå‡ºå‘ */
 	void DFSTraverse(VertexType v)
 	{
-		for (int i = 0; i < vexnum; i++) // ³õÊ¼»¯·ÃÎÊ±ê¼ÇÊı×é
+		for (int i = 0; i < vexnum; i++) // åˆå§‹åŒ–è®¿é—®æ ‡è®°æ•°ç»„
 			visited[i] = false;
 
-		int index = LocateVex(v);        // ÕÒµ½ÆğÊ¼¶¥µãµÄÎ»ÖÃ
-		DFS(index);                      // Ê×ÏÈÉî¶ÈÓÅÏÈ±éÀú¸Ã¶¥µã(ËùÔÚµÄÁ¬Í¨·ÖÁ¿)
+		int index = LocateVex(v);        // æ‰¾åˆ°èµ·å§‹é¡¶ç‚¹çš„ä½ç½®
+		DFS(index);                      // é¦–å…ˆæ·±åº¦ä¼˜å…ˆéå†è¯¥é¡¶ç‚¹(æ‰€åœ¨çš„è¿é€šåˆ†é‡)
 
-		for (int i = 0; i < vexnum; i++) // ±éÀúÆäËûÁ¬Í¨·ÖÁ¿
+		for (int i = 0; i < vexnum; i++) // éå†å…¶ä»–è¿é€šåˆ†é‡
 			if (!visited[i]) DFS(i);
 	}
-	/* ´ÓÎ»ÖÃÎªvµÄ¶¥µã³ö·¢£¬µİ¹éµØÉî¶ÈÓÅÏÈ±éÀúÍ¼G */
+	/* ä»ä½ç½®ä¸ºvçš„é¡¶ç‚¹å‡ºå‘ï¼Œé€’å½’åœ°æ·±åº¦ä¼˜å…ˆéå†å›¾G */
 	void DFS(int v)
 	{
-		visit(v); visited[v] = true; // ·ÃÎÊ¶¥µãv
-		for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w)) // wÎªvµÄÉĞÎ´·ÃÎÊµÄÁÚ½Óµã
-			if (!visited[w]) DFS(w); // µİ¹éµØ±éÀúÆäÁÚ½Óµã(Éî¶ÈÓÅÏÈ)
+		visit(v); visited[v] = true; // è®¿é—®é¡¶ç‚¹v
+		for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w)) // wä¸ºvçš„å°šæœªè®¿é—®çš„é‚»æ¥ç‚¹
+			if (!visited[w]) DFS(w); // é€’å½’åœ°éå†å…¶é‚»æ¥ç‚¹(æ·±åº¦ä¼˜å…ˆ)
 	}
 
-	/* ¹ã¶ÈÓÅÏÈ±éÀú£¬´ÓµÚÒ»¸ö¶¥µã³ö·¢ */
+	/* å¹¿åº¦ä¼˜å…ˆéå†ï¼Œä»ç¬¬ä¸€ä¸ªé¡¶ç‚¹å‡ºå‘ */
 	void BFSTraverse()
 	{
-		for (int i = 0; i < vexnum; i++)  // ³õÊ¼»¯·ÃÎÊ±ê¼ÇÊı×é
+		for (int i = 0; i < vexnum; i++)  // åˆå§‹åŒ–è®¿é—®æ ‡è®°æ•°ç»„
 			visited[i] = false;
 
-		Q = queue<int>();                 // ³õÊ¼»¯¸¨Öú¶ÓÁĞQ
+		Q = queue<int>();                 // åˆå§‹åŒ–è¾…åŠ©é˜Ÿåˆ—Q
 
-		for (int i = 0; i < vexnum; i++)  // ´Ó0ºÅ¶¥µã¿ªÊ¼±éÀú
-			if (!visited[i]) BFS(i);      // ¶ÔÃ¿¸ö"Á¬Í¨·ÖÁ¿"µ÷ÓÃÒ»´ÎBFS
+		for (int i = 0; i < vexnum; i++)  // ä»0å·é¡¶ç‚¹å¼€å§‹éå†
+			if (!visited[i]) BFS(i);      // å¯¹æ¯ä¸ª"è¿é€šåˆ†é‡"è°ƒç”¨ä¸€æ¬¡BFS
 	}
-	/* ¹ã¶ÈÓÅÏÈ±éÀú£¬´Ó¸ø¶¨¶¥µãv³ö·¢ */
+	/* å¹¿åº¦ä¼˜å…ˆéå†ï¼Œä»ç»™å®šé¡¶ç‚¹vå‡ºå‘ */
 	void BFSTraverse(VertexType v)
 	{
-		for (int i = 0; i < vexnum; i++)  // ³õÊ¼»¯·ÃÎÊ±ê¼ÇÊı×é
+		for (int i = 0; i < vexnum; i++)  // åˆå§‹åŒ–è®¿é—®æ ‡è®°æ•°ç»„
 			visited[i] = false;
 
-		Q = queue<int>();                 // ³õÊ¼»¯¸¨Öú¶ÓÁĞQ
+		Q = queue<int>();                 // åˆå§‹åŒ–è¾…åŠ©é˜Ÿåˆ—Q
 
-		int index = LocateVex(v);         // ÕÒµ½ÆğÊ¼¶¥µãµÄÎ»ÖÃ
-		BFS(index);                       // Ê×ÏÈ¹ã¶ÈÓÅÏÈ±éÀú¸Ã¶¥µã(ËùÔÚµÄÁ¬Í¨·ÖÁ¿)
+		int index = LocateVex(v);         // æ‰¾åˆ°èµ·å§‹é¡¶ç‚¹çš„ä½ç½®
+		BFS(index);                       // é¦–å…ˆå¹¿åº¦ä¼˜å…ˆéå†è¯¥é¡¶ç‚¹(æ‰€åœ¨çš„è¿é€šåˆ†é‡)
 
-		for (int i = 0; i < vexnum; i++)  // ±éÀúÆäËûÁ¬Í¨·ÖÁ¿
+		for (int i = 0; i < vexnum; i++)  // éå†å…¶ä»–è¿é€šåˆ†é‡
 			if (!visited[i]) BFS(i);
 	}
-	/* ´ÓÎ»ÖÃÎªvµÄ¶¥µã³ö·¢£¬·Çµİ¹éµØ¹ã¶ÈÓÅÏÈ±éÀúÍ¼G */
+	/* ä»ä½ç½®ä¸ºvçš„é¡¶ç‚¹å‡ºå‘ï¼Œéé€’å½’åœ°å¹¿åº¦ä¼˜å…ˆéå†å›¾G */
 	void BFS(int v)
 	{
-		visit(v); visited[v] = true; // ·ÃÎÊ¶¥µãv
-		Q.push(v);                   // ¶¥µãvÈë¶ÓÁĞQ(ÒÔ¼ì²âÆäËùÓĞÁÚ½Óµã)
+		visit(v); visited[v] = true; // è®¿é—®é¡¶ç‚¹v
+		Q.push(v);                   // é¡¶ç‚¹vå…¥é˜Ÿåˆ—Q(ä»¥æ£€æµ‹å…¶æ‰€æœ‰é‚»æ¥ç‚¹)
 
-		/* ¿ªÊ¼µü´ú·ÃÎÊÓëvÓĞÂ·¾¶ÏàÍ¨ÇÒÂ·¾¶³¤¶ÈÎª1,2,3...µÄ¶¥µã */
+		/* å¼€å§‹è¿­ä»£è®¿é—®ä¸væœ‰è·¯å¾„ç›¸é€šä¸”è·¯å¾„é•¿åº¦ä¸º1,2,3...çš„é¡¶ç‚¹ */
 		while (!Q.empty())
 		{
-			v = Q.front(); Q.pop(); // ¶¥µãv³ö¶ÓÁĞ
-			for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w)) // ¼ì²âvËùÓĞÁÚ½Óµã
+			v = Q.front(); Q.pop(); // é¡¶ç‚¹vå‡ºé˜Ÿåˆ—
+			for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w)) // æ£€æµ‹væ‰€æœ‰é‚»æ¥ç‚¹
 			{
-				if (!visited[w]) // wÎªvµÄÉĞÎ´·ÃÎÊµÄÁÚ½Óµã
+				if (!visited[w]) // wä¸ºvçš„å°šæœªè®¿é—®çš„é‚»æ¥ç‚¹
 				{
-					visit(w); visited[w] = true; // ·ÃÎÊ¶¥µãw
-					Q.push(w); // ¶¥µãwÈë¶ÓÁĞ(ÆäÁÚ½ÓµãÎªÏÂÒ»Åú±»·ÃÎÊµÄ¶¥µã)
+					visit(w); visited[w] = true; // è®¿é—®é¡¶ç‚¹w
+					Q.push(w); // é¡¶ç‚¹wå…¥é˜Ÿåˆ—(å…¶é‚»æ¥ç‚¹ä¸ºä¸‹ä¸€æ‰¹è¢«è®¿é—®çš„é¡¶ç‚¹)
 				}
 			}
 		}
 	}
 
-	/* closedge[k].lowcost = min{closedge[vi].lowcost | closedge[vi].lowcost>0, viÊôÓÚV-U} */
+	/* closedge[k].lowcost = min{closedge[vi].lowcost | closedge[vi].lowcost>0, viå±äºV-U} */
 	int minimum()
 	{
 
 		int index = -1, min;
-		/* ÕÒµ½µÚÒ»¸öÁ¬Í¨µÄµã */
+		/* æ‰¾åˆ°ç¬¬ä¸€ä¸ªè¿é€šçš„ç‚¹ */
 		for (int i = 0; i < vexnum; i++)
 		{
 			if (closedge[i].lowcost > 0)
@@ -192,33 +192,33 @@ public:
 
 	void MiniSpanTree_PRIM(int u)
 	{
-		// ÓÃÆÕÀïÄ·Ëã·¨´ÓµÚu¸ö¶¥µã³ö·¢¹¹ÔìÍøGµÄ×îĞ¡Éú³ÉÊ÷T£¬Êä³öTµÄ¸÷Ìõ±ß¡£
-		// ¼ÇÂ¼´Ó¶¥µã¼¯Uµ½V-UµÄ´ú¼Û×îĞ¡µÄ±ßµÄ¸¨ÖúÊı×é¶¨Òå£º
+		// ç”¨æ™®é‡Œå§†ç®—æ³•ä»ç¬¬uä¸ªé¡¶ç‚¹å‡ºå‘æ„é€ ç½‘Gçš„æœ€å°ç”Ÿæˆæ ‘Tï¼Œè¾“å‡ºTçš„å„æ¡è¾¹ã€‚
+		// è®°å½•ä»é¡¶ç‚¹é›†Uåˆ°V-Uçš„ä»£ä»·æœ€å°çš„è¾¹çš„è¾…åŠ©æ•°ç»„å®šä¹‰ï¼š
 		// struct { VertexType adjvex; EdgeType lowcost; } closedge[MaxVertexNum];
-		// closedge[j].lowcost±íÊ¾ÔÚ¼¯ºÏUÖĞ¶¥µãÓëµÚj¸ö¶¥µã¶ÔÓ¦×îĞ¡È¨Öµ
+		// closedge[j].lowcostè¡¨ç¤ºåœ¨é›†åˆUä¸­é¡¶ç‚¹ä¸ç¬¬jä¸ªé¡¶ç‚¹å¯¹åº”æœ€å°æƒå€¼
 
 		int k = LocateVex(u); int sum = 0;
-		for (int j = 0; j < vexnum; j++) // ¸¨ÖúÊı×éµÄ³õÊ¼»¯
+		for (int j = 0; j < vexnum; j++) // è¾…åŠ©æ•°ç»„çš„åˆå§‹åŒ–
 		{
 			if (j != k)
 			{
 				closedge[j] = { u ,Edge[k][j] }; // {adjvex, lowcost}
 			}
 		}
-		closedge[k].lowcost = 0; // ³õÊ¼£¬U = {u}
+		closedge[k].lowcost = 0; // åˆå§‹ï¼ŒU = {u}
 
-		for (int i = 1; i < vexnum; i++) // Ñ¡ÔñÆäÓàvexnum-1¸ö¶¥µã£¬Òò´Ëi´Ó1¿ªÊ¼Ñ­»·
+		for (int i = 1; i < vexnum; i++) // é€‰æ‹©å…¶ä½™vexnum-1ä¸ªé¡¶ç‚¹ï¼Œå› æ­¤iä»1å¼€å§‹å¾ªç¯
 		{
-			k = minimum(); // Çó³ö×îĞ¡Éú³ÉÊ÷TµÄÏÂÒ»¸ö½áµã£ºµÚk¶¥µã
+			k = minimum(); // æ±‚å‡ºæœ€å°ç”Ÿæˆæ ‘Tçš„ä¸‹ä¸€ä¸ªç»“ç‚¹ï¼šç¬¬ké¡¶ç‚¹
 			if (k == -1) break;
-			/* ´ËÊ±closedge[k].lowcost = min{closedge[vi].lowcost | closedge[vi].lowcost>0, viÊôÓÚV-U} */
-			cout << closedge[k].adjvex + 1 << ' ' << Vex[k] + 1 << ' ' << closedge[k].lowcost << endl; // Êä³öÉú³ÉÊ÷µÄ±ß
+			/* æ­¤æ—¶closedge[k].lowcost = min{closedge[vi].lowcost | closedge[vi].lowcost>0, viå±äºV-U} */
+			cout << closedge[k].adjvex + 1 << ' ' << Vex[k] + 1 << ' ' << closedge[k].lowcost << endl; // è¾“å‡ºç”Ÿæˆæ ‘çš„è¾¹
 			sum += closedge[k].lowcost;
 
-			closedge[k].lowcost = 0; // µÚk¶¥µã²¢ÈëU¼¯
+			closedge[k].lowcost = 0; // ç¬¬ké¡¶ç‚¹å¹¶å…¥Ué›†
 			for (int j = 0; j < vexnum; j++)
 			{
-				if (Edge[k][j] <= closedge[j].lowcost) // ĞÂ¶¥µã²¢ÈëUºóÖØĞÂÑ¡Ôñ×îĞ¡±ß
+				if (Edge[k][j] <= closedge[j].lowcost) // æ–°é¡¶ç‚¹å¹¶å…¥Uåé‡æ–°é€‰æ‹©æœ€å°è¾¹
 				{
 					closedge[j] = { Vex[k] ,Edge[k][j] };
 				}
@@ -234,11 +234,11 @@ int main()
 	int n, m;
 	cin >> n >> m;
 
-	Graph<int, int> G(n, m); // ¹¹ÔìÍ¼
+	Graph<int, int> G(n, m); // æ„é€ å›¾
 
 	int StartVex; cin >> StartVex;
 	if (G.LocateVex(StartVex) == -1)
-		cout << "ÆğÊ¼¶¥µã²»´æÔÚ" << endl;
+		cout << "èµ·å§‹é¡¶ç‚¹ä¸å­˜åœ¨" << endl;
 	else
 		// G.MiniSpanTree_PRIM(StartVex - 1);
 	{
