@@ -32,20 +32,15 @@ public:
 		for (int i = 0; i < vexnum; i++) Vex[i] = i + 1; // 顶点信息从1计起
 		for (int i = 0; i < vexnum; i++)
 			for (int j = 0; j < vexnum; j++)
-				Edge[i][j] = 0/*INT_MAX*/; // 无权图(带权图)
+				Edge[i][j] = INT_MAX/*0*/; // 带权图(无权图)
 
-		int x, y, index_x, index_y;    // 邻接的两个顶点、边权值
-		for (int i = 0; i < arcnum; i++) // 输入每条边
+		int x, y, w, index_x, index_y;     // 邻接的两个顶点、边权值
+		for (int i = 0; i < arcnum; i++)   // 输入每条边
 		{
-			cin >> x >> y;
+			cin >> x >> y >> w;
 			index_x = LocateVex(x); index_y = LocateVex(y);
-			if (Edge[index_x][index_y] == 1)
-			{
-				i--;
-				continue;
-			}
-			Edge[index_x][index_y] = 1;
-			Edge[index_y][index_x] = 1;
+			Edge[index_x][index_y] = w;
+			Edge[index_y][index_x] = w;
 		}
 	}
 
@@ -64,7 +59,7 @@ public:
 		if (x < 0 || x >= vexnum) return -1;  // 图中不存在位置为x的顶点，返回-1
 
 		for (int i = 0; i < vexnum; i++)      // 在边集中查找其邻接点
-			if (Edge[x][i] != 0/*INT_MAX*/)   // 若存在第一个邻接点，则返回顶点号
+			if (Edge[x][i] != INT_MAX/*0*/)   // 若存在第一个邻接点，则返回顶点号
 				return i;
 
 		return -1; // 若位置为x的顶点没有邻接点，返回-1
@@ -74,7 +69,7 @@ public:
 	int NextNeighbor(int x, int y)
 	{
 		for (int i = y + 1; i < vexnum; i++) // 在边集中查找除y外顶点x的下一个邻接点
-			if (Edge[x][i] != 0/*INT_MAX*/)  // 若存在下一个邻接点，则返回顶点号
+			if (Edge[x][i] != INT_MAX/*0*/)  // 若存在下一个邻接点，则返回顶点号
 				return i;
 
 		return -1; // 若y是x的最后一个邻接点，则返回-1
@@ -157,103 +152,85 @@ public:
 		}
 	}
 
-	/* closedge[k].lowcost = min{closedge[vi].lowcost | closedge[vi].lowcost>0, vi属于V-U} */
-	int minimum()
+	/* 在辅助数组closedge中，从V-U集中选择最小跨越边(lowcost最小)对应的顶点k，返回其位置 */
+	int minimum() // closedge[k].lowcost = min{closedge[v_i].lowcost | closedge[v_i].lowcost>0, v_i属于V-U}
 	{
-
-		int index = -1, min;
-		/* 找到第一个连通的点 */
-		for (int i = 0; i < vexnum; i++)
+		int min_adj; EdgeType min_cost = INT_MAX; // 最小跨越边的V-U集顶点、边权值
+		for (int i = 0; i < arcnum; i++) // 遍历closedge数组
 		{
-			if (closedge[i].lowcost > 0)
+			if (closedge[i].lowcost != 0 && closedge[i].lowcost < min_cost) // V-U集顶点中，跨越边权值最小
 			{
-				index = i;
-				min = closedge[i].lowcost;
-				break;
+				min_adj = i; // V-U集中的顶点k的位置(对应的U集顶点在closedge[i].adjvex中)
+				min_cost = closedge[i].lowcost; // 最小跨越边的权值
 			}
 		}
-		if (index == -1)
-			return -1;
-
-		for (int i = index + 1; i < vexnum; i++)
-		{
-			if (closedge[i].lowcost > 0)
-			{
-				if (closedge[i].lowcost < min)
-				{
-					index = i;
-					min = closedge[i].lowcost;
-				}
-			}
-		}
-
-		return index;
+		return min_adj; // 返回V-U集顶点k的位置
 	}
 
-	void MiniSpanTree_PRIM(int u)
+	/* 用普里姆(Prim)算法从顶点u出发构造网G的最小生成树T，输出T的各条边。 */
+	void MiniSpanTree_Prim(VertexType u)
 	{
-		// 用普里姆算法从第u个顶点出发构造网G的最小生成树T，输出T的各条边。
-		// 记录从顶点集U到V-U的代价最小的边的辅助数组定义：
-		// struct { VertexType adjvex; EdgeType lowcost; } closedge[MaxVertexNum];
-		// closedge[j].lowcost表示在集合U中顶点与第j个顶点对应最小权值
-
-		int k = LocateVex(u); int sum = 0;
-		for (int j = 0; j < vexnum; j++) // 辅助数组的初始化
+		int k = LocateVex(u); int sum = 0; // 顶点u的位置、生成树权值之和
+		for (int j = 0; j < vexnum; j++)   // 辅助数组的初始化
 		{
-			if (j != k)
-			{
-				closedge[j] = { u ,Edge[k][j] }; // {adjvex, lowcost}
-			}
+			/* 初始时，U仅包含顶点u，即 U = {u} */
+			if (j != k) closedge[j] = { u ,Edge[k][j] }; // 此时V-U中顶点优先级即为顶点与u邻接的边权值(不存在边则为INT_MAX)
 		}
-		closedge[k].lowcost = 0; // 初始，U = {u}
+		closedge[k].lowcost = 0; // lowcost置为0则表示已并入U集
 
-		for (int i = 1; i < vexnum; i++) // 选择其余vexnum-1个顶点，因此i从1开始循环
+		for (int i = 1; i < vexnum; i++) // 选择其余vexnum-1个顶点，因此需迭代vexnum-1次，每次U集并入一个顶点
 		{
-			k = minimum(); // 求出最小生成树T的下一个结点：第k顶点
-			if (k == -1) break;
-			/* 此时closedge[k].lowcost = min{closedge[vi].lowcost | closedge[vi].lowcost>0, vi属于V-U} */
-			cout << closedge[k].adjvex + 1 << ' ' << Vex[k] + 1 << ' ' << closedge[k].lowcost << endl; // 输出生成树的边
-			sum += closedge[k].lowcost;
+			k = minimum(); // 从V-U集中选择最小跨越边对应的顶点，它将是最小生成树T的下一个顶点
+			// 即 closedge[k].lowcost = min{closedge[v_i].lowcost | closedge[v_i].lowcost>0, v_i属于V-U}
 
-			closedge[k].lowcost = 0; // 第k顶点并入U集
-			for (int j = 0; j < vexnum; j++)
+			// 输出生成树的边(最小跨越边)
+			cout << closedge[k].adjvex        // U集的顶点(此前已并入)
+				<< ' ' << Vex[k]              // V-U集的顶点
+				<< ' ' << closedge[k].lowcost // 边权值
+				<< endl;
+			sum += closedge[k].lowcost;       // 记入权值之和
+
+			closedge[k].lowcost = 0; // 新顶点k并入U集
+
+			/* 更新顶点优先级数，与顶点k互不关联的顶点都无需考虑 */
+			for (int v = 0; v < vexnum; v++) // 只需遍历顶点k的每一邻居v
 			{
-				if (Edge[k][j] <= closedge[j].lowcost) // 新顶点并入U后重新选择最小边
+				if (Edge[k][v] < closedge[v].lowcost) // 若边kv的权值 小于 当前的优先级数(之前的其他跨越边的权值，如uv)
 				{
-					closedge[j] = { Vex[k] ,Edge[k][j] };
+					closedge[v] = { Vex[k] ,Edge[k][v] }; // 更新顶点优先级
 				}
-
 			}
 		}
-		cout << sum << endl;
+		cout << sum << endl; // 最小生成树构造完成，输出总权值
 	}
 };
 
 int main()
 {
-	int n, m;
-	cin >> n >> m;
+	int n, m; cin >> n >> m;
 
 	Graph<int, int> G(n, m); // 构造图
 
 	int StartVex; cin >> StartVex;
 	if (G.LocateVex(StartVex) == -1)
-		cout << "起始顶点不存在" << endl;
-	else
-		// G.MiniSpanTree_PRIM(StartVex - 1);
 	{
-		string result;
+		cout << "起始顶点不存在" << endl;
+	}
+	else
+	{
+		string result; cout << endl;
 
-		G.BFSTraverse(StartVex);
-		getline(G.ss, result); result.pop_back();
-		cout << result << endl;
+		G.BFSTraverse(StartVex); // 广度优先搜索
+		getline(G.ss, result); cout << "BFS:" << result << endl << endl;
 
 		G.ss.clear(); G.ss.str(string());
 
-		G.DFSTraverse(StartVex);
-		getline(G.ss, result); result.pop_back();
-		cout << result << endl;
+		G.DFSTraverse(StartVex); // 深度优先搜索
+		getline(G.ss, result); cout << "DFS:" << result << endl << endl;
+
+		cout << "MST:" << endl;
+		G.MiniSpanTree_Prim(StartVex); // 最小生成树
 	}
 
-
+	return 0;
 }
