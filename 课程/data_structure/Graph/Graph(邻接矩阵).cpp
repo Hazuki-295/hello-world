@@ -44,6 +44,23 @@ public:
 			Edge[index_y][index_x] = w;
 		}
 	}
+	Graph() // 构造图
+	{
+		int i, j, k;
+		cout << "请输入顶点数和边数：" << endl;
+		cin >> vexnum >> arcnum;
+		cout << "请输入顶点信息：" << endl;
+		for (int i = 0; i < vexnum; i++) // 顶点集
+			cin >> Vex[i];
+		for (int k = 0; k < arcnum; k++) // 边集
+		{
+			cout << "请输入边(vi, vj)的下标i, j：";
+			cin >> i >> j;
+			Edge[i][j] = 1;
+			// 若为无向图，置对称弧
+			Edge[j][i] = 1;
+		}
+	}
 
 	/* 输出邻接矩阵 */
 	void Print()
