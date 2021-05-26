@@ -1,5 +1,4 @@
 #include <iostream>
-
 using namespace std;
 
 /* 列表节点模板类（以单链表形式实现） */
@@ -11,7 +10,6 @@ template <typename T> struct ListNode {
 	ListNode(T x) : data(x), next(nullptr) {}
 	ListNode(T x, ListNode *next) : data(x), next(next) {}
 };
-
 template <typename T> using LinkList = ListNode<T> *; // 单链表(头指针)
 
 /* 链表模板类 */
@@ -31,16 +29,16 @@ public:
 	/* 初始化一个空链表 */
 	void InitList() // 默认构造一个空链表
 	{
-		L = (LinkList)malloc(sizeof(ListNode));  // 创建头结点
-		L->next = nullptr;                    // 初始为空链表
+		L = (LinkList)malloc(sizeof(ListNode)); // 创建头结点
+		L->next = nullptr; // 初始为空链表
 	}
 
 	/* 头插法，逆向建立单链表 */
 	LinkList List_HeadInsert(int n)
 	{
 		ListNode *s; ElemType temp;
-		L = (LinkList)malloc(sizeof(ListNode));  // 创建头结点
-		L->next = nullptr;                    // 初始为空链表
+		L = (LinkList)malloc(sizeof(ListNode)); // 创建头结点
+		L->next = nullptr; // 初始为空链表
 		for (int i = 0; i < n; i++)
 		{
 			cin >> temp;
@@ -50,7 +48,6 @@ public:
 			s->next = L->next; // 将新结点插入表中
 			L->next = s;       // 每次将s所指结点插在最前端
 		}
-		return L; // 返回头指针
 		return L; // 返回头指针
 	}
 
@@ -73,11 +70,11 @@ public:
 		return L;          // 返回头指针
 	}
 
-	/* 求单链表表长 */
+	/* 沿着指针链顺序遍历的过程中，求出单链表的表长 */
 	int LinkLength()
 	{
 		ListNode *p = L->next; int j = 0; // j为计数器
-		while (p != nullptr) // 从第一个结点开始，计数据结点的个数
+		while (p != nullptr) // 从第一个结点开始，统计数据结点的个数
 		{
 			j++;
 			p = p->next;
@@ -85,7 +82,7 @@ public:
 		return j;
 	}
 
-	/* 按序号查找 */
+	/* 按序号查找，返回位置x处的链表结点 */
 	ListNode *GetElem(int x) // L为"带头结点"的单链表的头指针
 	{
 		ListNode *p; int j;
@@ -104,7 +101,7 @@ public:
 		return p; // 若找到，则返回第x个结点的指针；若x大于表长，返回NULL
 	}
 
-	/* 按值查找 */
+	/* 按值查找，返回值域为给定值e的链表结点 */
 	ListNode *LocateElem(ElemType e)
 	{
 		ListNode *p = L->next;
