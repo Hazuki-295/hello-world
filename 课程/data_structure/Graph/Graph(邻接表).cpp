@@ -82,9 +82,16 @@ public:
 	}
 
 	/* 获取图G中弧<x,y>对应的权值 */
-	InfoType Get_edge_value(VertexType x, VertexType y)
+	bool Get_edge_value(int x, int y, InfoType &w)
 	{
-		int index_x = LocateVex(x), index_y = LocateVex(y);
+		ArcNode *p; // 辅助指针
+
+		for (p = vertices[x].firstarc; p->adjvex != y; p = p->nextarc); // 找到邻接边<x,y>
+
+		if (p == nullptr) return false;
+		else w = p->info;
+
+		return true;
 	}
 
 	/* 按值查找。若图G中存在值为val的顶点，则返回该顶点在图中的位置，否则返回-1 */
