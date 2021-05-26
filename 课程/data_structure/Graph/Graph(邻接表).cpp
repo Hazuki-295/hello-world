@@ -12,7 +12,6 @@ template <typename InfoType> struct ArcNode {
 	int adjvex; InfoType info; ArcNode *nextarc; // 该弧所指向的顶点的位置(下标)、边权值，指向下一条邻接弧的指针
 	// 构造函数
 	ArcNode(int _adjvex, InfoType _info) :adjvex(_adjvex), info(_info), nextarc(nullptr) {};
-
 };
 
 /* 顶点表结点模板类 */
@@ -53,13 +52,49 @@ public:
 	{
 		/* 初始化顶点集、边集 */
 		vertices = vector<VNode>(vexnum);
-		for (int i = 0; i < vexnum; i++) vertices[i].data = i + 1; // 顶点信息从1计起
+		for (int i = 0; i < vexnum; i++) vertices[i].data = i; // 顶点信息从0计起
 
 		VertexType x, y; InfoType w; // 邻接的两个顶点、边权值
 		for (int i = 0; i < arcnum; i++) // 输入每条边
 		{
 			cin >> x >> y >> w;
-			InsertArc(x, y, w); InsertArc(y, x, w); // 无向图对称弧
+			InsertArc(x, y, w);
+			// 若为无向图，置对称弧
+			InsertArc(y, x, w);
+		}
+	}
+	Graph() // 构造图
+	{
+		int i, j, k;
+		cout << "请输入顶点数和边数：" << endl;
+		cin >> vexnum >> arcnum;
+		vertices = vector<VNode>(vexnum); // 初始化顶点向量
+
+		cout << "请输入顶点信息：" << endl;
+		for (int i = 0; i < vexnum; i++) // 顶点集
+			cin >> vertices[i];
+
+		for (int i = 0; i < arcnum; i++) // 边集
+		{
+			cout << "请输入边(vi, vj)的下标i, j：";
+			cin >> x >> y;
+			InsertArc(x, y, 0);
+			// 若为无向图，置对称弧
+			InsertArc(y, x, 0);
+		}
+	}
+
+	/* 输出邻接表 */
+	void Print()
+	{
+		cout << "邻接表：" << endl;
+		ArcNode *p; // 辅助指针
+		for (int i = 0; i < vexnum; i++)
+		{
+			cout << "顶点：" << vertices[i].data << "：";
+			for (p = verticesp[i].firstarc; p != nullptr; p = p->nextarc)
+				cout << p->adjvex << " ";
+			cout << endl;
 		}
 	}
 
@@ -68,7 +103,7 @@ public:
 	{
 		ArcNode *p; // 辅助指针
 		int index_x = LocateVex(x), index_y = LocateVex(y);
-		
+
 		for (p = vertices[index_x].firstarc; p != nullptr; p = p->nextarc) // 若x没有邻接边，则直接退出循环
 		{
 			if (p->nextarc == nullptr) // 找到该顶点的最后一个邻接边
@@ -224,7 +259,7 @@ public:
 	{
 		ArcNode *p; // 辅助指针
 		int k = LocateVex(u); int sum = 0; // 顶点u的位置、生成树权值之和
-		
+
 		/* 初始时，U仅包含顶点u，即 U = {u} */
 		for (int j = 0; j < vexnum; j++) // 辅助数组初始化
 		{
@@ -261,7 +296,53 @@ public:
 		}
 		cout << sum << endl; // 最小生成树构造完成，输出总权值
 	}
+
+	/* 其他算法题 */
+	bool Findpath(int a, int b, int k);
+	bool Existpath(int x, int y);
+	void reset()
+	{
+		for (int i = 0; i < vexnum; i++) // 初始化访问标记数组
+			visited[i] = false;
+	}
 };
+
+/* 判断两点是否存在路径(深度优先搜索，遍历x所在连通分量) */
+bool Graph<int, int>::Existpath(int x, int y)
+{
+	visit(x); visited[x] = true; // 输出路径上的结点
+
+	ArcNode *p; // 辅助指针
+	for (p = vertices[x].firstarc; p != nullptr; p = p->nextarc)
+	{
+		int i = p->adjvex;
+		if (i == y)
+			return true;
+		else if (!visited[i] && Existpath(i, y)) // 从邻接点的邻接点找起(深度优先)
+			return true;
+	}
+	return false; // 该连通分量不存在通往y的路径
+}
+
+/* 判断无向图两点间是否存在一条长度为k的简单路径 */
+bool Graph<int, int>::Findpath(int a, int b, int k)
+{
+	ArcNode *p; // 辅助指针
+	if (a == b && k == 0) // 递归出口，找到b且路径长度为k
+		return true;
+	else if (k > 0)
+	{
+		visited[a] = true;     // 表示将通过该点尝试访问其他点
+		for (p = vertices[a].firstarc; p != nullptr; p = p->nextarc) // 尝试通过相连的点寻找
+		{
+			int i = p->adjvex; // 第一条边
+			if (!visited[i] && Findpath(i, b, k - 1)) // 往前走
+				return true;
+		}
+		visited[a] = false; // 通过该点的路径找不到，回溯
+	}
+	return false; // 前面的尝试都失败了，没有路径
+}
 
 int main()
 {
