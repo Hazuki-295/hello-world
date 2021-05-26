@@ -34,7 +34,7 @@ public:
 			for (int j = 0; j < vexnum; j++)
 				Edge[i][j] = INT_MAX/*0*/; // 带权图(无权图)
 
-		int x, y, w, index_x, index_y;     // 邻接的两个顶点、边权值
+		VertexType x, y; EdgeType w; int index_x, index_y; // 邻接的两个顶点、边权值
 		for (int i = 0; i < arcnum; i++)   // 输入每条边
 		{
 			cin >> x >> y >> w;
