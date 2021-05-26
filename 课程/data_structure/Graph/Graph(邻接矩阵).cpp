@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <string>
 #include <queue>
@@ -41,6 +42,18 @@ public:
 			index_x = LocateVex(x); index_y = LocateVex(y);
 			Edge[index_x][index_y] = w;
 			Edge[index_y][index_x] = w;
+		}
+	}
+
+	/* 输出邻接矩阵 */
+	void Print()
+	{
+		cout << "邻接矩阵：" << endl;
+		for (int i = 0; i < vexnum; i++)
+		{
+			for (int j = 0; j < vexnum; j++)
+				cout << setw(3) << Edge[i][j];
+			cout << endl;
 		}
 	}
 
