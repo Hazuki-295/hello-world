@@ -4,259 +4,259 @@
 #include <queue>
 using namespace std;
 
-#define MaxVertexNum 100  // Í¼ÖĞ¶¥µãÊıÄ¿µÄ×î´óÖµ
+#define MaxVertexNum 100  // å›¾ä¸­é¡¶ç‚¹æ•°ç›®çš„æœ€å¤§å€¼
 
-/* ±ß±í½áµãÄ£°åÀà */
+/* è¾¹è¡¨ç»“ç‚¹æ¨¡æ¿ç±» */
 template <typename InfoType> struct ArcNode {
-	// ³ÉÔ±
-	int adjvex; InfoType info; ArcNode *nextarc; // ¸Ã»¡ËùÖ¸ÏòµÄ¶¥µãµÄÎ»ÖÃ(ÏÂ±ê)¡¢±ßÈ¨Öµ£¬Ö¸ÏòÏÂÒ»ÌõÁÚ½Ó»¡µÄÖ¸Õë
-	// ¹¹Ôìº¯Êı
+	// æˆå‘˜
+	int adjvex; InfoType info; ArcNode *nextarc; // è¯¥å¼§æ‰€æŒ‡å‘çš„é¡¶ç‚¹çš„ä½ç½®(ä¸‹æ ‡)ã€è¾¹æƒå€¼ï¼ŒæŒ‡å‘ä¸‹ä¸€æ¡é‚»æ¥å¼§çš„æŒ‡é’ˆ
+	// æ„é€ å‡½æ•°
 	ArcNode(int _adjvex, InfoType _info) :adjvex(_adjvex), info(_info), nextarc(nullptr) {};
 
 };
 
-/* ¶¥µã±í½áµãÄ£°åÀà */
+/* é¡¶ç‚¹è¡¨ç»“ç‚¹æ¨¡æ¿ç±» */
 template <typename VertexType, typename InfoType> struct VNode {
-	// ³ÉÔ±
-	VertexType data;              // ¶¥µãĞÅÏ¢
-	ArcNode<InfoType> *firstarc;  // Ö¸ÏòµÚÒ»ÌõÒÀ¸½¸Ã¶¥µãµÄ»¡µÄÖ¸Õë
-	// ¹¹Ôìº¯Êı
-	VNode() :data(0), firstarc(nullptr) {}; // ¿ÕÔò±íÊ¾²»´æÔÚÁÚ½Óµã
+	// æˆå‘˜
+	VertexType data;              // é¡¶ç‚¹ä¿¡æ¯
+	ArcNode<InfoType> *firstarc;  // æŒ‡å‘ç¬¬ä¸€æ¡ä¾é™„è¯¥é¡¶ç‚¹çš„å¼§çš„æŒ‡é’ˆ
+	// æ„é€ å‡½æ•°
+	VNode() :data(0), firstarc(nullptr) {}; // ç©ºåˆ™è¡¨ç¤ºä¸å­˜åœ¨é‚»æ¥ç‚¹
 };
 
-/* Í¼GraphÄ£°åÀà£¨ÁÚ½Ó±í£© */
-template <typename VertexType, typename InfoType> class Graph { // VertexType£º¶¥µãµÄÊı¾İÀàĞÍ£¬InfoType£º´øÈ¨Í¼ÖĞ"±ßÉÏÈ¨Öµ"µÄÊı¾İÀàĞÍ
+/* å›¾Graphæ¨¡æ¿ç±»ï¼ˆé‚»æ¥è¡¨ï¼‰ */
+template <typename VertexType, typename InfoType> class Graph { // VertexTypeï¼šé¡¶ç‚¹çš„æ•°æ®ç±»å‹ï¼ŒInfoTypeï¼šå¸¦æƒå›¾ä¸­"è¾¹ä¸Šæƒå€¼"çš„æ•°æ®ç±»å‹
 
 private:
 	using VNode = VNode<VertexType, InfoType>;
 	using ArcNode = ArcNode<InfoType>;
 
-	/* Í¼µÄÁÚ½Ó±í´æ´¢½á¹¹ */
-	vector<VNode> vertices; // ¶¥µã±í
-	int vexnum, arcnum;     // Í¼µÄ¶¥µãÊıºÍ»¡Êı
+	/* å›¾çš„é‚»æ¥è¡¨å­˜å‚¨ç»“æ„ */
+	vector<VNode> vertices; // é¡¶ç‚¹è¡¨
+	int vexnum, arcnum;     // å›¾çš„é¡¶ç‚¹æ•°å’Œå¼§æ•°
 
-	// ¶¥µã±íË³Ğò´æ´¢£¬±ãÓÚËæ»ú·ÃÎÊ¡£±ß±í(¸÷¸ö¶¥µãµÄÁÚ½Ó±í)ÔÚ¶¥µã½áµãÖĞ¡£
+	// é¡¶ç‚¹è¡¨é¡ºåºå­˜å‚¨ï¼Œä¾¿äºéšæœºè®¿é—®ã€‚è¾¹è¡¨(å„ä¸ªé¡¶ç‚¹çš„é‚»æ¥è¡¨)åœ¨é¡¶ç‚¹ç»“ç‚¹ä¸­ã€‚
 
-	bool visited[MaxVertexNum]; // ·ÃÎÊ±ê¼ÇÊı×é
+	bool visited[MaxVertexNum]; // è®¿é—®æ ‡è®°æ•°ç»„
 
 
-	queue<int> Q; // ¸¨Öú¶ÓÁĞQ
+	queue<int> Q; // è¾…åŠ©é˜Ÿåˆ—Q
 
-	/* ¸¨ÖúÊı×é£¬¶Ôµ±Ç°V£­U¼¯ÖĞµÄÃ¿¸ö¶¥µã£¬¼ÇÂ¼ºÍ¶¥µã¼¯UÖĞ¶¥µãÏàÁ¬½ÓµÄ´ú¼Û×îĞ¡µÄ±ß */
+	/* è¾…åŠ©æ•°ç»„ï¼Œå¯¹å½“å‰Vï¼Ué›†ä¸­çš„æ¯ä¸ªé¡¶ç‚¹ï¼Œè®°å½•å’Œé¡¶ç‚¹é›†Uä¸­é¡¶ç‚¹ç›¸è¿æ¥çš„ä»£ä»·æœ€å°çš„è¾¹ */
 	struct Closedge { VertexType adjvex; InfoType lowcost; } closedge[MaxVertexNum];
 
 public:
-	queue<int> print; // ÓÃÓÚ´¦ÀíÊä³ö½á¹û
+	queue<int> print; // ç”¨äºå¤„ç†è¾“å‡ºç»“æœ
 
-	/* (´øÈ¨)ÎŞÏòÍ¼¹¹Ôì */
+	/* (å¸¦æƒ)æ— å‘å›¾æ„é€  */
 	Graph(int _vexnum, int _arcnum) :vexnum(_vexnum), arcnum(_arcnum)
 	{
-		/* ³õÊ¼»¯¶¥µã¼¯¡¢±ß¼¯ */
+		/* åˆå§‹åŒ–é¡¶ç‚¹é›†ã€è¾¹é›† */
 		vertices = vector<VNode>(vexnum);
-		for (int i = 0; i < vexnum; i++) vertices[i].data = i + 1; // ¶¥µãĞÅÏ¢´Ó1¼ÆÆğ
+		for (int i = 0; i < vexnum; i++) vertices[i].data = i + 1; // é¡¶ç‚¹ä¿¡æ¯ä»1è®¡èµ·
 
-		VertexType x, y; InfoType w; // ÁÚ½ÓµÄÁ½¸ö¶¥µã¡¢±ßÈ¨Öµ
-		for (int i = 0; i < arcnum; i++) // ÊäÈëÃ¿Ìõ±ß
+		VertexType x, y; InfoType w; // é‚»æ¥çš„ä¸¤ä¸ªé¡¶ç‚¹ã€è¾¹æƒå€¼
+		for (int i = 0; i < arcnum; i++) // è¾“å…¥æ¯æ¡è¾¹
 		{
 			cin >> x >> y >> w;
-			InsertArc(x, y, w); InsertArc(y, x, w); // ÎŞÏòÍ¼¶Ô³Æ»¡
+			InsertArc(x, y, w); InsertArc(y, x, w); // æ— å‘å›¾å¯¹ç§°å¼§
 		}
 	}
 
-	/* ÔÚÍ¼GÖĞÔöÌí»¡<x,y>£¬È¨ÖµÎªw */
+	/* åœ¨å›¾Gä¸­å¢æ·»å¼§<x,y>ï¼Œæƒå€¼ä¸ºw */
 	bool InsertArc(VertexType x, VertexType y, InfoType w)
 	{
 		int index_x = LocateVex(x), index_y = LocateVex(y);
-		ArcNode *p; // ¸¨ÖúÖ¸Õë
-		for (p = vertices[index_x].firstarc; p != nullptr; p = p->nextarc) // ÈôxÃ»ÓĞÁÚ½Ó±ß£¬ÔòÖ±½ÓÍË³öÑ­»·
+		ArcNode *p; // è¾…åŠ©æŒ‡é’ˆ
+		for (p = vertices[index_x].firstarc; p != nullptr; p = p->nextarc) // è‹¥xæ²¡æœ‰é‚»æ¥è¾¹ï¼Œåˆ™ç›´æ¥é€€å‡ºå¾ªç¯
 		{
-			if (p->nextarc == nullptr) // ÕÒµ½¸Ã¶¥µãµÄ×îºóÒ»¸öÁÚ½Ó±ß
+			if (p->nextarc == nullptr) // æ‰¾åˆ°è¯¥é¡¶ç‚¹çš„æœ€åä¸€ä¸ªé‚»æ¥è¾¹
 				break;
 		}
-		if (p == nullptr) // ÈôxÃ»ÓĞÁÚ½Óµã
-			vertices[index_x].firstarc = new ArcNode(index_y, w); // Ìí¼ÓµÚÒ»Ìõ»¡
-		else // ÈôxÓĞÁÚ½Óµã£¬ÔòpÖ¸Ïò×îºóÒ»¸öÁÚ½Ó±ß
-			p->nextarc = new ArcNode(index_y, w); // Ìí¼ÓÏÂÒ»Ìõ»¡
+		if (p == nullptr) // è‹¥xæ²¡æœ‰é‚»æ¥ç‚¹
+			vertices[index_x].firstarc = new ArcNode(index_y, w); // æ·»åŠ ç¬¬ä¸€æ¡å¼§
+		else // è‹¥xæœ‰é‚»æ¥ç‚¹ï¼Œåˆ™pæŒ‡å‘æœ€åä¸€ä¸ªé‚»æ¥è¾¹
+			p->nextarc = new ArcNode(index_y, w); // æ·»åŠ ä¸‹ä¸€æ¡å¼§
 		return true;
 	}
 
-	/* ÅĞ¶ÏÍ¼GÊÇ·ñ´æÔÚ»¡<x,y> */
+	/* åˆ¤æ–­å›¾Gæ˜¯å¦å­˜åœ¨å¼§<x,y> */
 	bool Adjacent()
 	{
 
 	}
 
-	/* »ñÈ¡Í¼GÖĞ»¡<x,y>¶ÔÓ¦µÄÈ¨Öµ */
+	/* è·å–å›¾Gä¸­å¼§<x,y>å¯¹åº”çš„æƒå€¼ */
 	InfoType Get_edge_value(VertexType x, VertexType y)
 	{
 		int index_x = LocateVex(x), index_y = LocateVex(y);
 	}
 
-	/* °´Öµ²éÕÒ¡£ÈôÍ¼GÖĞ´æÔÚÖµÎªvalµÄ¶¥µã£¬Ôò·µ»Ø¸Ã¶¥µãÔÚÍ¼ÖĞµÄÎ»ÖÃ£¬·ñÔò·µ»Ø-1 */
+	/* æŒ‰å€¼æŸ¥æ‰¾ã€‚è‹¥å›¾Gä¸­å­˜åœ¨å€¼ä¸ºvalçš„é¡¶ç‚¹ï¼Œåˆ™è¿”å›è¯¥é¡¶ç‚¹åœ¨å›¾ä¸­çš„ä½ç½®ï¼Œå¦åˆ™è¿”å›-1 */
 	int LocateVex(VertexType val)
 	{
-		for (int i = 0; i < vexnum; i++) // ¶¥µã¼¯ÖĞ²éÕÒÖµÎªvalµÄ¶¥µã
+		for (int i = 0; i < vexnum; i++) // é¡¶ç‚¹é›†ä¸­æŸ¥æ‰¾å€¼ä¸ºvalçš„é¡¶ç‚¹
 			if (vertices[i].data == val)
 				return i;
-		return -1; // ²»´æÔÚÔò·µ»Ø-1
+		return -1; // ä¸å­˜åœ¨åˆ™è¿”å›-1
 	}
 
-	/* ÇóÍ¼GÖĞÎ»ÖÃÎªxµÄ¶¥µãµÄµÚÒ»¸öÁÚ½Óµã£¬ÈôÓĞÔò·µ»Ø¶¥µãºÅ¡£ÈôÆäÃ»ÓĞÁÚ½Óµã»òÔÚÍ¼ÖĞ²»´æÔÚ£¬Ôò·µ»Ø-1 */
+	/* æ±‚å›¾Gä¸­ä½ç½®ä¸ºxçš„é¡¶ç‚¹çš„ç¬¬ä¸€ä¸ªé‚»æ¥ç‚¹ï¼Œè‹¥æœ‰åˆ™è¿”å›é¡¶ç‚¹å·ã€‚è‹¥å…¶æ²¡æœ‰é‚»æ¥ç‚¹æˆ–åœ¨å›¾ä¸­ä¸å­˜åœ¨ï¼Œåˆ™è¿”å›-1 */
 	int FirstNeighbor(int x)
 	{
-		if (x < 0 || x >= vexnum) return -1; // Í¼ÖĞ²»´æÔÚÎ»ÖÃÎªxµÄ¶¥µã£¬·µ»Ø-1
+		if (x < 0 || x >= vexnum) return -1; // å›¾ä¸­ä¸å­˜åœ¨ä½ç½®ä¸ºxçš„é¡¶ç‚¹ï¼Œè¿”å›-1
 
-		ArcNode *p = vertices[x].firstarc;   // µÚÒ»¸öÁÚ½Óµã
+		ArcNode *p = vertices[x].firstarc;   // ç¬¬ä¸€ä¸ªé‚»æ¥ç‚¹
 
-		if (p != nullptr)     // Èô´æÔÚµÚÒ»¸öÁÚ½Óµã£¬Ôò·µ»Ø¶¥µãºÅ
+		if (p != nullptr)     // è‹¥å­˜åœ¨ç¬¬ä¸€ä¸ªé‚»æ¥ç‚¹ï¼Œåˆ™è¿”å›é¡¶ç‚¹å·
 			return p->adjvex;
 
-		return -1;            // ÈôÎ»ÖÃÎªxµÄ¶¥µãÃ»ÓĞÁÚ½Óµã£¬·µ»Ø-1
+		return -1;            // è‹¥ä½ç½®ä¸ºxçš„é¡¶ç‚¹æ²¡æœ‰é‚»æ¥ç‚¹ï¼Œè¿”å›-1
 	}
 
-	/* ÇóÍ¼GÖĞÎ»ÖÃÎªxµÄ¶¥µã(Ïà¶ÔÓÚy´¦µÄ)ÏÂÒ»¸öÁÚ½ÓµãµÄÎ»ÖÃ¡£ÈôyÊÇxµÄ×îºóÒ»¸öÁÚ½Óµã£¬Ôò·µ»Ø-1 */
+	/* æ±‚å›¾Gä¸­ä½ç½®ä¸ºxçš„é¡¶ç‚¹(ç›¸å¯¹äºyå¤„çš„)ä¸‹ä¸€ä¸ªé‚»æ¥ç‚¹çš„ä½ç½®ã€‚è‹¥yæ˜¯xçš„æœ€åä¸€ä¸ªé‚»æ¥ç‚¹ï¼Œåˆ™è¿”å›-1 */
 	int NextNeighbor(int x, int y)
 	{
-		ArcNode *p; // ¸¨ÖúÖ¸Õë
-		for (p = vertices[x].firstarc; p->adjvex != y; p = p->nextarc); // ÕÒµ½ÁÚ½Ó±ß<x,y>
+		ArcNode *p; // è¾…åŠ©æŒ‡é’ˆ
+		for (p = vertices[x].firstarc; p->adjvex != y; p = p->nextarc); // æ‰¾åˆ°é‚»æ¥è¾¹<x,y>
 		if (p->nextarc != nullptr)
-			return p->nextarc->adjvex; // Èô´æÔÚÏÂÒ»¸öÁÚ½Óµã£¬Ôò·µ»Ø¶¥µãºÅ
+			return p->nextarc->adjvex; // è‹¥å­˜åœ¨ä¸‹ä¸€ä¸ªé‚»æ¥ç‚¹ï¼Œåˆ™è¿”å›é¡¶ç‚¹å·
 
-		return -1; // ÈôyÊÇxµÄ×îºóÒ»¸öÁÚ½Óµã£¬Ôò·µ»Ø-1
+		return -1; // è‹¥yæ˜¯xçš„æœ€åä¸€ä¸ªé‚»æ¥ç‚¹ï¼Œåˆ™è¿”å›-1
 	}
 
-	/* ·ÃÎÊÍ¼ÖĞÎ»ÖÃÎªxµÄ¶¥µã */
+	/* è®¿é—®å›¾ä¸­ä½ç½®ä¸ºxçš„é¡¶ç‚¹ */
 	void visit(int x) { print.push(vertices[x].data); }
 
-	/* Éî¶ÈÓÅÏÈ±éÀú£¬´ÓµÚÒ»¸ö¶¥µã³ö·¢ */
+	/* æ·±åº¦ä¼˜å…ˆéå†ï¼Œä»ç¬¬ä¸€ä¸ªé¡¶ç‚¹å‡ºå‘ */
 	void DFSTraverse()
 	{
-		for (int i = 0; i < vexnum; i++) // ³õÊ¼»¯·ÃÎÊ±ê¼ÇÊı×é
+		for (int i = 0; i < vexnum; i++) // åˆå§‹åŒ–è®¿é—®æ ‡è®°æ•°ç»„
 			visited[i] = false;
-		for (int i = 0; i < vexnum; i++) // ±¾´úÂëÖĞÊÇ´Óv=0(µÚÒ»¸ö¶¥µã)¿ªÊ¼±éÀú
+		for (int i = 0; i < vexnum; i++) // æœ¬ä»£ç ä¸­æ˜¯ä»v=0(ç¬¬ä¸€ä¸ªé¡¶ç‚¹)å¼€å§‹éå†
 			if (!visited[i]) DFS(i);
 	}
-	/* Éî¶ÈÓÅÏÈ±éÀú£¬´Ó¸ø¶¨¶¥µãv³ö·¢ */
+	/* æ·±åº¦ä¼˜å…ˆéå†ï¼Œä»ç»™å®šé¡¶ç‚¹vå‡ºå‘ */
 	void DFSTraverse(VertexType v)
 	{
-		for (int i = 0; i < vexnum; i++) // ³õÊ¼»¯·ÃÎÊ±ê¼ÇÊı×é
+		for (int i = 0; i < vexnum; i++) // åˆå§‹åŒ–è®¿é—®æ ‡è®°æ•°ç»„
 			visited[i] = false;
 
-		int index = LocateVex(v);        // ÕÒµ½ÆğÊ¼¶¥µãµÄÎ»ÖÃ
-		DFS(index);                      // Ê×ÏÈÉî¶ÈÓÅÏÈ±éÀú¸Ã¶¥µã(ËùÔÚµÄÁ¬Í¨·ÖÁ¿)
+		int index = LocateVex(v);        // æ‰¾åˆ°èµ·å§‹é¡¶ç‚¹çš„ä½ç½®
+		DFS(index);                      // é¦–å…ˆæ·±åº¦ä¼˜å…ˆéå†è¯¥é¡¶ç‚¹(æ‰€åœ¨çš„è¿é€šåˆ†é‡)
 
-		for (int i = 0; i < vexnum; i++) // ±éÀúÆäËûÁ¬Í¨·ÖÁ¿
+		for (int i = 0; i < vexnum; i++) // éå†å…¶ä»–è¿é€šåˆ†é‡
 			if (!visited[i]) DFS(i);
 	}
-	/* ´ÓÎ»ÖÃÎªvµÄ¶¥µã³ö·¢£¬µİ¹éµØÉî¶ÈÓÅÏÈ±éÀúÍ¼G */
+	/* ä»ä½ç½®ä¸ºvçš„é¡¶ç‚¹å‡ºå‘ï¼Œé€’å½’åœ°æ·±åº¦ä¼˜å…ˆéå†å›¾G */
 	void DFS(int v)
 	{
-		visit(v); visited[v] = true; // ·ÃÎÊ¶¥µãv
-		for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w)) // wÎªvµÄÉĞÎ´·ÃÎÊµÄÁÚ½Óµã
-			if (!visited[w]) DFS(w); // µİ¹éµØ±éÀúÆäÁÚ½Óµã(Éî¶ÈÓÅÏÈ)
+		visit(v); visited[v] = true; // è®¿é—®é¡¶ç‚¹v
+		for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w)) // wä¸ºvçš„å°šæœªè®¿é—®çš„é‚»æ¥ç‚¹
+			if (!visited[w]) DFS(w); // é€’å½’åœ°éå†å…¶é‚»æ¥ç‚¹(æ·±åº¦ä¼˜å…ˆ)
 	}
 
-	/* ¹ã¶ÈÓÅÏÈ±éÀú£¬´ÓµÚÒ»¸ö¶¥µã³ö·¢ */
+	/* å¹¿åº¦ä¼˜å…ˆéå†ï¼Œä»ç¬¬ä¸€ä¸ªé¡¶ç‚¹å‡ºå‘ */
 	void BFSTraverse()
 	{
-		for (int i = 0; i < vexnum; i++)  // ³õÊ¼»¯·ÃÎÊ±ê¼ÇÊı×é
+		for (int i = 0; i < vexnum; i++)  // åˆå§‹åŒ–è®¿é—®æ ‡è®°æ•°ç»„
 			visited[i] = false;
 
-		Q = queue<int>();                 // ³õÊ¼»¯¸¨Öú¶ÓÁĞQ
+		Q = queue<int>();                 // åˆå§‹åŒ–è¾…åŠ©é˜Ÿåˆ—Q
 
-		for (int i = 0; i < vexnum; i++)  // ´Ó0ºÅ¶¥µã¿ªÊ¼±éÀú
-			if (!visited[i]) BFS(i);      // ¶ÔÃ¿¸ö"Á¬Í¨·ÖÁ¿"µ÷ÓÃÒ»´ÎBFS
+		for (int i = 0; i < vexnum; i++)  // ä»0å·é¡¶ç‚¹å¼€å§‹éå†
+			if (!visited[i]) BFS(i);      // å¯¹æ¯ä¸ª"è¿é€šåˆ†é‡"è°ƒç”¨ä¸€æ¬¡BFS
 	}
-	/* ¹ã¶ÈÓÅÏÈ±éÀú£¬´Ó¸ø¶¨¶¥µãv³ö·¢ */
+	/* å¹¿åº¦ä¼˜å…ˆéå†ï¼Œä»ç»™å®šé¡¶ç‚¹vå‡ºå‘ */
 	void BFSTraverse(VertexType v)
 	{
-		for (int i = 0; i < vexnum; i++)  // ³õÊ¼»¯·ÃÎÊ±ê¼ÇÊı×é
+		for (int i = 0; i < vexnum; i++)  // åˆå§‹åŒ–è®¿é—®æ ‡è®°æ•°ç»„
 			visited[i] = false;
 
-		Q = queue<int>();                 // ³õÊ¼»¯¸¨Öú¶ÓÁĞQ
+		Q = queue<int>();                 // åˆå§‹åŒ–è¾…åŠ©é˜Ÿåˆ—Q
 
-		int index = LocateVex(v);         // ÕÒµ½ÆğÊ¼¶¥µãµÄÎ»ÖÃ
-		BFS(index);                       // Ê×ÏÈ¹ã¶ÈÓÅÏÈ±éÀú¸Ã¶¥µã(ËùÔÚµÄÁ¬Í¨·ÖÁ¿)
+		int index = LocateVex(v);         // æ‰¾åˆ°èµ·å§‹é¡¶ç‚¹çš„ä½ç½®
+		BFS(index);                       // é¦–å…ˆå¹¿åº¦ä¼˜å…ˆéå†è¯¥é¡¶ç‚¹(æ‰€åœ¨çš„è¿é€šåˆ†é‡)
 
-		for (int i = 0; i < vexnum; i++)  // ±éÀúÆäËûÁ¬Í¨·ÖÁ¿
+		for (int i = 0; i < vexnum; i++)  // éå†å…¶ä»–è¿é€šåˆ†é‡
 			if (!visited[i]) BFS(i);
 	}
-	/* ´ÓÎ»ÖÃÎªvµÄ¶¥µã³ö·¢£¬·Çµİ¹éµØ¹ã¶ÈÓÅÏÈ±éÀúÍ¼G */
+	/* ä»ä½ç½®ä¸ºvçš„é¡¶ç‚¹å‡ºå‘ï¼Œéé€’å½’åœ°å¹¿åº¦ä¼˜å…ˆéå†å›¾G */
 	void BFS(int v)
 	{
-		visit(v); visited[v] = true; // ·ÃÎÊ¶¥µãv
-		Q.push(v);                   // ¶¥µãvÈë¶ÓÁĞQ(ÒÔ¼ì²âÆäËùÓĞÁÚ½Óµã)
+		visit(v); visited[v] = true; // è®¿é—®é¡¶ç‚¹v
+		Q.push(v);                   // é¡¶ç‚¹vå…¥é˜Ÿåˆ—Q(ä»¥æ£€æµ‹å…¶æ‰€æœ‰é‚»æ¥ç‚¹)
 
-		/* ¿ªÊ¼µü´ú·ÃÎÊÓëvÓĞÂ·¾¶ÏàÍ¨ÇÒÂ·¾¶³¤¶ÈÎª1,2,3...µÄ¶¥µã */
+		/* å¼€å§‹è¿­ä»£è®¿é—®ä¸væœ‰è·¯å¾„ç›¸é€šä¸”è·¯å¾„é•¿åº¦ä¸º1,2,3...çš„é¡¶ç‚¹ */
 		while (!Q.empty())
 		{
-			v = Q.front(); Q.pop(); // ¶¥µãv³ö¶ÓÁĞ
-			for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w)) // ¼ì²âvËùÓĞÁÚ½Óµã
+			v = Q.front(); Q.pop(); // é¡¶ç‚¹vå‡ºé˜Ÿåˆ—
+			for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w)) // æ£€æµ‹væ‰€æœ‰é‚»æ¥ç‚¹
 			{
-				if (!visited[w]) // wÎªvµÄÉĞÎ´·ÃÎÊµÄÁÚ½Óµã
+				if (!visited[w]) // wä¸ºvçš„å°šæœªè®¿é—®çš„é‚»æ¥ç‚¹
 				{
-					visit(w); visited[w] = true; // ·ÃÎÊ¶¥µãw
-					Q.push(w); // ¶¥µãwÈë¶ÓÁĞ(ÆäÁÚ½ÓµãÎªÏÂÒ»Åú±»·ÃÎÊµÄ¶¥µã)
+					visit(w); visited[w] = true; // è®¿é—®é¡¶ç‚¹w
+					Q.push(w); // é¡¶ç‚¹wå…¥é˜Ÿåˆ—(å…¶é‚»æ¥ç‚¹ä¸ºä¸‹ä¸€æ‰¹è¢«è®¿é—®çš„é¡¶ç‚¹)
 				}
 			}
 		}
 	}
 
-	/* ÔÚ¸¨ÖúÊı×éclosedgeÖĞ£¬´ÓV-U¼¯ÖĞÑ¡Ôñ×îĞ¡¿çÔ½±ß(lowcost×îĞ¡)¶ÔÓ¦µÄ¶¥µãk£¬·µ»ØÆäÎ»ÖÃ */
-	int minimum() // closedge[k].lowcost = min{closedge[v_i].lowcost | closedge[v_i].lowcost>0, v_iÊôÓÚV-U}
+	/* åœ¨è¾…åŠ©æ•°ç»„closedgeä¸­ï¼Œä»V-Ué›†ä¸­é€‰æ‹©æœ€å°è·¨è¶Šè¾¹(lowcostæœ€å°)å¯¹åº”çš„é¡¶ç‚¹kï¼Œè¿”å›å…¶ä½ç½® */
+	int minimum() // closedge[k].lowcost = min{closedge[v_i].lowcost | closedge[v_i].lowcost>0, v_iå±äºV-U}
 	{
-		int min_adj; InfoType min_cost = INT_MAX; // ×îĞ¡¿çÔ½±ßµÄV-U¼¯¶¥µã¡¢±ßÈ¨Öµ
-		for (int i = 0; i < arcnum; i++) // ±éÀúclosedgeÊı×é
+		int min_adj; InfoType min_cost = INT_MAX; // æœ€å°è·¨è¶Šè¾¹çš„V-Ué›†é¡¶ç‚¹ã€è¾¹æƒå€¼
+		for (int i = 0; i < arcnum; i++) // éå†closedgeæ•°ç»„
 		{
-			if (closedge[i].lowcost != 0 && closedge[i].lowcost < min_cost) // V-U¼¯¶¥µãÖĞ£¬¿çÔ½±ßÈ¨Öµ×îĞ¡
+			if (closedge[i].lowcost != 0 && closedge[i].lowcost < min_cost) // V-Ué›†é¡¶ç‚¹ä¸­ï¼Œè·¨è¶Šè¾¹æƒå€¼æœ€å°
 			{
-				min_adj = i; // V-U¼¯ÖĞµÄ¶¥µãkµÄÎ»ÖÃ(¶ÔÓ¦µÄU¼¯¶¥µãÔÚclosedge[i].adjvexÖĞ)
-				min_cost = closedge[i].lowcost; // ×îĞ¡¿çÔ½±ßµÄÈ¨Öµ
+				min_adj = i; // V-Ué›†ä¸­çš„é¡¶ç‚¹kçš„ä½ç½®(å¯¹åº”çš„Ué›†é¡¶ç‚¹åœ¨closedge[i].adjvexä¸­)
+				min_cost = closedge[i].lowcost; // æœ€å°è·¨è¶Šè¾¹çš„æƒå€¼
 			}
 		}
-		return min_adj; // ·µ»ØV-U¼¯¶¥µãkµÄÎ»ÖÃ
+		return min_adj; // è¿”å›V-Ué›†é¡¶ç‚¹kçš„ä½ç½®
 	}
 
-	/* ÓÃÆÕÀïÄ·(Prim)Ëã·¨´Ó¶¥µãu³ö·¢¹¹ÔìÍøGµÄ×îĞ¡Éú³ÉÊ÷T£¬Êä³öTµÄ¸÷Ìõ±ß¡£ */
+	/* ç”¨æ™®é‡Œå§†(Prim)ç®—æ³•ä»é¡¶ç‚¹uå‡ºå‘æ„é€ ç½‘Gçš„æœ€å°ç”Ÿæˆæ ‘Tï¼Œè¾“å‡ºTçš„å„æ¡è¾¹ã€‚ */
 	void MiniSpanTree_Prim(VertexType u)
 	{
-		int k = LocateVex(u); int sum = 0; // ¶¥µãuµÄÎ»ÖÃ¡¢Éú³ÉÊ÷È¨ÖµÖ®ºÍ
-		ArcNode *p; // ¸¨ÖúÖ¸Õë
-		for (int j = 0; j < vexnum; j++) // ¸¨ÖúÊı×é³õÊ¼»¯
+		int k = LocateVex(u); int sum = 0; // é¡¶ç‚¹uçš„ä½ç½®ã€ç”Ÿæˆæ ‘æƒå€¼ä¹‹å’Œ
+		ArcNode *p; // è¾…åŠ©æŒ‡é’ˆ
+		for (int j = 0; j < vexnum; j++) // è¾…åŠ©æ•°ç»„åˆå§‹åŒ–
 		{
-			if (j != k) closedge[j] = { u ,INT_MAX }; // ²»´æÔÚ±ßÔòÎªINT_MAX
+			if (j != k) closedge[j] = { u ,INT_MAX }; // ä¸å­˜åœ¨è¾¹åˆ™ä¸ºINT_MAX
 		}
-		/* ³õÊ¼Ê±£¬U½ö°üº¬¶¥µãu£¬¼´ U = {u} */
-		for (p = vertices[k].firstarc; p != nullptr; p = p->nextarc) // Ã¶¾ÙkµÄËùÓĞÁÚ¾Ó
+		/* åˆå§‹æ—¶ï¼ŒUä»…åŒ…å«é¡¶ç‚¹uï¼Œå³ U = {u} */
+		for (p = vertices[k].firstarc; p != nullptr; p = p->nextarc) // æšä¸¾kçš„æ‰€æœ‰é‚»å±…
 		{
-			closedge[p->adjvex] = { u, p->info }; // V-U¼¯µÄ¶¥µã£¬ÓÅÏÈ¼¶¼´Îª¶¥µãÓëuÁÚ½ÓµÄ±ßÈ¨Öµ
+			closedge[p->adjvex] = { u, p->info }; // V-Ué›†çš„é¡¶ç‚¹ï¼Œä¼˜å…ˆçº§å³ä¸ºé¡¶ç‚¹ä¸ué‚»æ¥çš„è¾¹æƒå€¼
 		}
-		closedge[k].lowcost = 0; // lowcostÖÃÎª0Ôò±íÊ¾ÒÑ²¢ÈëU¼¯
+		closedge[k].lowcost = 0; // lowcostç½®ä¸º0åˆ™è¡¨ç¤ºå·²å¹¶å…¥Ué›†
 
-		for (int i = 1; i < vexnum; i++) // Ñ¡ÔñÆäÓàvexnum-1¸ö¶¥µã£¬Òò´ËĞèµü´úvexnum-1´Î£¬Ã¿´ÎU¼¯²¢ÈëÒ»¸ö¶¥µã
+		for (int i = 1; i < vexnum; i++) // é€‰æ‹©å…¶ä½™vexnum-1ä¸ªé¡¶ç‚¹ï¼Œå› æ­¤éœ€è¿­ä»£vexnum-1æ¬¡ï¼Œæ¯æ¬¡Ué›†å¹¶å…¥ä¸€ä¸ªé¡¶ç‚¹
 		{
-			k = minimum(); // ´ÓV-U¼¯ÖĞÑ¡Ôñ×îĞ¡¿çÔ½±ß¶ÔÓ¦µÄ¶¥µã£¬Ëü½«ÊÇ×îĞ¡Éú³ÉÊ÷TµÄÏÂÒ»¸ö¶¥µã
-			// ¼´ closedge[k].lowcost = min{closedge[v_i].lowcost | closedge[v_i].lowcost>0, v_iÊôÓÚV-U}
+			k = minimum(); // ä»V-Ué›†ä¸­é€‰æ‹©æœ€å°è·¨è¶Šè¾¹å¯¹åº”çš„é¡¶ç‚¹ï¼Œå®ƒå°†æ˜¯æœ€å°ç”Ÿæˆæ ‘Tçš„ä¸‹ä¸€ä¸ªé¡¶ç‚¹
+			// å³ closedge[k].lowcost = min{closedge[v_i].lowcost | closedge[v_i].lowcost>0, v_iå±äºV-U}
 
-			// Êä³öÉú³ÉÊ÷µÄ±ß(×îĞ¡¿çÔ½±ß)
-			cout << closedge[k].adjvex        // U¼¯µÄ¶¥µã(´ËÇ°ÒÑ²¢Èë)
-				<< ' ' << vertices[k].data    // V-U¼¯µÄ¶¥µã
-				<< ' ' << closedge[k].lowcost // ±ßÈ¨Öµ
+			// è¾“å‡ºç”Ÿæˆæ ‘çš„è¾¹(æœ€å°è·¨è¶Šè¾¹)
+			cout << closedge[k].adjvex        // Ué›†çš„é¡¶ç‚¹(æ­¤å‰å·²å¹¶å…¥)
+				<< ' ' << vertices[k].data    // V-Ué›†çš„é¡¶ç‚¹
+				<< ' ' << closedge[k].lowcost // è¾¹æƒå€¼
 				<< endl;
-			sum += closedge[k].lowcost;       // ¼ÇÈëÈ¨ÖµÖ®ºÍ
+			sum += closedge[k].lowcost;       // è®°å…¥æƒå€¼ä¹‹å’Œ
 
-			closedge[k].lowcost = 0; // ĞÂ¶¥µãk²¢ÈëU¼¯
+			closedge[k].lowcost = 0; // æ–°é¡¶ç‚¹kå¹¶å…¥Ué›†
 
-			/* ¸üĞÂ¶¥µãÓÅÏÈ¼¶Êı£¬Óë¶¥µãk»¥²»¹ØÁªµÄ¶¥µã¶¼ÎŞĞè¿¼ÂÇ */
-			for (p = vertices[k].firstarc; p != nullptr; p = p->nextarc) // Ö»Ğè±éÀú¶¥µãkµÄÃ¿Ò»ÁÚ¾Óv
+			/* æ›´æ–°é¡¶ç‚¹ä¼˜å…ˆçº§æ•°ï¼Œä¸é¡¶ç‚¹käº’ä¸å…³è”çš„é¡¶ç‚¹éƒ½æ— éœ€è€ƒè™‘ */
+			for (p = vertices[k].firstarc; p != nullptr; p = p->nextarc) // åªéœ€éå†é¡¶ç‚¹kçš„æ¯ä¸€é‚»å±…v
 			{
-				if (p->info < closedge[p->adjvex].lowcost) // Èô±ßkvµÄÈ¨Öµ Ğ¡ÓÚ µ±Ç°µÄÓÅÏÈ¼¶Êı(Ö®Ç°µÄÆäËû¿çÔ½±ßµÄÈ¨Öµ£¬Èçuv)
+				if (p->info < closedge[p->adjvex].lowcost) // è‹¥è¾¹kvçš„æƒå€¼ å°äº å½“å‰çš„ä¼˜å…ˆçº§æ•°(ä¹‹å‰çš„å…¶ä»–è·¨è¶Šè¾¹çš„æƒå€¼ï¼Œå¦‚uv)
 				{
-					closedge[p->adjvex] = { vertices[k].data ,p->info }; // Ôò¸üĞÂ¶¥µãÓÅÏÈ¼¶
+					closedge[p->adjvex] = { vertices[k].data ,p->info }; // åˆ™æ›´æ–°é¡¶ç‚¹ä¼˜å…ˆçº§
 				}
 			}
 		}
-		cout << sum << endl; // ×îĞ¡Éú³ÉÊ÷¹¹ÔìÍê³É£¬Êä³ö×ÜÈ¨Öµ
+		cout << sum << endl; // æœ€å°ç”Ÿæˆæ ‘æ„é€ å®Œæˆï¼Œè¾“å‡ºæ€»æƒå€¼
 	}
 };
 
@@ -264,18 +264,18 @@ int main()
 {
 	int n, m; cin >> n >> m;
 
-	Graph<int, int> G(n, m); // ¹¹ÔìÍ¼
+	Graph<int, int> G(n, m); // æ„é€ å›¾
 
 	int StartVex; cin >> StartVex;
 	if (G.LocateVex(StartVex) == -1)
 	{
-		cout << "ÆğÊ¼¶¥µã²»´æÔÚ" << endl;
+		cout << "èµ·å§‹é¡¶ç‚¹ä¸å­˜åœ¨" << endl;
 	}
 	else
 	{
 		stringstream result; cout << endl;
 
-		G.BFSTraverse(StartVex); cout << "BFS:";// ¹ã¶ÈÓÅÏÈËÑË÷
+		G.BFSTraverse(StartVex); cout << "BFS:";// å¹¿åº¦ä¼˜å…ˆæœç´¢
 		for (int i = 0; i < n - 1; i++)
 		{
 			cout << G.print.front() << ' ';
@@ -283,7 +283,7 @@ int main()
 		}
 		cout << G.print.front() << endl << endl; G.print.pop();
 
-		G.DFSTraverse(StartVex); cout << "DFS:";// Éî¶ÈÓÅÏÈËÑË÷
+		G.DFSTraverse(StartVex); cout << "DFS:";// æ·±åº¦ä¼˜å…ˆæœç´¢
 		for (int i = 0; i < n - 1; i++)
 		{
 			cout << G.print.front() << ' ';
@@ -292,7 +292,7 @@ int main()
 		cout << G.print.front() << endl << endl; G.print.pop();
 
 		cout << "MST:" << endl;
-		G.MiniSpanTree_Prim(StartVex); // ×îĞ¡Éú³ÉÊ÷
+		G.MiniSpanTree_Prim(StartVex); // æœ€å°ç”Ÿæˆæ ‘
 	}
 
 	return 0;
