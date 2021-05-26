@@ -74,13 +74,13 @@ public:
 		for (int i = 0; i < vexnum; i++) // 顶点集
 			cin >> vertices[i];
 
-		for (int i = 0; i < arcnum; i++) // 边集
+		for (int k = 0; k < arcnum; i++) // 边集
 		{
 			cout << "请输入边(vi, vj)的下标i, j：";
-			cin >> x >> y;
-			InsertArc(x, y, 0);
+			cin >> i >> j;
+			InsertArc(i, j, 1);
 			// 若为无向图，置对称弧
-			InsertArc(y, x, 0);
+			InsertArc(j, i, 1);
 		}
 	}
 
