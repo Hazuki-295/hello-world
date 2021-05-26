@@ -80,6 +80,18 @@ public:
 		return true;
 	}
 
+	/* 判断图G是否存在弧<x,y> */
+	bool Adjacent()
+	{
+
+	}
+
+	/* 获取图G中弧<x,y>对应的权值 */
+	InfoType Get_edge_value(VertexType x, VertexType y)
+	{
+		int index_x = LocateVex(x), index_y = LocateVex(y);
+	}
+
 	/* 按值查找。若图G中存在值为val的顶点，则返回该顶点在图中的位置，否则返回-1 */
 	int LocateVex(VertexType val)
 	{
@@ -209,10 +221,15 @@ public:
 	void MiniSpanTree_Prim(VertexType u)
 	{
 		int k = LocateVex(u); int sum = 0; // 顶点u的位置、生成树权值之和
-		for (int j = 0; j < vexnum; j++)   // 辅助数组初始化
+		ArcNode *p; // 辅助指针
+		for (int j = 0; j < vexnum; j++) // 辅助数组初始化
 		{
-			/* 初始时，U仅包含顶点u，即 U = {u} */
-			if (j != k) closedge[j] = { u ,Edge[k][j] }; // 此时V-U集的顶点优先级即为顶点与u邻接的边权值(不存在边则为INT_MAX)
+			if (j != k) closedge[j] = { u ,INT_MAX }; // 不存在边则为INT_MAX
+		}
+		/* 初始时，U仅包含顶点u，即 U = {u} */
+		for (p = vertices[k].firstarc; p != nullptr; p = p->nextarc) // 枚举k的所有邻居
+		{
+			closedge[p->adjvex] = { u, p->info }; // V-U集的顶点，优先级即为顶点与u邻接的边权值
 		}
 		closedge[k].lowcost = 0; // lowcost置为0则表示已并入U集
 
@@ -223,7 +240,7 @@ public:
 
 			// 输出生成树的边(最小跨越边)
 			cout << closedge[k].adjvex        // U集的顶点(此前已并入)
-				<< ' ' << Vex[k]              // V-U集的顶点
+				<< ' ' << vertices[k].data    // V-U集的顶点
 				<< ' ' << closedge[k].lowcost // 边权值
 				<< endl;
 			sum += closedge[k].lowcost;       // 记入权值之和
@@ -231,11 +248,11 @@ public:
 			closedge[k].lowcost = 0; // 新顶点k并入U集
 
 			/* 更新顶点优先级数，与顶点k互不关联的顶点都无需考虑 */
-			for (int v = 0; v < vexnum; v++) // 只需遍历顶点k的每一邻居v
+			for (p = vertices[k].firstarc; p != nullptr; p = p->nextarc) // 只需遍历顶点k的每一邻居v
 			{
-				if (Edge[k][v] < closedge[v].lowcost) // 若边kv的权值 小于 当前的优先级数(之前的其他跨越边的权值，如uv)
+				if (p->info < closedge[p->adjvex].lowcost) // 若边kv的权值 小于 当前的优先级数(之前的其他跨越边的权值，如uv)
 				{
-					closedge[v] = { Vex[k] ,Edge[k][v] }; // 则更新顶点优先级
+					closedge[p->adjvex] = { vertices[k].data ,p->info }; // 则更新顶点优先级
 				}
 			}
 		}
