@@ -66,8 +66,9 @@ public:
 	/* 在图G中增添弧<x,y>，权值为w */
 	bool InsertArc(VertexType x, VertexType y, InfoType w)
 	{
-		int index_x = LocateVex(x), index_y = LocateVex(y);
 		ArcNode *p; // 辅助指针
+		int index_x = LocateVex(x), index_y = LocateVex(y);
+		
 		for (p = vertices[index_x].firstarc; p != nullptr; p = p->nextarc) // 若x没有邻接边，则直接退出循环
 		{
 			if (p->nextarc == nullptr) // 找到该顶点的最后一个邻接边
@@ -78,12 +79,6 @@ public:
 		else // 若x有邻接点，则p指向最后一个邻接边
 			p->nextarc = new ArcNode(index_y, w); // 添加下一条弧
 		return true;
-	}
-
-	/* 判断图G是否存在弧<x,y> */
-	bool Adjacent()
-	{
-
 	}
 
 	/* 获取图G中弧<x,y>对应的权值 */
@@ -220,13 +215,14 @@ public:
 	/* 用普里姆(Prim)算法从顶点u出发构造网G的最小生成树T，输出T的各条边。 */
 	void MiniSpanTree_Prim(VertexType u)
 	{
-		int k = LocateVex(u); int sum = 0; // 顶点u的位置、生成树权值之和
 		ArcNode *p; // 辅助指针
+		int k = LocateVex(u); int sum = 0; // 顶点u的位置、生成树权值之和
+		
+		/* 初始时，U仅包含顶点u，即 U = {u} */
 		for (int j = 0; j < vexnum; j++) // 辅助数组初始化
 		{
 			if (j != k) closedge[j] = { u ,INT_MAX }; // 不存在边则为INT_MAX
 		}
-		/* 初始时，U仅包含顶点u，即 U = {u} */
 		for (p = vertices[k].firstarc; p != nullptr; p = p->nextarc) // 枚举k的所有邻居
 		{
 			closedge[p->adjvex] = { u, p->info }; // V-U集的顶点，优先级即为顶点与u邻接的边权值
