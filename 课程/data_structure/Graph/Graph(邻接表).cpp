@@ -2,7 +2,6 @@
 #include <sstream>
 #include <string>
 #include <queue>
-#include "../../../叶月_hazuki/GitHub/hello-world/课程/data_structure/List/LinkList.cpp"
 using namespace std;
 
 #define MaxVertexNum 100  // 图中顶点数目的最大值
@@ -10,18 +9,19 @@ using namespace std;
 /* 边表结点模板类 */
 template <typename InfoType> struct ArcNode {
 	// 成员
-	int adjvex; InfoType info; // 该弧所指向的顶点的位置(下标)、边权值，next域由链表所有
+	int adjvex; InfoType info; ArcNode *nextarc; // 该弧所指向的顶点的位置(下标)、边权值，指向下一条邻接弧的指针
 	// 构造函数
-	ArcNode(int _adjvex, InfoType _info) :adjvex(_adjvex), info(_info) {};
+	ArcNode(int _adjvex, InfoType _info) :adjvex(_adjvex), info(_info), nextarc(nullptr) {};
+
 };
 
 /* 顶点表结点模板类 */
 template <typename VertexType, typename InfoType> struct VNode {
 	// 成员
-	VertexType data;                     // 顶点信息
-	ListNode<ArcNode<InfoType>> *first;  // 指向第一条依附该顶点的弧的指针
+	VertexType data;              // 顶点信息
+	ArcNode<InfoType> *firstarc;  // 指向第一条依附该顶点的弧的指针
 	// 构造函数
-	VNode() :data(0), first(nullptr) {}; // 空则表示不存在邻接点
+	VNode() :data(0), firstarc(nullptr) {}; // 空则表示不存在邻接点
 };
 
 /* 图Graph模板类（邻接表） */
@@ -32,8 +32,8 @@ private:
 	using ArcNode = ArcNode<InfoType>;
 
 	/* 图的邻接表存储结构 */
-	vector<VNode> vertices = vector<VNode>(MaxVertexNum); // 顶点表
-	int vexnum, arcnum; // 图的顶点数和弧数
+	vector<VNode> vertices; // 顶点表
+	int vexnum, arcnum;     // 图的顶点数和弧数
 
 	// 顶点表顺序存储，便于随机访问。边表(各个顶点的邻接表)在顶点结点中。
 
@@ -52,26 +52,39 @@ public:
 	Graph(int _vexnum, int _arcnum) :vexnum(_vexnum), arcnum(_arcnum)
 	{
 		/* 初始化顶点集、边集 */
-		for (int i = 0; i < vexnum; i++) Vex[i] = i + 1; // 顶点信息从1计起
-		for (int i = 0; i < vexnum; i++)
-			for (int j = 0; j < vexnum; j++)
-				Edge[i][j] = INT_MAX/*0*/; // 带权图(无权图)
+		vertices = vector<VNode>(vexnum);
+		for (int i = 0; i < vexnum; i++) vertices[i].data = i + 1; // 顶点信息从1计起
 
-		int x, y, w, index_x, index_y;     // 邻接的两个顶点、边权值
-		for (int i = 0; i < arcnum; i++)   // 输入每条边
+		VertexType x, y; InfoType w; // 邻接的两个顶点、边权值
+		for (int i = 0; i < arcnum; i++) // 输入每条边
 		{
 			cin >> x >> y >> w;
-			index_x = LocateVex(x); index_y = LocateVex(y);
-			Edge[index_x][index_y] = w;
-			Edge[index_y][index_x] = w;
+			InsertArc(x, y, w); InsertArc(y, x, w); // 无向图对称弧
 		}
+	}
+
+	/* 在图G中增添弧<x,y>，权值为w */
+	bool InsertArc(VertexType x, VertexType y, InfoType w)
+	{
+		int index_x = LocateVex(x), index_y = LocateVex(y);
+		ArcNode *p; // 辅助指针
+		for (p = vertices[index_x].firstarc; p != nullptr; p = p->nextarc) // 若x没有邻接边，则直接退出循环
+		{
+			if (p->nextarc == nullptr) // 找到该顶点的最后一个邻接边
+				break;
+		}
+		if (p == nullptr) // 若x没有邻接点
+			vertices[index_x].firstarc = new ArcNode(index_y, w); // 添加第一条弧
+		else // 若x有邻接点，则p指向最后一个邻接边
+			p->nextarc = new ArcNode(index_y, w); // 添加下一条弧
+		return true;
 	}
 
 	/* 按值查找。若图G中存在值为val的顶点，则返回该顶点在图中的位置，否则返回-1 */
 	int LocateVex(VertexType val)
 	{
 		for (int i = 0; i < vexnum; i++) // 顶点集中查找值为val的顶点
-			if (Vex[i] == val)
+			if (vertices[i].data == val)
 				return i;
 		return -1; // 不存在则返回-1
 	}
@@ -79,27 +92,29 @@ public:
 	/* 求图G中位置为x的顶点的第一个邻接点，若有则返回顶点号。若其没有邻接点或在图中不存在，则返回-1 */
 	int FirstNeighbor(int x)
 	{
-		if (x < 0 || x >= vexnum) return -1;  // 图中不存在位置为x的顶点，返回-1
+		if (x < 0 || x >= vexnum) return -1; // 图中不存在位置为x的顶点，返回-1
 
-		for (int i = 0; i < vexnum; i++)      // 在边集中查找其邻接点
-			if (Edge[x][i] != INT_MAX/*0*/)   // 若存在第一个邻接点，则返回顶点号
-				return i;
+		ArcNode *p = vertices[x].firstarc;   // 第一个邻接点
 
-		return -1; // 若位置为x的顶点没有邻接点，返回-1
+		if (p != nullptr)     // 若存在第一个邻接点，则返回顶点号
+			return p->adjvex;
+
+		return -1;            // 若位置为x的顶点没有邻接点，返回-1
 	}
 
 	/* 求图G中位置为x的顶点(相对于y处的)下一个邻接点的位置。若y是x的最后一个邻接点，则返回-1 */
 	int NextNeighbor(int x, int y)
 	{
-		for (int i = y + 1; i < vexnum; i++) // 在边集中查找除y外顶点x的下一个邻接点
-			if (Edge[x][i] != INT_MAX/*0*/)  // 若存在下一个邻接点，则返回顶点号
-				return i;
+		ArcNode *p; // 辅助指针
+		for (p = vertices[x].firstarc; p->adjvex != y; p = p->nextarc); // 找到邻接边<x,y>
+		if (p->nextarc != nullptr)
+			return p->nextarc->adjvex; // 若存在下一个邻接点，则返回顶点号
 
 		return -1; // 若y是x的最后一个邻接点，则返回-1
 	}
 
 	/* 访问图中位置为x的顶点 */
-	void visit(int x) { print.push(Vex[x]); }
+	void visit(int x) { print.push(vertices[x].data); }
 
 	/* 深度优先遍历，从第一个顶点出发 */
 	void DFSTraverse()
@@ -178,7 +193,7 @@ public:
 	/* 在辅助数组closedge中，从V-U集中选择最小跨越边(lowcost最小)对应的顶点k，返回其位置 */
 	int minimum() // closedge[k].lowcost = min{closedge[v_i].lowcost | closedge[v_i].lowcost>0, v_i属于V-U}
 	{
-		int min_adj; EdgeType min_cost = INT_MAX; // 最小跨越边的V-U集顶点、边权值
+		int min_adj; InfoType min_cost = INT_MAX; // 最小跨越边的V-U集顶点、边权值
 		for (int i = 0; i < arcnum; i++) // 遍历closedge数组
 		{
 			if (closedge[i].lowcost != 0 && closedge[i].lowcost < min_cost) // V-U集顶点中，跨越边权值最小
