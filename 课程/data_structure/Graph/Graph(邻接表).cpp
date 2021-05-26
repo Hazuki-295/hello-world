@@ -12,6 +12,7 @@ template <typename InfoType> struct ArcNode {
 	int adjvex; InfoType info; ArcNode *nextarc; // 该弧所指向的顶点的位置(下标)、边权值，指向下一条邻接弧的指针
 	// 构造函数
 	ArcNode(int _adjvex, InfoType _info) :adjvex(_adjvex), info(_info), nextarc(nullptr) {};
+	ArcNode(int _adjvex, InfoType _info, ArcNode *_nextarc) :adjvex(_adjvex), info(_info), nextarc(_nextarc) {};
 };
 
 /* 顶点表结点模板类 */
@@ -72,15 +73,15 @@ public:
 
 		cout << "请输入顶点信息：" << endl;
 		for (int i = 0; i < vexnum; i++) // 顶点集
-			cin >> vertices[i];
+			cin >> vertices[i].data;
 
-		for (int k = 0; k < arcnum; i++) // 边集
+		for (int k = 0; k < arcnum; k++) // 边集
 		{
 			cout << "请输入边(vi, vj)的下标i, j：";
 			cin >> i >> j;
-			InsertArc(i, j, 1);
+			InsertArc2(i, j, 1);
 			// 若为无向图，置对称弧
-			InsertArc(j, i, 1);
+			InsertArc2(j, i, 1);
 		}
 	}
 
@@ -92,7 +93,7 @@ public:
 		for (int i = 0; i < vexnum; i++)
 		{
 			cout << "顶点：" << vertices[i].data << "：";
-			for (p = verticesp[i].firstarc; p != nullptr; p = p->nextarc)
+			for (p = vertices[i].firstarc; p != nullptr; p = p->nextarc)
 				cout << p->adjvex << " ";
 			cout << endl;
 		}
@@ -113,6 +114,27 @@ public:
 			vertices[index_x].firstarc = new ArcNode(index_y, w); // 添加第一条弧
 		else // 若x有邻接点，则p指向最后一个邻接边
 			p->nextarc = new ArcNode(index_y, w); // 添加下一条弧
+		return true;
+
+		/* 采用头插法 */
+		ArcNode *p, *q; // 辅助指针
+		int index_x = LocateVex(x), index_y = LocateVex(y);
+
+		p = vertices[index_x].firstarc; // 头结点
+		q = new ArcNode(index_y, w);    // 创建新结点
+
+
+	}
+	bool InsertArc2(VertexType x, VertexType y, InfoType w)
+	{
+		/* 采用头插法 */
+		ArcNode *p, *q; // 辅助指针
+		int index_x = LocateVex(x), index_y = LocateVex(y);
+
+		p = vertices[index_x].firstarc;  // 头结点
+		q = new ArcNode(index_y, w, p);  // 创建新结点
+		vertices[index_x].firstarc = q;  // 新结点成为第一个结点
+
 		return true;
 	}
 
