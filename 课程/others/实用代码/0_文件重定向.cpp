@@ -5,7 +5,6 @@ using namespace std;
 int main()
 {
 	ifstream fin("input.txt");   // 已有输入文件
-	if (!fin) cout << "未找到输入文件：input.txt" << endl;
 	ofstream fout("output.txt"); // 已有输出文件
 
 	// 流缓冲类streambuff，使用该类的成员可以访问到流缓冲区中的数据
