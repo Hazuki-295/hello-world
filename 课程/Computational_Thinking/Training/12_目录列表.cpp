@@ -28,12 +28,12 @@ int main()
 		int w = *(wide.rbegin());  // 单词最大宽度
 
 		int N = (L + 2) / (2 + w); // 每行元素个数
-		// 每行元素个数 = (L+2)/(2+w)
+		// 每行元素个数 = (L+2)/(2+w)，向下取整
 		// 则所需行数 = 所有元素个数/每行元素个数，向上取整
 
 		int line_num = name.size() / N;
-		bool incomplete = false; // 是否存在不完整的行？
-		int exceede = name.size() % N;
+		bool incomplete = false;       // 是否存在不完整的行？
+		int exceede = name.size() % N; // 不完整的行的元素个数
 		if (exceede != 0)
 		{
 			line_num++;
