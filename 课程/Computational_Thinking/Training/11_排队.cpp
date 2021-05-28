@@ -2,11 +2,8 @@
 #include <sstream>
 #include <vector>
 #include <string>
-#include <queue>
 #include <deque>
-#include <stack>
 #include <algorithm>
-#include <unordered_set>
 using namespace std;
 
 class Queue // 排队
@@ -46,7 +43,6 @@ public:
 		if (s1 == "enqueue")
 		{
 			buffer >> number; // x开始排队
-			search(number, index);
 			enqueue();
 		}
 		if (s1 == "dequeue")
@@ -54,7 +50,6 @@ public:
 		if (s1 == "deqteam")
 		{
 			buffer >> number; // x及相熟的人（若存在）离队
-			search(number, index);
 			deqteam();
 		}
 	}
@@ -76,62 +71,75 @@ public:
 	void enqueue() // x开始排队
 	{
 		// 看看队列里面是否有熟人
-
-		size_t size = Q.size(), _index; bool finished = false;
-		for (int i = size - 1; i >= 0; i--) // 倒序遍历队伍里的每个人
+		bool finished = false;
+		if (search(number, index) == true)
 		{
-			if (search(Q[i], _index) == false) // 这个人没小组
-				continue;
-			if (_index == index) // 如果发现了熟人，他就会插队并排到熟人的后面
+			size_t size = Q.size(), _index;
+			for (int i = size - 1; i >= 0; i--) // 倒序遍历队伍里的每个人
 			{
-				Q.insert(Q.begin() + _index + 1, number);
-				finished = true;
-				break;
+				if (search(Q[i], _index) == false) // 这个人没小组
+					continue;
+				if (_index == index) // 如果发现了熟人，他就会插队并排到熟人的后面
+				{
+					Q.insert(Q.begin() + i + 1, number); // 该元素前插入
+					finished = true;
+					break;
+				}
 			}
 		}
 		if (!finished) // 如果没有熟人在排队，他就只能在队尾排队
-			Q.insert(Q.end(), number);
+			Q.push_back(number);
 	}
 
 	void dequeue() // 队头的人办理完业务离队
 	{
 		if (Q.size() != 0)
 		{
-			cout << Q.front() << " " << endl;
+			cout << Q.front() << endl;
 			Q.pop_front();
 		}
-
 	}
 
 	void deqteam() // x及相熟的人（若存在）离队
 	{
-		size_t size = Q.size(), _index;
-		deque<string>::iterator p1 = Q.end(), p2 = Q.end();
-		for (size_t i = 0; i < size; i++) // 找到第一个同组的人
+		if (search(number, index) == true)
 		{
-			if (search(Q[i], _index)) // 这个人没小组
-				continue;
-			if (_index == index)
+			size_t size = Q.size(), _index;
+			deque<string>::iterator p1 = Q.end(), p2 = Q.end();
+			for (size_t i = 0; i < size; i++) // 找到第一个同组的人
 			{
-				p1 = Q.begin() + i;
-				break;
+				if (search(Q[i], _index) == false) // 这个人没小组
+					continue;
+				if (_index == index)
+				{
+					p1 = Q.begin() + i;
+					break;
+				}
 			}
+			for (int i = size - 1; i >= 0; i--) // 找到最后一个同组的人
+			{
+				if (search(Q[i], _index) == false) // 这个人没小组
+					continue;
+				if (_index == index)
+				{
+					p2 = Q.begin() + i + 1; // 的下一个位置
+					break;
+				}
+			}
+			vector<string> temp(p1, p2);
+			int i;
+			for (i = 0; i < temp.size() - 1; i++)
+				cout << temp[i] << " ";
+			cout << temp[i] << endl;
+
+			Q.erase(p1, p2); // x及相熟的人（若存在）离队
 		}
-		for (int i = size - 1; i >= 0; i--) // 找到最后一个同组的人
+		else // 离队的人没有小组
 		{
-			if (search(Q[i], _index)) // 这个人没小组
-				continue;
-			if (_index == index)
-			{
-				p1 = Q.begin() + i + 1; // 的下一个位置
-				break;
-			}
+			auto p = find(Q.begin(), Q.end(), number);
+			cout << *p << endl;
+			Q.erase(p);
 		}
-		vector<string> temp(p1, p2);
-		for (auto x : temp)
-			cout << x << " ";
-		cout << endl;
-		Q.erase(p1, p2); // x及相熟的人（若存在）离队
 	}
 };
 
