@@ -31,6 +31,17 @@ bool operator<(const product &a, const product &b) // 优先级更弱
 	return false;
 }
 
+bool compare(const int &a, const int &b) // a>b? 降序
+{
+	if (abs(a) > abs(b))
+		return true;
+	else if (abs(a) == abs(b))
+		if (a > b)  // 以正数为准
+			return true;
+
+	return false;
+} // 降序
+
 /* Problem C. 最大积 */
 int main()
 {
@@ -45,66 +56,38 @@ int main()
 		stringstream buffer(line);
 
 		int temp;
-		vector<int> nege_factors; // 负因子
-		vector<int> posi_factors; // 正因子
+		vector<int> factors; // 因子
 
 		while (buffer >> temp)
 		{
 			if (temp > 0)
-				posi_factors.push_back(temp); // 正因子
+				factors.push_back(temp); // 正因子
 			else if (temp < 0)
-				nege_factors.push_back(temp); // 负因子
+				factors.push_back(temp); // 负因子
 		}
 		// 不考虑只含有0
 
-		sort(posi_factors.begin(), posi_factors.end(), greater<int>()); // 从大到小排序
-		sort(nege_factors.begin(), nege_factors.end(), less<int>());    // 从小到大排序
+		sort(factors.begin(), factors.end(), compare); // 正负因子可混合使用，以绝对值最大为准
 
-		/* 处理负因子 */
-		vector<product> nege_part; // 比较复杂，从大到小乘
+		/* 处理因子 */
+		vector<product> products;
+		long long sum = 0;   // 乘积
+		int count = 1;       // 因子数
 
-		long long sum_nege = 0;   // 负数部分乘积
-		int count_nege = 0;    // 负数部分因子数 
-		if (nege_factors.size() != 0)
+		if (factors.size() != 0)
 		{
 			long long temp = 1;
-			for (int i = 0; i < nege_factors.size(); i++)
+			for (int i = 0; i < factors.size(); i++) // 处理每个因子
 			{
-				temp = temp * nege_factors[i];
-				nege_part.push_back(product(temp, i + 1));
+				temp = temp * factors[i];
+				products.push_back(product(temp, i + 1));
 			}
-			sort(nege_part.begin(), nege_part.end());
-			sum_nege = nege_part.back().val;     // 取出最大乘积
-			count_nege = nege_part.back().count; // 及其对应个数
+			sort(products.begin(), products.end());
+			sum = products.back().val;     // 取出最大乘积
+			count = products.back().count; // 及其对应个数
 		}
 
-		/* 处理正因子 */
-		vector<product> posi_part;
-		long long sum_posi = 0;   // 正数部分乘积
-		int count_posi = 0;    // 正数部分因子数
-		if (posi_factors.size() != 0)
-		{
-			long long temp = 1;
-			for (int i = 0; i < posi_factors.size(); i++)
-			{
-				temp = temp * posi_factors[i];
-				posi_part.push_back(product(temp, i + 1));
-			}
-			sort(posi_part.begin(), posi_part.end());
-			sum_posi = posi_part.back().val;     // 取出最大乘积
-			count_posi = posi_part.back().count; // 及其对应个数
-		}
-
-		long long ans = 0; int min = 0; // ans为满足要求的最大乘积，min为得到该最大积的最少因数个数
-
-		vector<product> result; // 两部分相乘
-		result.push_back(product(sum_posi, count_posi));
-		result.push_back(product(sum_nege, count_nege));
-		result.push_back(product(sum_posi * sum_nege, count_posi + count_nege));
-		sort(result.begin(), result.end());
-		ans = result.back().val; min = result.back().count;
-
-		if (ans == 0) min = 1;
+		long long ans = sum; int min = count; // ans为满足要求的最大乘积，min为得到该最大积的最少因数个数
 
 		cout << " " << ans << " " << min << endl;
 	}

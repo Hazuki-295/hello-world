@@ -15,13 +15,14 @@ struct product // 乘积
 	product(long long _val, int _count) :val(_val), count(_count) {};
 };
 
-bool operator<(const product &a, const product &b) // 优先级
+bool operator<(const product &a, const product &b) // 优先级更弱
 {
 	if (a.val < b.val)
 		return true;
 	else if (a.val == b.val)
 		if (a.count > b.count)
 			return true;
+
 	return false;
 }
 
@@ -98,10 +99,7 @@ int main()
 		sort(result.begin(), result.end());
 		ans = result.back().val; min = result.back().count;
 
-		if (posi_factors.size() == 0 && nege_factors.size() == 0)
-			min = 1;
-		else if (posi_factors.size() == 0 && ans == 0)
-			min = 1;
+		if (ans == 0) min = 1;
 
 		cout << " " << ans << " " << min << endl;
 	}
