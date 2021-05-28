@@ -34,6 +34,23 @@ size_t nthUglyNumber(int n)
 	return ugly;
 }
 
+/* 给你一个整数n，请你找出并返回第n个丑数 */
+size_t nthUglyNumber2(int n)
+{
+	vector<size_t> dp(n + 1); // 0号元素未用
+	dp[1] = 1; // 最小的丑数1
+	int p2 = 1, p3 = 1, p5 = 1;  // 指数，只含有因子2,3,5
+	for (int i = 2; i <= n; i++)
+	{
+		size_t num2 = dp[p2] * 2, num3 = dp[p3] * 3, num5 = dp[p5] * 5; // 动态规划
+		dp[i] = min(min(num2, num3), num5); // 每次加入一个数
+		if (dp[i] == num2) p2++;
+		if (dp[i] == num3) p3++;
+		if (dp[i] == num5) p5++;
+	}
+	return dp[n];
+}
+
 
 int main()
 {
