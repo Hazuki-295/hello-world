@@ -1,47 +1,48 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <set>
 #include <vector>
 #include <sstream>
 #include <algorithm>
 using namespace std;
 
-/* Problem B. Ğ¡QµÄÅÆÃæ */
+/* Problem B. å°Qçš„ç‰Œé¢ */
 int main()
 {
-	// ½«Ã¿¸öÏòÁ¿À©³äÖÁº¬ÓĞÏàÍ¬¸öÊıµÄÔªËØ
+	// å°†æ¯ä¸ªå‘é‡æ‰©å……è‡³å«æœ‰ç›¸åŒä¸ªæ•°çš„å…ƒç´ 
 	vector<set<int>> cards(4);
-	
+
 	string line; set<int> allkind;
 
-	for (int i = 0; i < 4; i++) // ¶ÁÈ¡4ĞĞ
+	for (int i = 0; i < 4; i++) // è¯»å–4è¡Œ
 	{
 		getline(cin, line);
-		stringstream buffer(line); // °ó¶¨¸Õ¶ÁÈëµÄĞĞ
+		stringstream buffer(line); // ç»‘å®šåˆšè¯»å…¥çš„è¡Œ
 
-		int n; buffer >> n; // ¸Ã»¨É«ÔªËØ¸öÊı
+		int n; buffer >> n; // è¯¥èŠ±è‰²å…ƒç´ ä¸ªæ•°
 		int temp;
 		for (int j = 0; j < n; j++)
 		{
 			buffer >> temp;
 			cards[i].insert(temp);
-			allkind.insert(temp);    // ËùÓĞ¿ÉÄÜµÄÊıÖµ
+			allkind.insert(temp);    // æ‰€æœ‰å¯èƒ½çš„æ•°å€¼
 		}
 	}
 	int size = allkind.size();
 
 	int count = 0;
-	for (int i = 0; i < 4; i++) // À©³äÏòÁ¿
+	for (int i = 0; i < 4; i++) // æ‰©å……å‘é‡
 	{
 		for (auto x : allkind)
 		{
 			if (find(cards[i].begin(), cards[i].end(), x) == cards[i].end())
 			{
-				cards[i].insert(x); // ÎŞ´ËÔªËØ£¬Ìî³ä
-				count++; // ²¹³äµÄÔªËØ¸öÊı
+				cards[i].insert(x); // æ— æ­¤å…ƒç´ ï¼Œå¡«å……
+				count++; // è¡¥å……çš„å…ƒç´ ä¸ªæ•°
 			}
 		}
 	}
 
 	cout << count << endl;
-	
+
+	return 0;
 }

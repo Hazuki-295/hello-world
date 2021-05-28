@@ -1,27 +1,22 @@
-#include <iostream>
-#include <set>
-#include <vector>
-#include <string>
-#include <sstream>
-#include <algorithm>
+ï»¿#include <iostream>
 using namespace std;
 
-void Solution(int x1, int x2) // ÕûÊý¸ù
+void Solution(int x1, int x2) // æ•´æ•°æ ¹
 {
 	int a = 1;
 	int b = -(x1 + x2);
 	int c = x1 * x2;
-	printf("%d %d %d\n", a, b, c);
+	printf("%d %d %d\n", a, b, c); // å¤šç»„è§£ï¼Œä¸¤ä¸ªæ–¹ç¨‹ä¸‰ä¸ªæœªçŸ¥æ•°ï¼Œç›´æŽ¥ä»¤a=1
 }
 
-/* Problem D. ÊýÑ§ÄÑÌâ */
+/* Problem D. æ•°å­¦éš¾é¢˜ */
 int main()
 {
-	// ÒÑÖªÒ»Ôª¶þ´Î·½³ÌµÄÁ½¸öÕûÊý¸ù£¬Çó¸ÃÒ»Ôª¶þ´Î·½³Ì¡£
-	// ÈçÓÐ¶à×é½â£¬Êä³öÈÎÒâÒ»ÖÖ¼´¿É£¬µ«ÒªÇóËùÓÐÊýÏµÊý¾ø¶ÔÖµ²»³¬¹ý100000¡£
+	// å·²çŸ¥ä¸€å…ƒäºŒæ¬¡æ–¹ç¨‹çš„ä¸¤ä¸ªæ•´æ•°æ ¹ï¼Œæ±‚è¯¥ä¸€å…ƒäºŒæ¬¡æ–¹ç¨‹ã€‚
+	// å¦‚æœ‰å¤šç»„è§£ï¼Œè¾“å‡ºä»»æ„ä¸€ç§å³å¯ï¼Œä½†è¦æ±‚æ‰€æœ‰æ•°ç³»æ•°ç»å¯¹å€¼ä¸è¶…è¿‡100000ã€‚
 
-	int T, a, b; cin >> T;
-	for (int i = 0; i < T; i++)
+	int test_num, a, b; cin >> test_num;
+	for (int i = 0; i < test_num; i++)
 	{
 		cin >> a >> b;
 		Solution(a, b);
