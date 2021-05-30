@@ -1,13 +1,13 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <unordered_map>
 using namespace std;
 
 struct grass_node
 {
-	// ³ÉÔ±
-	int x, y; // ×ø±ê
-	// ¹¹Ôìº¯Êı
-	grass_node(int _x, int _y) :x(_x), y(_y) {};
+	// æˆå‘˜
+	int x, y; // åæ ‡
+	// æ„é€ å‡½æ•°
+	grass_node(int _x, int _y) :x(_x), y(_y) {}
 };
 
 bool operator==(const grass_node &a, const grass_node &b)
@@ -20,41 +20,41 @@ namespace std
 	template <>
 	struct hash<grass_node>
 	{
-		// ÓÃÀ´É¢ÁĞÒ»¸öÎŞĞòÈİÆ÷µÄÀàĞÍ±ØĞëÒª¶¨ÒåÏÂÁĞÀàĞÍ
+		// ç”¨æ¥æ•£åˆ—ä¸€ä¸ªæ— åºå®¹å™¨çš„ç±»å‹å¿…é¡»è¦å®šä¹‰ä¸‹åˆ—ç±»å‹
 		typedef size_t result_type;
-		typedef grass_node argument_type; // Ä¬ÈÏÇé¿öÏÂ£¬´ËÀàĞÍĞèÒª==
+		typedef grass_node argument_type; // é»˜è®¤æƒ…å†µä¸‹ï¼Œæ­¤ç±»å‹éœ€è¦==
 		size_t operator() (const grass_node &s) const;
-		// ÎÒÃÇµÄÀàÊ¹ÓÃºÏ³ÉµÄ¿½±´¿ØÖÆ³ÉÔ±ºÍÄ¬ÈÏ¹¹Ôìº¯Êı
+		// æˆ‘ä»¬çš„ç±»ä½¿ç”¨åˆæˆçš„æ‹·è´æ§åˆ¶æˆå‘˜å’Œé»˜è®¤æ„é€ å‡½æ•°
 	};
 	size_t hash<grass_node>::operator() (const grass_node &s) const
 	{
 		return hash<int>() (s.x) ^ hash<int>() (s.y);
 	}
-} // ¹Ø±ÕstdÃüÃû¿Õ¼ä
+} // å…³é—­stdå‘½åç©ºé—´
 
-/* Problem F. Ğ¡NµÄ×÷ÒµÌâ */
+/* Problem F. å°Nçš„ä½œä¸šé¢˜ */
 int main()
 {
-	// ÔÓ²İ×ø±ê£¬ÌåÁ¦(È¨Öµ)
+	// æ‚è‰åæ ‡ï¼Œä½“åŠ›(æƒå€¼)
 	int grass_num; cin >> grass_num;
 
-	int x, y, w; // ×ø±ê£¬È¨Öµ
+	int x, y, w; // åæ ‡ï¼Œæƒå€¼
 	unordered_map<grass_node, int> grass;
-	for (int i = 0; i < grass_num; i++) // ÔÓ²İĞÅÏ¢
+	for (int i = 0; i < grass_num; i++) // æ‚è‰ä¿¡æ¯
 	{
 		cin >> x >> y >> w;
 		auto temp = grass_node(x, y);
 		grass[temp] += w;
 	}
 
-	int search_num; cin >> search_num; // ²éÑ¯´ÎÊı
-	int x1, y1, x2, y2; // ²éÑ¯µÄ¾ØĞÎ(±ÕÇø¼ä)
+	int search_num; cin >> search_num; // æŸ¥è¯¢æ¬¡æ•°
+	int x1, y1, x2, y2; // æŸ¥è¯¢çš„çŸ©å½¢(é—­åŒºé—´)
 	for (int i = 0; i < search_num; i++)
 	{
-		int cost = 0; // Çå³ıÏàÓ¦¾ØĞÎÇøÓòÄÚÔÓ²İºÄ·ÑµÄÌåÁ¦×ÜºÍ
+		int cost = 0; // æ¸…é™¤ç›¸åº”çŸ©å½¢åŒºåŸŸå†…æ‚è‰è€—è´¹çš„ä½“åŠ›æ€»å’Œ
 		cin >> x1 >> y1 >> x2 >> y2;
 
-		for (auto temp : grass) // ¶ÔÃ¿Ò»¿ÅÔÓ²İ
+		for (auto temp : grass) // å¯¹æ¯ä¸€é¢—æ‚è‰
 		{
 			if (x1 <= temp.first.x && temp.first.x <= x2) // x1<=x<=x2,y1<=y<=y2
 			{

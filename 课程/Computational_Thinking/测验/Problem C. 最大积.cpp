@@ -1,19 +1,19 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <vector>
 #include <string>
 #include <sstream>
 #include <algorithm>
 using namespace std;
 
-struct product // ³Ë»ı
+struct product // ä¹˜ç§¯
 {
-	// ³ÉÔ±
-	long long val; int count; // ³Ë»ı¡¢Òò×ÓÊı
-	// ¹¹Ôìº¯Êı
-	product(long long _val, int _count) :val(_val), count(_count) {};
+	// æˆå‘˜
+	long long val; int count; // ä¹˜ç§¯ã€å› å­æ•°
+	// æ„é€ å‡½æ•°
+	product(long long _val, int _count) :val(_val), count(_count) {}
 };
 
-bool operator<(const product &a, const product &b) // ÓÅÏÈ¼¶¸üÈõ
+bool operator<(const product &a, const product &b) // ä¼˜å…ˆçº§æ›´å¼±
 {
 	if (a.val < b.val)
 		return true;
@@ -24,12 +24,12 @@ bool operator<(const product &a, const product &b) // ÓÅÏÈ¼¶¸üÈõ
 	return false;
 }
 
-/* Problem C. ×î´ó»ı */
+/* Problem C. æœ€å¤§ç§¯ */
 int main()
 {
-	// ¸ø¶¨Èô¸É¸öÕûÊıS=S1,S2,...,Sn£¬ÆäÖĞÊıµÄ×î´ó³Ë»ıÊÇ¶àÉÙ£¿
+	// ç»™å®šè‹¥å¹²ä¸ªæ•´æ•°S=S1,S2,...,Snï¼Œå…¶ä¸­æ•°çš„æœ€å¤§ä¹˜ç§¯æ˜¯å¤šå°‘ï¼Ÿ
 
-	// ×î´ó³Ë»ı£¬Òò×ÓÓĞĞòÅÅÁĞ£¬´Ó´óµ½Ğ¡³Ë
+	// æœ€å¤§ä¹˜ç§¯ï¼Œå› å­æœ‰åºæ’åˆ—ï¼Œä»å¤§åˆ°å°ä¹˜
 	string line; int cases = 0;
 
 	while (getline(cin, line))
@@ -38,26 +38,26 @@ int main()
 		stringstream buffer(line);
 
 		int temp;
-		vector<int> nege_factors; // ¸ºÒò×Ó
-		vector<int> posi_factors; // ÕıÒò×Ó
+		vector<int> nege_factors; // è´Ÿå› å­
+		vector<int> posi_factors; // æ­£å› å­
 
 		while (buffer >> temp)
 		{
 			if (temp > 0)
-				posi_factors.push_back(temp); // ÕıÒò×Ó
+				posi_factors.push_back(temp); // æ­£å› å­
 			else if (temp < 0)
-				nege_factors.push_back(temp); // ¸ºÒò×Ó
+				nege_factors.push_back(temp); // è´Ÿå› å­
 		}
-		// ²»¿¼ÂÇÖ»º¬ÓĞ0
+		// ä¸è€ƒè™‘åªå«æœ‰0
 
-		sort(posi_factors.begin(), posi_factors.end(), greater<int>()); // ´Ó´óµ½Ğ¡ÅÅĞò
-		sort(nege_factors.begin(), nege_factors.end(), less<int>());    // ´ÓĞ¡µ½´óÅÅĞò
+		sort(posi_factors.begin(), posi_factors.end(), greater<int>()); // ä»å¤§åˆ°å°æ’åº
+		sort(nege_factors.begin(), nege_factors.end(), less<int>());    // ä»å°åˆ°å¤§æ’åº
 
-		/* ´¦Àí¸ºÒò×Ó */
-		vector<product> nege_part; // ±È½Ï¸´ÔÓ£¬´Ó´óµ½Ğ¡³Ë
+		/* å¤„ç†è´Ÿå› å­ */
+		vector<product> nege_part; // æ¯”è¾ƒå¤æ‚ï¼Œä»å¤§åˆ°å°ä¹˜
 
-		long long sum_nege = 0;   // ¸ºÊı²¿·Ö³Ë»ı
-		int count_nege = 0;    // ¸ºÊı²¿·ÖÒò×ÓÊı 
+		long long sum_nege = 0;   // è´Ÿæ•°éƒ¨åˆ†ä¹˜ç§¯
+		int count_nege = 0;    // è´Ÿæ•°éƒ¨åˆ†å› å­æ•° 
 		if (nege_factors.size() != 0)
 		{
 			long long temp = 1;
@@ -67,14 +67,14 @@ int main()
 				nege_part.push_back(product(temp, i + 1));
 			}
 			sort(nege_part.begin(), nege_part.end());
-			sum_nege = nege_part.back().val;     // È¡³ö×î´ó³Ë»ı
-			count_nege = nege_part.back().count; // ¼°Æä¶ÔÓ¦¸öÊı
+			sum_nege = nege_part.back().val;     // å–å‡ºæœ€å¤§ä¹˜ç§¯
+			count_nege = nege_part.back().count; // åŠå…¶å¯¹åº”ä¸ªæ•°
 		}
 
-		/* ´¦ÀíÕıÒò×Ó */
+		/* å¤„ç†æ­£å› å­ */
 		vector<product> posi_part;
-		long long sum_posi = 0;   // ÕıÊı²¿·Ö³Ë»ı
-		int count_posi = 0;    // ÕıÊı²¿·ÖÒò×ÓÊı
+		long long sum_posi = 0;   // æ­£æ•°éƒ¨åˆ†ä¹˜ç§¯
+		int count_posi = 0;    // æ­£æ•°éƒ¨åˆ†å› å­æ•°
 		if (posi_factors.size() != 0)
 		{
 			long long temp = 1;
@@ -84,13 +84,13 @@ int main()
 				posi_part.push_back(product(temp, i + 1));
 			}
 			sort(posi_part.begin(), posi_part.end());
-			sum_posi = posi_part.back().val;     // È¡³ö×î´ó³Ë»ı
-			count_posi = posi_part.back().count; // ¼°Æä¶ÔÓ¦¸öÊı
+			sum_posi = posi_part.back().val;     // å–å‡ºæœ€å¤§ä¹˜ç§¯
+			count_posi = posi_part.back().count; // åŠå…¶å¯¹åº”ä¸ªæ•°
 		}
 
-		long long ans = 0; int min = 0; // ansÎªÂú×ãÒªÇóµÄ×î´ó³Ë»ı£¬minÎªµÃµ½¸Ã×î´ó»ıµÄ×îÉÙÒòÊı¸öÊı
+		long long ans = 0; int min = 0; // ansä¸ºæ»¡è¶³è¦æ±‚çš„æœ€å¤§ä¹˜ç§¯ï¼Œminä¸ºå¾—åˆ°è¯¥æœ€å¤§ç§¯çš„æœ€å°‘å› æ•°ä¸ªæ•°
 
-		vector<product> result; // Á½²¿·ÖÏà³Ë
+		vector<product> result; // ä¸¤éƒ¨åˆ†ç›¸ä¹˜
 		result.push_back(product(sum_posi, count_posi));
 		result.push_back(product(sum_nege, count_nege));
 		result.push_back(product(sum_posi * sum_nege, count_posi + count_nege));
