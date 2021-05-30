@@ -102,8 +102,8 @@ public:
 	{
 		if (T) {
 			visit(T->data);             // 访问根结点
-			PreOrder(T->lchild); // 遍历左子树
-			PreOrder(T->rchild); // 遍历右子树
+			PreOrder(T->lchild, visit); // 遍历左子树
+			PreOrder(T->rchild, visit); // 遍历右子树
 		}
 	}
 
@@ -111,9 +111,9 @@ public:
 	void InOrder(BiTree T)
 	{
 		if (T) {
-			InOrder(T->lchild); // 遍历左子树
+			InOrder(T->lchild, visit); // 遍历左子树
 			visit(T->data);            // 访问根结点
-			InOrder(T->rchild); // 遍历右子树
+			InOrder(T->rchild, visit); // 遍历右子树
 		}
 	}
 
@@ -121,8 +121,8 @@ public:
 	void PostOrder(BiTree T)
 	{
 		if (T) {
-			PostOrder(T->lchild); // 遍历左子树
-			PostOrder(T->rchild); // 遍历右子树
+			PostOrder(T->lchild, visit); // 遍历左子树
+			PostOrder(T->rchild, visit); // 遍历右子树
 			visit(T->data);              // 访问根结点
 		}
 	}
@@ -193,12 +193,8 @@ int main()
 	BinTree<char> T;
 	T.CreateBiTree();
 
-	cout << "先序遍历：";
-	T.PreOrder(); cout << " "; T.PreOrder2(); cout << endl;
-	cout << "中序遍历：";
-	T.InOrder(); cout << " "; T.InOrder2(); cout << endl;
-	cout << "后序遍历："; T.PostOrder(); cout << endl;
-	cout << "层次遍历："; T.LevelOrder(); cout << endl;
+	T.InOrder2(); cout << endl;
+	T.LevelOrder(); cout << endl;
 
 	return 0;
 }
