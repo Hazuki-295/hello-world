@@ -1,90 +1,142 @@
-#include <iostream>
+ï»¿#include <iostream>
 using namespace std;
 
-typedef int ElemType;
+#define MaxSize 50 // çº¿æ€§è¡¨çš„æœ€å¤§é•¿åº¦
 
-/* ÏßĞÔ±íµÄË³Ğò´æ´¢½á¹¹(¶¯Ì¬·ÖÅä) */
-#define InitSize 100     // ±í³¤¶ÈµÄ³õÊ¼·ÖÅäÁ¿
-#define LISTINCREMENT 10 // ·ÖÅäÔöÁ¿
+/* é¡ºåºåˆ—è¡¨æ¨¡æ¿ç±» */
+template <typename T> class List {
 
-typedef struct {
-    ElemType *data;      // ´æ´¢¿Õ¼ä»ùÖ·
-    int MaxSize, length; // Êı×éµÄ×î´óÈİÁ¿ºÍµ±Ç°ÔªËØ¸öÊı(³¤¶È)
+private:
+	using ElemType = T;
 
-} SqList; // Ë³Ğò±íµÄÀàĞÍ¶¨Òå(¶¯Ì¬·ÖÅä)
+	/* çº¿æ€§è¡¨çš„é¡ºåºå­˜å‚¨ç»“æ„(é™æ€åˆ†é…) */
+	ElemType *data; // é¡ºåºè¡¨çš„å…ƒç´ 
+	int length;     // é¡ºåºè¡¨çš„å½“å‰é•¿åº¦
 
-SqList L; // ÉùÃ÷Ò»¸öË³Ğò±íL(ËüÊÇÒ»¸ö½á¹¹Ìå±äÁ¿)
+public:
+	// æ„é€ å‡½æ•°
+	List() { InitList(); } //é»˜è®¤
 
-/* ³õÊ¼»¯Ò»¸ö¿ÕµÄË³Ğò±í(ÎªË³Ğò±í·ÖÅä´æ´¢¿Õ¼ä) */
-bool InitList(SqList &L)
+	/* åˆå§‹åŒ–ä¸€ä¸ªç©ºçš„é¡ºåºè¡¨(ä¸ºé¡ºåºè¡¨åˆ†é…å­˜å‚¨ç©ºé—´) */
+	void InitList()
+	{
+		data = new ElemType[MaxSize];
+		length = 0;  // ç©ºè¡¨é•¿åº¦ä¸º0
+	}
+
+	void CreatList(int n)
+	{
+		length = n; ElemType temp;
+		for (int i = 0; i < n; i++)
+		{
+			cin >> temp;
+			data[i] = temp;
+		}
+	}
+
+	/* æ’å…¥æ“ä½œï¼Œåœ¨è¡¨Lä¸­ç¬¬xä¸ªä½ç½®ä¹‹å‰æ’å…¥æ–°çš„æ•°æ®å…ƒç´ e */
+	bool ListInsert(int x, ElemType e)
+	{
+		if (x<1 || x > length + 1) // æ’å…¥çš„ä½ç½®éæ³•
+			return false;
+
+		if (length >= MaxSize) // å½“å‰å­˜å‚¨ç©ºé—´å·²æ»¡ï¼Œä¸èƒ½æ’å…¥
+			return false;
+
+		ElemType *p, *q;    // på’Œqä¸ºè¾…åŠ©æŒ‡é’ˆ 
+		q = &(data[x - 1]); // qä¸ºæ’å…¥ä½ç½®
+		for (p = &(data[length - 1]); p >= q; p--) // æ’å…¥ä½ç½®åŠä¹‹åçš„å…ƒç´ å³ç§»
+		{
+			*(p + 1) = *p;
+		}
+		*q = e;     // åœ¨æ’å…¥ä½ç½® q æ’å…¥æ–°çš„å…ƒç´ e
+		length++; // è¡¨é•¿åŠ 1
+		return true;
+	}
+
+	/* åˆ é™¤æ“ä½œï¼Œåˆ é™¤è¡¨Lä¸­ç¬¬xä¸ªä½ç½®çš„å…ƒç´ ï¼Œå¹¶ç”¨eè¿”å›åˆ é™¤å…ƒç´ çš„å€¼ */
+	bool ListDelete(int x, ElemType &e)
+	{
+		if (x<1 || x>length) // åˆ é™¤çš„ä½ç½®éæ³•
+			return false;
+
+		ElemType *p, *q; // på’Œqä¸ºè¾…åŠ©æŒ‡é’ˆ 
+
+		p = &(data[x - 1]);        // pä¸ºè¢«åˆ é™¤å…ƒç´ çš„ä½ç½®
+		e = *p;                    // è¢«åˆ é™¤å…ƒç´ çš„å€¼èµ‹ç»™e
+		q = &(data[length - 1]);   // è¡¨å°¾å…ƒç´ çš„ä½ç½®
+		for (p++; p <= q; p++)     // è¢«åˆ é™¤å…ƒç´ ä¹‹åçš„å…ƒç´ å·¦ç§»
+		{
+			*(p - 1) = *p;
+		}
+		length--; // è¡¨é•¿å‡1
+		return true;
+	}
+
+	/* æŒ‰å€¼æŸ¥æ‰¾æ“ä½œï¼Œåœ¨è¡¨Lä¸­æŸ¥æ‰¾å…·æœ‰ç»™å®šå…³é”®å­—(e)å€¼çš„å…ƒç´  */
+	int LocateElem(ElemType e)
+	{
+		for (int i = 0; i < length; i++)
+			if (data[i] == e)
+				return i + 1; // ä¸‹æ ‡ä¸ºiçš„å…ƒç´ å€¼ç­‰äºeï¼Œè¿”å›å…¶ä½åºi+1
+		return 0;             // é€€å‡ºå¾ªç¯ï¼Œè¯´æ˜æŸ¥æ‰¾å¤±è´¥(0è¡¨ç¤ºæœªæ‰¾åˆ°)
+	}
+
+	/* æŒ‰ä½æŸ¥æ‰¾æ“ä½œï¼Œæ‰¾åˆ°è¡¨Lä¸­ç¬¬iä¸ªä½ç½®çš„å…ƒç´ ï¼Œå¹¶ç”¨eè¿”å›å…¶å€¼ */
+	bool GetElem(int x, ElemType &e)
+	{
+		if (x<1 || x>length)
+			return false;
+		e = data[x - 1]; // ä½åºä¸ºiçš„å…ƒç´ ï¼Œå…¶ä¸‹æ ‡ä¸ºi-1
+		return true;
+	}
+
+	/* è¾“å‡ºæ“ä½œï¼Œé¡ºåºè¾“å‡ºçº¿æ€§è¡¨Lçš„æ‰€æœ‰å…ƒç´ å€¼ */
+	void PrintList()
+	{
+		for (int i = 0; i < length; i++)
+		{
+			cout << data[i] << ' ';
+		}
+		cout << endl;
+	}
+
+	int LinkLength() { return length; };
+
+	void ListTest();
+}; // SqList
+
+template<typename T> void List<T>::ListTest()
 {
-    L.data = (ElemType *)malloc(InitSize * sizeof(ElemType)); // ·ÖÅä´æ´¢¿Õ¼ä
-    if (!L.data) // ´æ´¢·ÖÅäÊ§°Ü
-        exit(OVERFLOW);
+	cout << "è¯·è¾“å…¥é“¾è¡¨ç»“ç‚¹ä¸ªæ•°ï¼š" << endl;
+	int n; cin >> n; cout << '\n';
 
-    L.length = 0;         // ¿Õ±í³¤¶ÈÎª0
-    L.MaxSize = InitSize; // ³õÊ¼´æ´¢ÈİÁ¿
-    return true;
+	cout << "è¯·è¾“å…¥" << n << "ä¸ªé“¾è¡¨å…ƒç´ ï¼š\n";
+	CreatList(n);
+
+	cout << "\nåˆå§‹åŒ–å®Œæˆã€‚\n";
+	/* æµ‹è¯•ä»£ç  */
+	cout << "å½“å‰é“¾è¡¨é•¿åº¦ä¸ºï¼š\n" << LinkLength() << '\n';
+	cout << "å½“å‰é“¾è¡¨å…ƒç´ ä¸ºï¼š\n"; PrintList(); cout << "\n\n";
+
+	/* æ“ä½œæµ‹è¯• */
+	int delete1, insert1; ElemType temp;
+	cout << "åˆ é™¤ç¬¬xä¸ªå…ƒç´ ï¼š"; cin >> delete1;
+	ListDelete(delete1, temp);
+	/* æµ‹è¯•ä»£ç  */
+	cout << "å½“å‰é“¾è¡¨é•¿åº¦ä¸ºï¼š\n" << LinkLength() << '\n';
+	cout << "å½“å‰é“¾è¡¨å…ƒç´ ä¸ºï¼š\n"; PrintList(); cout << "\n\n";
+
+	cout << "åœ¨ç¬¬xä¸ªå…ƒç´ ä¹‹å‰æ’å…¥å…ƒç´ ï¼š"; cin >> insert1;
+	cout << "æ’å…¥çš„å…ƒç´ ï¼š"; cin >> temp;
+	ListInsert(insert1, temp);
+	/* æµ‹è¯•ä»£ç  */
+	cout << "å½“å‰é“¾è¡¨é•¿åº¦ä¸ºï¼š\n" << LinkLength() << '\n';
+	cout << "å½“å‰é“¾è¡¨å…ƒç´ ä¸ºï¼š\n"; PrintList(); cout << "\n\n";
 }
 
-/* ²åÈë²Ù×÷£¬ÔÚ±íLÖĞµÚx¸öÎ»ÖÃÖ®Ç°²åÈëĞÂµÄÊı¾İÔªËØe */
-bool ListInsert(SqList &L, int x, ElemType e)
+int main()
 {
-    if (x<1 || x>L.length + 1) // ²åÈëµÄÎ»ÖÃ·Ç·¨
-        return false;
-
-    ElemType *newbase, *p, *q; // newbase´æ·ÅĞÂµÄ»ùµØÖ·£¬pºÍqÎª¸¨ÖúÖ¸Õë 
-    if (L.length == L.MaxSize) // µ±Ç°´æ´¢¿Õ¼äÒÑÂú£¬Ôö¼Ó·ÖÅä
-    {
-        newbase = (ElemType *)realloc(L.data, (L.MaxSize + LISTINCREMENT) * sizeof(ElemType));
-        if (!newbase)
-            exit(OVERFLOW);         // ´æ´¢·ÖÅäÊ§°Ü
-        L.data = newbase;           // ĞÂ»ùÖ·
-        L.MaxSize += LISTINCREMENT; // Ôö¼Ó´æ´¢ÈİÁ¿
-    }
-    q = &(L.data[x - 1]); // qÎª²åÈëÎ»ÖÃ
-    for (p = &(L.data[L.length - 1]); p >= q; p--) // ²åÈëÎ»ÖÃ¼°Ö®ºóµÄÔªËØÓÒÒÆ
-    {
-        *(p + 1) = *p;
-    }
-    *q = e;     // ÔÚ²åÈëÎ»ÖÃ q ²åÈëĞÂµÄÔªËØe
-    L.length++; // ±í³¤¼Ó1
-    return true;
-}
-
-/* É¾³ı²Ù×÷£¬É¾³ı±íLÖĞµÚx¸öÎ»ÖÃµÄÔªËØ£¬²¢ÓÃe·µ»ØÉ¾³ıÔªËØµÄÖµ */
-bool ListDelete(SqList &L, int x, ElemType &e)
-{
-    if (x<1 || x>L.length) // É¾³ıµÄÎ»ÖÃ·Ç·¨
-        return false;
-
-    ElemType *p, *q; // pºÍqÎª¸¨ÖúÖ¸Õë 
-
-    p = &(L.data[x - 1]);        // pÎª±»É¾³ıÔªËØµÄÎ»ÖÃ
-    e = *p;                      // ±»É¾³ıÔªËØµÄÖµ¸³¸øe
-    q = &(L.data[L.length - 1]); // ±íÎ²ÔªËØµÄÎ»ÖÃ
-    for (p++; p <= q; p++)       // ±»É¾³ıÔªËØÖ®ºóµÄÔªËØ×óÒÆ
-    {
-        *(p - 1) = *p;
-    }
-    L.length--; // ±í³¤¼õ1
-    return true;
-}
-
-/* °´Öµ²éÕÒ²Ù×÷£¬ÔÚ±íLÖĞ²éÕÒ¾ßÓĞ¸ø¶¨¹Ø¼ü×Ö(e)ÖµµÄÔªËØ */
-int LocateElem(SqList L, ElemType e)
-{
-    for (int i = 0; i < L.length; i++)
-        if (L.data[i] == e)
-            return i + 1; // ÏÂ±êÎªiµÄÔªËØÖµµÈÓÚe£¬·µ»ØÆäÎ»Ğòi+1
-    return 0;             // ÍË³öÑ­»·£¬ËµÃ÷²éÕÒÊ§°Ü(0±íÊ¾Î´ÕÒµ½)
-}
-
-/* °´Î»²éÕÒ²Ù×÷£¬ÕÒµ½±íLÖĞµÚi¸öÎ»ÖÃµÄÔªËØ£¬²¢ÓÃe·µ»ØÆäÖµ */
-bool GetElem(SqList &L, int x, ElemType &e)
-{
-    if (x<1 || x>L.length)
-        return false;
-    e = L.data[x - 1]; // Î»ĞòÎªiµÄÔªËØ£¬ÆäÏÂ±êÎªi-1
-    return true;
+	List<int> L;
+	L.ListTest();
 }
