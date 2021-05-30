@@ -40,7 +40,7 @@ public:
 	/* 判栈空 */
 	bool StackEmpty()
 	{
-		if (top == -1)  // 栈空
+		if (top == -1)    // 栈空
 			return true;
 		else              // 栈不空
 			return false;
@@ -51,7 +51,7 @@ public:
 	{
 		if (top == maxsize - 1)  // 栈满，报错
 			return false;
-		data[++top] = x;       // 指针先加1，再入栈
+		data[++top] = x;         // 指针先加1，再入栈
 		return true;
 	}
 
@@ -60,7 +60,7 @@ public:
 	{
 		if (top == -1)     // 栈空，报错
 			return false;
-		x = data[top--]; // 先出栈，指针再减1
+		x = data[top--];   // 先出栈，指针再减1
 		return true;
 	}
 
@@ -69,7 +69,7 @@ public:
 	{
 		if (top == -1)     // 栈空，报错
 			return false;
-		x = data[top];   // x记录栈顶元素
+		x = data[top];     // x记录栈顶元素
 		return true;
 	}
 }; // SqStack
@@ -84,7 +84,7 @@ private:
 	ElemType *data;      // 存放队列元素
 	int front, rear;     // 队头指针和队尾指针
 
-	int maxsize;	         // 队列的最大元素个数
+	int maxsize;	     // 队列的最大元素个数
 
 public:
 	// 构造函数
