@@ -1,170 +1,187 @@
-#include <iostream>
+ï»¿#include <iostream>
+#include <stack>
+#include <queue>
 using namespace std;
 
 typedef char ElemType;
 #define MaxSize 50
 
-/* Ë³Ğò¶ÓÁĞÄ£°åÀà */
-template<typename T> class Queue {
+/* äºŒå‰æ ‘çš„äºŒå‰é“¾è¡¨å­˜å‚¨è¡¨ç¤º */
+typedef struct BiTNode {
+	ElemType data; // æ•°æ®åŸŸ 
+	struct BiTNode *lchild, *rchild; // å·¦å³å­©å­æŒ‡é’ˆ
+} BiTNode, *BiTree;
 
-private:
-    typedef T ElemType;
-
-    /* ¶ÓÁĞµÄË³Ğò´æ´¢ÀàĞÍ */
-    typedef struct {
-        ElemType *data;      // ´æ·Å¶ÓÁĞÔªËØ
-        int front, rear;     // ¶ÓÍ·Ö¸ÕëºÍ¶ÓÎ²Ö¸Õë
-    } SqQueue;               // Ë³Ğò¶ÓÁĞµÄÀàĞÍ¶¨Òå
-
-    int maxsize;	         // ¶ÓÁĞµÄ×î´óÔªËØ¸öÊı
-
-    SqQueue Q; // ÉùÃ÷Ò»¸öË³Ğò¶ÓÁĞQ(ËüÊÇÒ»¸ö½á¹¹Ìå±äÁ¿)
-
-public:
-    // ¹¹Ôìº¯Êı
-    Queue() { InitQueue(); } //Ä¬ÈÏ
-
-    /* ³õÊ¼»¯Ò»¸ö¿Õ¶ÓÁĞ */
-    void InitQueue()
-    {
-        Q.rear = Q.front = 0;			  // ³õÊ¼»¯¶ÓÊ×¡¢¶ÓÎ²Ö¸Õë
-
-        maxsize = MaxSize;
-        Q.data = new ElemType[maxsize]; // Êı¾İÓò
-    }
-
-    /* ³õÊ¼»¯Ò»¸ö¿Õ¶ÓÁĞ(Ö¸¶¨´óĞ¡) */
-    void InitQueue(int size)
-    {
-        Q.rear = Q.front = 0;			  // ³õÊ¼»¯¶ÓÊ×¡¢¶ÓÎ²Ö¸Õë
-
-        maxsize = size;
-        Q.data = new ElemType[maxsize]; // Êı¾İÓò
-    }
-
-    /* ÅĞ¶ÓÁĞ¿Õ */
-    bool QueueEmpty()
-    {
-        if (Q.rear == Q.front) //¶Ó¿ÕÌõ¼ş
-            return true;
-        else
-            return false;
-    }
-
-    /* Èë¶Ó£¬Èô¶ÓÁĞQÎ´Âú£¬½«x¼ÓÈë£¬Ê¹Ö®³ÉÎªĞÂµÄ¶ÓÎ² */
-    bool EnQueue(ElemType x)
-    {
-        if ((Q.rear + 1) % maxsize == Q.front) // ¶ÓÂúÔò±¨´í
-            return false;
-        Q.data[Q.rear] = x;
-        Q.rear = (Q.rear + 1) % maxsize; // ¶ÓÎ²Ö¸Õë¼Ó1È¡Ä£
-        return true;
-    }
-
-    /* ³ö¶Ó£¬Èô¶ÓÁĞQ·Ç¿Õ£¬É¾³ı¶ÓÍ·ÔªËØ£¬²¢ÓÃx·µ»Ø */
-    bool DeQueue(ElemType &x)
-    {
-        if (Q.rear == Q.front) // ¶Ó¿ÕÔò±¨´í
-            return false;
-        x = Q.data[Q.front];
-        Q.front = (Q.front + 1) % maxsize; // ¶ÓÍ·Ö¸Õë¼Ó1È¡Ä£
-        return true;
-    }
-}; // SqQueue
-
-/* Ê÷µÄ¶ş²æÁ´±í´¢´æ½á¹¹ */
-typedef struct CSNode {
-    ElemType data;
-    struct CSNode *firstchild, *nextsibling;
-} CSNode, *CSTree;
-
-/* ½¨Á¢Ê÷µÄº¢×Ó-ĞÖµÜÁ´±í½áµã */
-CSNode *GetTreeNode(ElemType e)
+/* æŒ‰å…ˆåºåºåˆ—å»ºç«‹äºŒå‰æ ‘çš„äºŒå‰é“¾è¡¨ */
+bool CreateBiTree(BiTree &T)
 {
-    CSTree p;
-    p = (CSTree)malloc(sizeof(CSNode));
-    if (!p)
-        exit(1);
-    p->data = e;
-    p->firstchild = nullptr;
-    p->nextsibling = nullptr;
-    return p;
+	char ch; /*cin >> ch;*/
+	if ((ch = getchar()) != '\n')
+	{
+		if (ch == '#')
+			T = nullptr;
+		else
+		{
+			if (!(T = (BiTNode *)malloc(sizeof(BiTNode))))
+			{
+				exit(1);
+			}
+			T->data = ch; // ç”Ÿæˆæ ¹ç»“ç‚¹
+			CreateBiTree(T->lchild); // æ„é€ å·¦å­æ ‘
+			CreateBiTree(T->rchild); // æ„é€ å³å­æ ‘
+		}
+	}
+
+	return true;
 }
 
-/* ÇóÊ÷µÄÉî¶È */
-int TreeDepth(CSTree T)
+/* è®¿é—®ç»“ç‚¹ */
+void PrintElement(ElemType &e)
 {
-    int depth1, depth2;
-    if (!T)
-        return 0;
-    else {
-        depth1 = TreeDepth(T->firstchild);
-        depth2 = TreeDepth(T->nextsibling);
-        return(((depth1 + 1) > depth2) ? (depth1 + 1) : depth2);
-    }
+	printf("%c", e);
+	return;
 }
 
-typedef struct Node {
-    char value; // ½áµãµÄÖµ
-    int degree; // ½áµãµÄ¶È
-} Node, *pNode;
+/* ç»Ÿè®¡äºŒå‰æ ‘ä¸­å¶å­ç»“ç‚¹çš„ä¸ªæ•° */
+void CountLeaf(BiTree T, int &count)
+{
+	if (T)
+	{
+		if ((!T->lchild) && (!T->rchild)) // å¦‚æœæ˜¯å¶å­ç»“ç‚¹
+			count++; // å¯¹å¶å­ç»“ç‚¹è®¡æ•°
+		CountLeaf(T->lchild, count);
+		CountLeaf(T->rchild, count);
+	}
+}
+
+/* ç»Ÿè®¡äºŒå‰æ ‘ä¸­ç»“ç‚¹çš„ä¸ªæ•° */
+void CountNode(BiTree T, int &count)
+{
+	if (T)
+	{
+		//if ((!T->lchild) && (!T->rchild)) // å¦‚æœæ˜¯å¶å­ç»“ç‚¹
+		count++; // å¯¹å¶å­ç»“ç‚¹è®¡æ•°
+		CountNode(T->lchild, count);
+		CountNode(T->rchild, count);
+	}
+}
+
+/* æ±‚äºŒå‰æ ‘çš„æ·±åº¦ */
+int Depth(BiTree T)
+{
+	int depthval, depthLeft, depthRight;
+	if (!T)
+		depthval = 0;
+	else
+	{
+		depthLeft = Depth(T->lchild);
+		depthRight = Depth(T->rchild);
+		depthval = 1 + (depthLeft > depthRight ? depthLeft : depthRight);
+	}
+	return depthval;
+}
+
+/* å…ˆåºéå†äºŒå‰æ ‘ */
+void PreOrder(BiTree T, void(*visit)(ElemType &e))
+{
+	if (T) {
+		visit(T->data);             // è®¿é—®æ ¹ç»“ç‚¹
+		PreOrder(T->lchild, visit); // éå†å·¦å­æ ‘
+		PreOrder(T->rchild, visit); // éå†å³å­æ ‘
+	}
+}
+
+/* ä¸­åºéå†äºŒå‰æ ‘ */
+void InOrder(BiTree T, void(*visit)(ElemType &e))
+{
+	if (T) {
+		InOrder(T->lchild, visit); // éå†å·¦å­æ ‘
+		visit(T->data);            // è®¿é—®æ ¹ç»“ç‚¹
+		InOrder(T->rchild, visit); // éå†å³å­æ ‘
+	}
+}
+
+/* ååºéå†äºŒå‰æ ‘ */
+void PostOrder(BiTree T, void(*visit)(ElemType &e))
+{
+	if (T) {
+		PostOrder(T->lchild, visit); // éå†å·¦å­æ ‘
+		PostOrder(T->rchild, visit); // éå†å³å­æ ‘
+		visit(T->data);              // è®¿é—®æ ¹ç»“ç‚¹
+	}
+}
+
+
+/* ä¸­åºéå†äºŒå‰æ ‘(éé€’å½’ç®—æ³•) */
+void InOrder2(BiTree T, void(*visit)(ElemType &e))
+{
+	stack<BiTree> S; BiTree p = T; // åˆå§‹åŒ–æ ˆS; pæ˜¯éå†æŒ‡é’ˆ
+	while (p || !S.empty()) // æ ˆä¸ç©º(å­˜åœ¨å¾…è®¿é—®ç»“ç‚¹) æˆ– pä¸ç©º(ä¸­åºéå†çš„æ ‘ä¸æ˜¯ç©ºæ ‘) æ—¶å¾ªç¯
+	{
+		if (p) // ä¸€è·¯å‘å·¦ (æˆ– å³å­æ ‘ä¸ç©ºï¼Œä¸­åºéå†ä¹‹)
+		{
+			S.push(p);     // å½“å‰ç»“ç‚¹å…¥æ ˆ
+			p = p->lchild; // å·¦å­©å­ä¸ç©ºï¼Œä¸€ç›´å‘å·¦èµ°
+		}
+		else // å‡ºæ ˆï¼Œå¹¶è½¬å‘å‡ºæ ˆç»“ç‚¹çš„å³å­æ ‘
+		{
+			p = S.top(); S.pop(); // æ ˆé¡¶å…ƒç´ å‡ºæ ˆ
+			visit(p->data);       // è®¿é—®å‡ºæ ˆç»“ç‚¹
+			p = p->rchild;        // å‘å³å­æ ‘èµ°ï¼Œpèµ‹å€¼ä¸ºå½“å‰ç»“ç‚¹çš„å³å­©å­
+								  // è‹¥å³å­©å­ä¸ºç©ºï¼Œè¯¥å‡ºæ ˆç»“ç‚¹éå†å®Œæ¯•ï¼Œåˆ™ç»§ç»­å‡ºæ ˆ
+		} // è¿”å›whileå¾ªç¯ï¼Œç»§ç»­è¿›å…¥if-elseè¯­å¥
+	}
+}
+
+/* å…ˆåºéå†äºŒå‰æ ‘(éé€’å½’ç®—æ³•) */
+void PreOrder2(BiTree T, void(*visit)(ElemType &e))
+{
+	stack<BiTree> S; BiTree p = T; // åˆå§‹åŒ–æ ˆS; pæ˜¯éå†æŒ‡é’ˆ
+	while (p || !S.empty()) // æ ˆä¸ç©º(å­˜åœ¨å¾…è®¿é—®ç»“ç‚¹) æˆ– pä¸ç©º(å…ˆåºéå†çš„æ ‘ä¸æ˜¯ç©ºæ ‘) æ—¶å¾ªç¯
+	{
+		if (p) // ä¸€è·¯å‘å·¦ (æˆ– å³å­æ ‘ä¸ç©ºï¼Œå…ˆåºéå†ä¹‹)
+		{
+			visit(p->data); S.push(p); // è®¿é—®å½“å‰ç»“ç‚¹ï¼Œå¹¶å…¥æ ˆ
+			p = p->lchild;             // å·¦å­©å­ä¸ç©ºï¼Œä¸€ç›´å‘å·¦èµ°
+		}
+		else // å‡ºæ ˆï¼Œå¹¶è½¬å‘å‡ºæ ˆç»“ç‚¹çš„å³å­æ ‘
+		{
+			p = S.top(); S.pop(); // æ ˆé¡¶å…ƒç´ å‡ºæ ˆ
+			p = p->rchild;        // å‘å³å­æ ‘èµ°ï¼Œpèµ‹å€¼ä¸ºå½“å‰ç»“ç‚¹çš„å³å­©å­
+								  // è‹¥å³å­©å­ä¸ºç©ºï¼Œè¯¥å‡ºæ ˆç»“ç‚¹éå†å®Œæ¯•ï¼Œåˆ™ç»§ç»­å‡ºæ ˆ
+		} // è¿”å›whileå¾ªç¯ï¼Œç»§ç»­è¿›å…¥if-elseè¯­å¥
+	}
+}
+
+/* å±‚æ¬¡éå†äºŒå‰æ ‘ */
+void LevelOrder(BiTree T, void(*visit)(ElemType &e))
+{
+	queue<BiTree> Q; BiTree p = T; // åˆå§‹åŒ–è¾…åŠ©é˜Ÿåˆ—; pæ˜¯éå†æŒ‡é’ˆ
+
+	Q.push(T); // å°†æ ¹ç»“ç‚¹å…¥é˜Ÿ
+	while (!Q.empty()) // é˜Ÿåˆ—ä¸ç©ºåˆ™å¾ªç¯
+	{
+		p = Q.front(); Q.pop(); // é˜Ÿå¤´ç»“ç‚¹å‡ºé˜Ÿ
+		visit(p->data); // è®¿é—®å‡ºé˜Ÿç»“ç‚¹
+
+		if (p->lchild != NULL)
+			Q.push(p->lchild); // å·¦å­æ ‘ä¸ç©ºï¼Œåˆ™å·¦å­æ ‘æ ¹ç»“ç‚¹å…¥é˜Ÿ
+		if (p->rchild != NULL)
+			Q.push(p->rchild); // å³å­æ ‘ä¸ç©ºï¼Œåˆ™å³å­æ ‘æ ¹ç»“ç‚¹å…¥é˜Ÿ
+	}
+}
+
 
 int main()
 {
-    int num; cin >> num;
+	BiTree T = new BiTNode; // åˆ›å»ºæ ¹ç»“ç‚¹
+	CreateBiTree(T);
 
-    pNode data = (Node *)malloc(sizeof(Node) * num);
-    for (int i = 0; i < num; i++)
-    {
-        cin >> data[i].value >> data[i].degree;
-    }
+	InOrder2(T, PrintElement); cout << '\n';
+	LevelOrder(T, PrintElement); cout << '\n';
 
-    Queue<Node> Q; Q.InitQueue();
-    Queue<CSTree> Treequeue; Treequeue.InitQueue();
+	delete T;
 
-    CSTree T;
-    pNode q = data; // ½á¹¹Ö¸Õë
-    T = GetTreeNode(q->value);
+	return 0;
 
-    CSNode *Treenode, *firstchild, *sibling; // ÓÎ±ê
-
-    Q.EnQueue(*q); // Ê÷¸ùÈë¶ÓÁĞ
-    Treequeue.EnQueue(T);
-
-    while (!Q.QueueEmpty())
-    {
-        Node temp;
-
-        Q.DeQueue(temp);// ¶ÓÍ·³öÁĞ
-        Treequeue.DeQueue(Treenode);
-
-        if (temp.degree != 0) // µÚÒ»¸öº¢×Ó
-        {
-            q++; Q.EnQueue(*q); // µÚÒ»¸öº¢×Ó½áµãÈë¶ÓÁĞ
-            firstchild = GetTreeNode(q->value);
-            Treequeue.EnQueue(firstchild);
-
-            Treenode->firstchild = firstchild; // µÚÒ»¸öº¢×Ó
-
-            sibling = firstchild;
-        }
-
-        for (int i = 2; i <= temp.degree; i++) // µÚÒ»¸öº¢×ÓµÄĞÖµÜ
-        {
-
-
-            q++; Q.EnQueue(*q); // º¢×ÓµÄĞÖµÜ½áµãÈë¶ÓÁĞ
-            sibling->nextsibling = GetTreeNode(q->value);
-            Treequeue.EnQueue(sibling->nextsibling);
-
-            sibling = sibling->nextsibling;
-        }
-
-    }
-
-    int level = TreeDepth(T);
-
-    printf("%d\n", level);
-
-    return 0;
 }
