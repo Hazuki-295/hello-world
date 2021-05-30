@@ -33,6 +33,7 @@ public:
 	void CountLeaf(int &count) { CountLeaf(T, count); }
 	void CountNode(int &count) { CountNode(T, count); }
 	void Depth() { Depth(T); }
+	void maxDepth() { maxDepth(T); }
 	void InOrder() { InOrder(T); }
 	void PreOrder() { PreOrder(T); }
 	void PostOrder() { PostOrder(T); }
@@ -97,11 +98,20 @@ public:
 		return depthval;
 	}
 
+	/* 求二叉树的深度 */
+	int maxDepth(BiTNode *root)
+	{
+		if (root == nullptr)
+			return 0;
+		return 1 + max(maxDepth(root->left), maxDepth(root->right));
+	}
+
 	/* 先序遍历二叉树 */
 	void PreOrder(BiTree T)
 	{
-		if (T) {
-			visit(T->data);             // 访问根结点
+		if (T != nullptr)
+		{
+			visit(T->data);      // 访问根结点
 			PreOrder(T->lchild); // 遍历左子树
 			PreOrder(T->rchild); // 遍历右子树
 		}
@@ -110,9 +120,10 @@ public:
 	/* 中序遍历二叉树 */
 	void InOrder(BiTree T)
 	{
-		if (T) {
+		if (T != nullptr)
+		{
 			InOrder(T->lchild); // 遍历左子树
-			visit(T->data);            // 访问根结点
+			visit(T->data);     // 访问根结点
 			InOrder(T->rchild); // 遍历右子树
 		}
 	}
@@ -120,10 +131,11 @@ public:
 	/* 后序遍历二叉树 */
 	void PostOrder(BiTree T)
 	{
-		if (T) {
+		if (T != nullptr)
+		{
 			PostOrder(T->lchild); // 遍历左子树
 			PostOrder(T->rchild); // 遍历右子树
-			visit(T->data);              // 访问根结点
+			visit(T->data);       // 访问根结点
 		}
 	}
 
