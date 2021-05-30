@@ -1,31 +1,31 @@
-#include <iostream>
+ï»¿#include <iostream>
 using namespace std;
 
 #include "../List/LinkList.cpp"
 
-/* ÒÔÁĞ±íÎª»ùÀà£¬ÅÉÉú³öÕ»Ä£°åÀà */
-template <typename T> class Stack : public List<T> { //½«ÁĞ±íµÄÊ×/Ä©¶Ë×÷ÎªÕ»¶¥/µ×
+/* ä»¥åˆ—è¡¨ä¸ºåŸºç±»ï¼Œæ´¾ç”Ÿå‡ºæ ˆæ¨¡æ¿ç±» */
+template <typename T> class Stack : public List<T> { //å°†åˆ—è¡¨çš„é¦–/æœ«ç«¯ä½œä¸ºæ ˆé¡¶/åº•
 
 private:
 	typedef T ElemType;
 
 public:
-	// ¹¹Ôìº¯Êı
-	Stack() { InitStack(); } //Ä¬ÈÏ
+	// æ„é€ å‡½æ•°
+	Stack() { InitStack(); } //é»˜è®¤
 
-	/* ³õÊ¼»¯Ò»¸ö¿ÕÕ» */
+	/* åˆå§‹åŒ–ä¸€ä¸ªç©ºæ ˆ */
 	void InitStack() { List<T>::InitList(); }
 
-	/* ÅĞÕ»¿Õ */
+	/* åˆ¤æ ˆç©º */
 	bool StackEmpty() { return List<T>::LinkLength() == 0; }
 
-	/* ½øÕ»£¬½«x¼ÓÈëÊ¹Ö®³ÉÎªĞÂµÄÕ»¶¥ */
+	/* è¿›æ ˆï¼Œå°†xåŠ å…¥ä½¿ä¹‹æˆä¸ºæ–°çš„æ ˆé¡¶ */
 	bool Push(ElemType x)
 	{
 		return List<T>::ListInsert(List<T>::LinkLength() + 1, x);
 	}
 
-	/* ³öÕ»£¬µ¯³öÕ»¶¥ÔªËØ£¬²¢ÓÃx·µ»ØÆäÖµ */
+	/* å‡ºæ ˆï¼Œå¼¹å‡ºæ ˆé¡¶å…ƒç´ ï¼Œå¹¶ç”¨xè¿”å›å…¶å€¼ */
 	bool Pop(ElemType &x)
 	{
 		return List<T>::ListDelete(List<T>::LinkLength(), x);
@@ -38,40 +38,39 @@ int main()
 
 	Stack<int> L;
 
-	cout << "ÇëÊäÈëÁ´±í½áµã¸öÊı£º\n";
+	cout << "è¯·è¾“å…¥é“¾è¡¨ç»“ç‚¹ä¸ªæ•°ï¼š\n";
 	cin >> n; cout << '\n';
 
-	cout << "ÇëÊäÈë" << n << "¸öÁ´±íÔªËØ£º\n";
-	L.List_TailInsert(n); //³õÊ¼»¯Á´±í
+	cout << "è¯·è¾“å…¥" << n << "ä¸ªé“¾è¡¨å…ƒç´ ï¼š\n";
+	L.List_TailInsert(n); //åˆå§‹åŒ–é“¾è¡¨
 
 
-	cout << "\n³õÊ¼»¯Íê³É¡£\n";
-	/* ²âÊÔ´úÂë */
-	cout << "µ±Ç°Á´±í³¤¶ÈÎª£º\n" << L.LinkLength() << '\n';
-	cout << "µ±Ç°Á´±íÔªËØÎª£º\n"; L.PrintList(); cout << "\n\n";
+	cout << "\nåˆå§‹åŒ–å®Œæˆã€‚\n";
+	/* æµ‹è¯•ä»£ç  */
+	cout << "å½“å‰é“¾è¡¨é•¿åº¦ä¸ºï¼š\n" << L.LinkLength() << '\n';
+	cout << "å½“å‰é“¾è¡¨å…ƒç´ ä¸ºï¼š\n"; L.PrintList(); cout << "\n\n";
 
 	int delete1, insert1;
-	int index;
 
 	while (true)
 	{
-		/* ÈëÕ»²âÊÔ */
-		cout << "ÈëÕ»£º\n";
+		/* å…¥æ ˆæµ‹è¯• */
+		cout << "å…¥æ ˆï¼š\n";
 		cin >> insert1;
 		L.Push(insert1);
-		/* ²âÊÔ´úÂë */
-		cout << "µ±Ç°Á´±í³¤¶ÈÎª£º\n" << L.LinkLength() << '\n';
-		cout << "µ±Ç°Á´±íÔªËØÎª£º\n"; L.PrintList(); cout << "\n\n";
+		/* æµ‹è¯•ä»£ç  */
+		cout << "å½“å‰é“¾è¡¨é•¿åº¦ä¸ºï¼š\n" << L.LinkLength() << '\n';
+		cout << "å½“å‰é“¾è¡¨å…ƒç´ ä¸ºï¼š\n"; L.PrintList(); cout << "\n\n";
 	}
 
 	while (!L.StackEmpty())
 	{
-		/* ³öÕ»²âÊÔ */
-		cout << "³öÕ»¡£\n";
+		/* å‡ºæ ˆæµ‹è¯• */
+		cout << "å‡ºæ ˆã€‚\n";
 		L.Pop(delete1);
-		/* ²âÊÔ´úÂë */
-		cout << "µ±Ç°Á´±í³¤¶ÈÎª£º\n" << L.LinkLength() << '\n';
-		cout << "µ±Ç°Á´±íÔªËØÎª£º\n"; L.PrintList(); cout << "\n\n";
+		/* æµ‹è¯•ä»£ç  */
+		cout << "å½“å‰é“¾è¡¨é•¿åº¦ä¸ºï¼š\n" << L.LinkLength() << '\n';
+		cout << "å½“å‰é“¾è¡¨å…ƒç´ ä¸ºï¼š\n"; L.PrintList(); cout << "\n\n";
 	}
 
 }

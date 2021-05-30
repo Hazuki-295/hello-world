@@ -12,7 +12,7 @@ template <typename T> struct ListNode {
 };
 template <typename T> using LinkList = ListNode<T> *; // 单链表(头指针)
 
-/* 链表模板类 */
+/* 链表模板类(不带头结点) */
 template <typename T> class List {
 
 private:
@@ -29,24 +29,22 @@ public:
 	/* 初始化一个空链表 */
 	void InitList() // 默认构造一个空链表
 	{
-		L = (ListNode *)malloc(sizeof(ListNode)); // 创建头结点
-		L->next = nullptr; // 初始为空链表
+		L = nullptr; // 初始为空链表
 	}
 
 	/* 头插法，逆向建立单链表 */
 	LinkList List_HeadInsert(int n)
 	{
 		ListNode *s; ElemType temp;
-		L = (ListNode *)malloc(sizeof(ListNode)); // 创建头结点
-		L->next = nullptr; // 初始为空链表
+		L = nullptr; // 初始为空链表
 		for (int i = 0; i < n; i++)
 		{
 			cin >> temp;
 
 			s = (ListNode *)malloc(sizeof(ListNode)); // 创建新结点
 			s->data = temp;
-			s->next = L->next; // 将新结点插入表中
-			L->next = s;       // 每次将s所指结点插在最前端
+			s->next = L;    // 将新结点插入表中(指向之前的第一个结点)
+			L = s;          // 每次插入新结点后，需要将它的地址赋值给头指针L
 		}
 		return L; // 返回头指针
 	}
@@ -55,9 +53,10 @@ public:
 	LinkList List_TailInsert(int n)
 	{
 		ElemType temp;
-		L = (ListNode *)malloc(sizeof(ListNode)); // 创建头结点
-		ListNode *s, *r = L;  // r为表尾指针(初始化指向头结点)
-		for (int i = 0; i < n; i++)
+		L = (ListNode *)malloc(sizeof(ListNode)); // 创建第一个结点
+		cin >> temp; L->data = temp;
+		ListNode *s, *r = L;  // r为表尾指针(初始化指向第一个结点)
+		for (int i = 0; i < n - 1; i++)
 		{
 			cin >> temp;
 
@@ -73,8 +72,8 @@ public:
 	/* 沿着指针链顺序遍历的过程中，求出单链表的表长 */
 	int LinkLength()
 	{
-		ListNode *p = L->next; int j = 0; // j为计数器
-		while (p != nullptr) // 从第一个结点开始，统计数据结点的个数
+		ListNode *p = L; int j = 0; // j为计数器
+		while (p != nullptr)        // 从第一个结点开始，统计数据结点的个数
 		{
 			j++;
 			p = p->next;
@@ -83,14 +82,14 @@ public:
 	}
 
 	/* 按序号查找，返回位置x处的链表结点 */
-	ListNode *GetElem(int x) // L为"带头结点"的单链表的头指针
+	ListNode *GetElem(int x) // L为"不带头结点"的单链表的头指针
 	{
 		ListNode *p; int j;
 
-		p = L->next; j = 1; // 初始化，p指向第一个结点，j为计数器
+		p = L; j = 1; // 初始化，p指向第一个结点(若为空表，则为nullptr)，j为计数器
 
 		if (x == 0)
-			return L;       // 若x等于0，则返回头结点
+			return L;       // 若x等于0，则返回头指针
 		if (x < 1)
 			return nullptr; // 若x无效，则直接返回NULL
 		while (p != nullptr && j < x)  // 从第1个结点开始找，直到 p指向第x个元素(j=x) 或 p为空(达到尾结点)
@@ -104,7 +103,7 @@ public:
 	/* 按值查找，返回值域为给定值e的链表结点 */
 	ListNode *LocateElem(ElemType e)
 	{
-		ListNode *p = L->next; // 从第一个结点开始找
+		ListNode *p = L; // 从第一个结点开始找
 		while (p != nullptr && (p->data != e)) // 从第1个结点开始查找 data域为e 的结点
 		{
 			p = p->next;
@@ -145,7 +144,7 @@ public:
 	/* 输出操作，顺序输出线性表L的所有元素值 */
 	void PrintList()
 	{
-		ListNode *p = L->next; // 从第一个结点开始输出
+		ListNode *p = L; // 从第一个结点开始输出
 		while (p != nullptr)
 		{
 			cout << p->data << ' ';
