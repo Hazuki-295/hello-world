@@ -1,147 +1,139 @@
-#include <iostream>
+ï»¿#include <iostream>
 using namespace std;
 
 #define MaxSize 50
 
-/* Ë³ĞòÕ»Ä£°åÀà */
+/* é¡ºåºæ ˆæ¨¡æ¿ç±» */
 template<typename T> class Stack {
 
 private:
-    typedef T ElemType;
+	using ElemType = T;
 
-    /* Õ»µÄË³Ğò´æ´¢ÀàĞÍ */
-    typedef struct {
-        ElemType *data; // ´æ·ÅÕ»ÖĞÔªËØ
-        int top;        // Õ»¶¥Ö¸Õë
-    } SqStack;          // Ë³ĞòÕ»µÄÀàĞÍ¶¨Òå
+	/* æ ˆçš„é¡ºåºå­˜å‚¨ç±»å‹ */
+	ElemType *data;     // å­˜æ”¾æ ˆä¸­å…ƒç´ 
+	int top;            // æ ˆé¡¶æŒ‡é’ˆ
 
-    int maxsize;	    // Õ»µÄ×î´óÔªËØ¸öÊı
-
-    SqStack S; // ÉùÃ÷Ò»¸öË³ĞòÕ»S(ËüÊÇÒ»¸ö½á¹¹Ìå±äÁ¿)
+	int maxsize;	    // æ ˆçš„æœ€å¤§å…ƒç´ ä¸ªæ•°
 
 public:
-    // ¹¹Ôìº¯Êı
-    Stack() { InitStack(); } //Ä¬ÈÏ
+	// æ„é€ å‡½æ•°
+	Stack() { InitStack(); } //é»˜è®¤
 
-    /* ³õÊ¼»¯Ò»¸ö¿ÕÕ» */
-    void InitStack()
-    {
-        S.top = -1; // ³õÊ¼»¯Õ»¶¥Ö¸Õë
+	/* åˆå§‹åŒ–ä¸€ä¸ªç©ºæ ˆ */
+	void InitStack()
+	{
+		top = -1; // åˆå§‹åŒ–æ ˆé¡¶æŒ‡é’ˆ
 
-        maxsize = MaxSize;
-        S.data = new ElemType[maxsize]; // Êı¾İÓò
-    }
+		maxsize = MaxSize;
+		data = new ElemType[maxsize]; // æ•°æ®åŸŸ
+	}
 
-    /* ³õÊ¼»¯Ò»¸ö¿ÕÕ»(Ö¸¶¨´óĞ¡) */
-    void InitStack(int size)
-    {
-        S.top = -1; // ³õÊ¼»¯Õ»¶¥Ö¸Õë
+	/* åˆå§‹åŒ–ä¸€ä¸ªç©ºæ ˆ(æŒ‡å®šå¤§å°) */
+	void InitStack(int size)
+	{
+		top = -1; // åˆå§‹åŒ–æ ˆé¡¶æŒ‡é’ˆ
 
-        maxsize = size;
-        S.data = new ElemType[maxsize]; // Êı¾İÓò
-    }
+		maxsize = size;
+		data = new ElemType[maxsize]; // æ•°æ®åŸŸ
+	}
 
-    /* ÅĞÕ»¿Õ */
-    bool StackEmpty()
-    {
-        if (S.top == -1)  // Õ»¿Õ
-            return true;
-        else              // Õ»²»¿Õ
-            return false;
-    }
+	/* åˆ¤æ ˆç©º */
+	bool StackEmpty()
+	{
+		if (top == -1)  // æ ˆç©º
+			return true;
+		else              // æ ˆä¸ç©º
+			return false;
+	}
 
-    /* ½øÕ»£¬ÈôÕ»SÎ´Âú£¬Ôò½«x¼ÓÈëÊ¹Ö®³ÉÎªĞÂµÄÕ»¶¥ */
-    bool Push(ElemType x)
-    {
-        if (S.top == maxsize - 1)  // Õ»Âú£¬±¨´í
-            return false;
-        S.data[++S.top] = x;       // Ö¸ÕëÏÈ¼Ó1£¬ÔÙÈëÕ»
-        return true;
-    }
+	/* è¿›æ ˆï¼Œè‹¥æ ˆSæœªæ»¡ï¼Œåˆ™å°†xåŠ å…¥ä½¿ä¹‹æˆä¸ºæ–°çš„æ ˆé¡¶ */
+	bool Push(ElemType x)
+	{
+		if (top == maxsize - 1)  // æ ˆæ»¡ï¼ŒæŠ¥é”™
+			return false;
+		data[++top] = x;       // æŒ‡é’ˆå…ˆåŠ 1ï¼Œå†å…¥æ ˆ
+		return true;
+	}
 
-    /* ³öÕ»£¬ÈôÕ»S·Ç¿Õ£¬Ôòµ¯³öÕ»¶¥ÔªËØ£¬²¢ÓÃx·µ»ØÆäÖµ */
-    bool Pop(ElemType &x)
-    {
-        if (S.top == -1)     // Õ»¿Õ£¬±¨´í
-            return false;
-        x = S.data[S.top--]; // ÏÈ³öÕ»£¬Ö¸ÕëÔÙ¼õ1
-        return true;
-    }
+	/* å‡ºæ ˆï¼Œè‹¥æ ˆSéç©ºï¼Œåˆ™å¼¹å‡ºæ ˆé¡¶å…ƒç´ ï¼Œå¹¶ç”¨xè¿”å›å…¶å€¼ */
+	bool Pop(ElemType &x)
+	{
+		if (top == -1)     // æ ˆç©ºï¼ŒæŠ¥é”™
+			return false;
+		x = data[top--]; // å…ˆå‡ºæ ˆï¼ŒæŒ‡é’ˆå†å‡1
+		return true;
+	}
 
-    /* ¶ÁÕ»¶¥ÔªËØ */
-    bool GetTop(ElemType &x)
-    {
-        if (S.top == -1)     // Õ»¿Õ£¬±¨´í
-            return false;
-        x = S.data[S.top];   // x¼ÇÂ¼Õ»¶¥ÔªËØ
-        return true;
-    }
+	/* è¯»æ ˆé¡¶å…ƒç´  */
+	bool GetTop(ElemType &x)
+	{
+		if (top == -1)     // æ ˆç©ºï¼ŒæŠ¥é”™
+			return false;
+		x = data[top];   // xè®°å½•æ ˆé¡¶å…ƒç´ 
+		return true;
+	}
 }; // SqStack
 
-/* Ë³Ğò¶ÓÁĞÄ£°åÀà */
+/* é¡ºåºé˜Ÿåˆ—æ¨¡æ¿ç±» */
 template<typename T> class Queue {
 
 private:
-    typedef T ElemType;
+	using ElemType = T;
 
-    /* ¶ÓÁĞµÄË³Ğò´æ´¢ÀàĞÍ */
-    typedef struct {
-        ElemType *data;      // ´æ·Å¶ÓÁĞÔªËØ
-        int front, rear;     // ¶ÓÍ·Ö¸ÕëºÍ¶ÓÎ²Ö¸Õë
-    } SqQueue;               // Ë³Ğò¶ÓÁĞµÄÀàĞÍ¶¨Òå
+	/* é˜Ÿåˆ—çš„é¡ºåºå­˜å‚¨ç±»å‹ */
+	ElemType *data;      // å­˜æ”¾é˜Ÿåˆ—å…ƒç´ 
+	int front, rear;     // é˜Ÿå¤´æŒ‡é’ˆå’Œé˜Ÿå°¾æŒ‡é’ˆ
 
-    int maxsize;	         // ¶ÓÁĞµÄ×î´óÔªËØ¸öÊı
-
-    SqQueue Q; // ÉùÃ÷Ò»¸öË³Ğò¶ÓÁĞQ(ËüÊÇÒ»¸ö½á¹¹Ìå±äÁ¿)
+	int maxsize;	         // é˜Ÿåˆ—çš„æœ€å¤§å…ƒç´ ä¸ªæ•°
 
 public:
-    // ¹¹Ôìº¯Êı
-    Queue() { InitQueue(); } //Ä¬ÈÏ
+	// æ„é€ å‡½æ•°
+	Queue() { InitQueue(); } //é»˜è®¤
 
-    /* ³õÊ¼»¯Ò»¸ö¿Õ¶ÓÁĞ */
-    void InitQueue()
-    {
-        Q.rear = Q.front = 0;			  // ³õÊ¼»¯¶ÓÊ×¡¢¶ÓÎ²Ö¸Õë
+	/* åˆå§‹åŒ–ä¸€ä¸ªç©ºé˜Ÿåˆ— */
+	void InitQueue()
+	{
+		rear = front = 0;			  // åˆå§‹åŒ–é˜Ÿé¦–ã€é˜Ÿå°¾æŒ‡é’ˆ
 
-        maxsize = MaxSize;
-        Q.data = new ElemType[maxsize]; // Êı¾İÓò
-    }
+		maxsize = MaxSize;
+		data = new ElemType[maxsize]; // æ•°æ®åŸŸ
+	}
 
-    /* ³õÊ¼»¯Ò»¸ö¿Õ¶ÓÁĞ(Ö¸¶¨´óĞ¡) */
-    void InitQueue(int size)
-    {
-        Q.rear = Q.front = 0;			  // ³õÊ¼»¯¶ÓÊ×¡¢¶ÓÎ²Ö¸Õë
+	/* åˆå§‹åŒ–ä¸€ä¸ªç©ºé˜Ÿåˆ—(æŒ‡å®šå¤§å°) */
+	void InitQueue(int size)
+	{
+		rear = front = 0;			  // åˆå§‹åŒ–é˜Ÿé¦–ã€é˜Ÿå°¾æŒ‡é’ˆ
 
-        maxsize = size;
-        Q.data = new ElemType[maxsize]; // Êı¾İÓò
-    }
+		maxsize = size;
+		data = new ElemType[maxsize]; // æ•°æ®åŸŸ
+	}
 
-    /* ÅĞ¶ÓÁĞ¿Õ */
-    bool QueueEmpty()
-    {
-        if (Q.rear == Q.front) //¶Ó¿ÕÌõ¼ş
-            return true;
-        else
-            return false;
-    }
+	/* åˆ¤é˜Ÿåˆ—ç©º */
+	bool QueueEmpty()
+	{
+		if (rear == front) //é˜Ÿç©ºæ¡ä»¶
+			return true;
+		else
+			return false;
+	}
 
-    /* Èë¶Ó£¬Èô¶ÓÁĞQÎ´Âú£¬½«x¼ÓÈë£¬Ê¹Ö®³ÉÎªĞÂµÄ¶ÓÎ² */
-    bool EnQueue(ElemType x)
-    {
-        if ((Q.rear + 1) % maxsize == Q.front) // ¶ÓÂúÔò±¨´í
-            return false;
-        Q.data[Q.rear] = x;
-        Q.rear = (Q.rear + 1) % maxsize; // ¶ÓÎ²Ö¸Õë¼Ó1È¡Ä£
-        return true;
-    }
+	/* å…¥é˜Ÿï¼Œè‹¥é˜Ÿåˆ—Qæœªæ»¡ï¼Œå°†xåŠ å…¥ï¼Œä½¿ä¹‹æˆä¸ºæ–°çš„é˜Ÿå°¾ */
+	bool EnQueue(ElemType x)
+	{
+		if ((rear + 1) % maxsize == front) // é˜Ÿæ»¡åˆ™æŠ¥é”™
+			return false;
+		data[rear] = x;
+		rear = (rear + 1) % maxsize; // é˜Ÿå°¾æŒ‡é’ˆåŠ 1å–æ¨¡
+		return true;
+	}
 
-    /* ³ö¶Ó£¬Èô¶ÓÁĞQ·Ç¿Õ£¬É¾³ı¶ÓÍ·ÔªËØ£¬²¢ÓÃx·µ»Ø */
-    bool DeQueue(ElemType &x)
-    {
-        if (Q.rear == Q.front) // ¶Ó¿ÕÔò±¨´í
-            return false;
-        x = Q.data[Q.front];
-        Q.front = (Q.front + 1) % maxsize; // ¶ÓÍ·Ö¸Õë¼Ó1È¡Ä£
-        return true;
-    }
+	/* å‡ºé˜Ÿï¼Œè‹¥é˜Ÿåˆ—Qéç©ºï¼Œåˆ é™¤é˜Ÿå¤´å…ƒç´ ï¼Œå¹¶ç”¨xè¿”å› */
+	bool DeQueue(ElemType &x)
+	{
+		if (rear == front) // é˜Ÿç©ºåˆ™æŠ¥é”™
+			return false;
+		x = data[front];
+		front = (front + 1) % maxsize; // é˜Ÿå¤´æŒ‡é’ˆåŠ 1å–æ¨¡
+		return true;
+	}
 }; // SqQueue
