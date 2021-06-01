@@ -32,8 +32,8 @@ public:
 	void CreateBiTree() { CreateBiTree(T); }
 	void CountLeaf(int &count) { CountLeaf(T, count); }
 	void CountNode(int &count) { CountNode(T, count); }
-	void Depth() { Depth(T); }
-	void maxDepth() { maxDepth(T); }
+	int Depth() { return Depth(T); }
+	int maxDepth() { return maxDepth(T); }
 	void InOrder() { InOrder(T); }
 	void PreOrder() { PreOrder(T); }
 	void PostOrder() { PostOrder(T); }
@@ -103,7 +103,7 @@ public:
 	{
 		if (root == nullptr)
 			return 0;
-		return 1 + max(maxDepth(root->left), maxDepth(root->right));
+		return 1 + max(maxDepth(root->lchild), maxDepth(root->rchild));
 	}
 
 	/* 先序遍历二叉树 */
@@ -211,6 +211,11 @@ int main()
 	T.InOrder(); cout << " "; T.InOrder2(); cout << endl;
 	cout << "后序遍历："; T.PostOrder(); cout << endl;
 	cout << "层次遍历："; T.LevelOrder(); cout << endl;
+
+	int count1 = 0, count2 = 0; T.CountNode(count1); T.CountLeaf(count2);
+	cout << "树的深度为：" << T.maxDepth() << endl;
+	cout << "树的结点个数为：" << count1 << endl;
+	cout << "树的叶子结点个数为：" << count2 << endl;
 
 	return 0;
 }
