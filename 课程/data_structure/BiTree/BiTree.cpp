@@ -23,20 +23,20 @@ private:
 	using BiTNode = BiTNode<T>;
 	using BiTree = BiTree<T>;
 
-	BiTree T = nullptr; // 指向树根的指针
+	BiTree root = nullptr; // 指向树根的指针
 
 	void (*visit)(ElemType &e) = PrintElement;
 
 public:
 	// 对象调用(递归算法)
-	void CreateBiTree() { CreateBiTree(T); }
-	void CountLeaf(int &count) { CountLeaf(T, count); }
-	void CountNode(int &count) { CountNode(T, count); }
-	int Depth() { return Depth(T); }
-	int maxDepth() { return maxDepth(T); }
-	void InOrder() { InOrder(T); }
-	void PreOrder() { PreOrder(T); }
-	void PostOrder() { PostOrder(T); }
+	void CreateBiTree() { CreateBiTree(root); }
+	void CountLeaf(int &count) { CountLeaf(root, count); }
+	void CountNode(int &count) { CountNode(root, count); }
+	int Depth() { return Depth(root); }
+	int maxDepth() { return maxDepth(root); }
+	void InOrder() { InOrder(root); }
+	void PreOrder() { PreOrder(root); }
+	void PostOrder() { PostOrder(root); }
 
 
 	/* 按先序扩展序列(字符)，建立二叉树的二叉链表 */
