@@ -1,71 +1,46 @@
 ﻿#include <iostream>
-#include <unordered_map>
+#include <vector>
 using namespace std;
 
-struct grass_node
-{
-	// 成员
-	int x, y; // 坐标
-	// 构造函数
-	grass_node(int _x, int _y) :x(_x), y(_y) {}
+/* 二维前缀和方法。检索一次的时间复杂度为O(1)。 */
+class NumMatrix {
+public:
+	vector<vector<int>> sums; // m+1 行 n+1 列，存放矩阵的二维前缀和。sums[i+1][j+1] 的值为 f(i, j) 的值。
+
+	NumMatrix(vector<vector<int>> &matrix) { // 计算二维前缀和
+		int m = matrix.size();    // 矩阵行数m
+		if (m == 0) return;
+		int n = matrix[0].size(); // 矩阵列数n
+		sums.resize(m + 1, vector<int>(n + 1)); // 方便计算 sumRegion
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				sums[i + 1][j + 1] = sums[i][j + 1] + sums[i + 1][j] - sums[i][j] + matrix[i][j];
+			} // f(i, j) = f(i-1, j) + f(i, j-1) - f(i-1, j-1) + matrix[i][j]
+		}
+	}
+
+	int sumRegion(int row1, int col1, int row2, int col2) {
+		return sums[row2 + 1][col2 + 1] - sums[row1][col2 + 1] - sums[row2 + 1][col1] + sums[row1][col1];
+	} // f(row2, col2) - f(row1-1, col2) - f(row2, col1-1) + f(row1-1, col1-1)
 };
 
-bool operator==(const grass_node &a, const grass_node &b)
-{
-	return (a.x == b.x && a.y == b.y);
-}
-
-namespace std
-{
-	template <>
-	struct hash<grass_node>
-	{
-		// 用来散列一个无序容器的类型必须要定义下列类型
-		typedef size_t result_type;
-		typedef grass_node argument_type; // 默认情况下，此类型需要==
-		size_t operator() (const grass_node &s) const;
-		// 我们的类使用合成的拷贝控制成员和默认构造函数
-	};
-	size_t hash<grass_node>::operator() (const grass_node &s) const
-	{
-		return hash<int>() (s.x) ^ hash<int>() (s.y);
-	}
-} // 关闭std命名空间
-
-/* Problem F. 小N的作业题 */
 int main()
 {
-	// 杂草坐标，体力(权值)
-	int grass_num; cin >> grass_num;
-
-	int x, y, w; // 坐标，权值
-	unordered_map<grass_node, int> grass;
-	for (int i = 0; i < grass_num; i++) // 杂草信息
-	{
+	vector<vector<int>> grass;
+	int grassNum; cin >> grassNum;
+	grass.resize(2000 + 1, vector<int>(2000 + 1));
+	int x, y, w;
+	for (int i = 0; i < grassNum; i++) {
 		cin >> x >> y >> w;
-		auto temp = grass_node(x, y);
-		grass[temp] += w;
+		grass[x][y] += w;
 	}
 
-	int search_num; cin >> search_num; // 查询次数
-	int x1, y1, x2, y2; // 查询的矩形(闭区间)
-	for (int i = 0; i < search_num; i++)
-	{
-		int cost = 0; // 清除相应矩形区域内杂草耗费的体力总和
+	int searchNum; cin >> searchNum;
+	int x1, y1, x2, y2;
+	NumMatrix *obj = new NumMatrix(grass);
+	for (int i = 0; i < searchNum; i++) {
 		cin >> x1 >> y1 >> x2 >> y2;
-
-		for (auto temp : grass) // 对每一颗杂草
-		{
-			if (x1 <= temp.first.x && temp.first.x <= x2) // x1<=x<=x2,y1<=y<=y2
-			{
-				if (y1 <= temp.first.y && temp.first.y <= y2)
-				{
-					cost += temp.second;
-				}
-			}
-		}
-		cout << cost << endl;
+		cout << obj->sumRegion(x1, y1, x2, y2) << endl;
 	}
-
 	return 0;
 }
