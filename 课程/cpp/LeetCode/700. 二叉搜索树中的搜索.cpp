@@ -10,6 +10,7 @@ struct TreeNode {
 	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
+/* 给定二叉搜索树（BST）的根节点和一个值。 你需要在BST中找到节点值等于给定值的节点。 */
 class Solution {
 public:
 	TreeNode *searchBST(TreeNode *root, int val) {
