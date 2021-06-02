@@ -84,7 +84,7 @@ public:
 	}
 };
 
-/* 编译器版本不同，平台上课通过版本 */
+/* 编译器版本不同，平台上可通过版本 */
 int main()
 {
 	int nodeNum; cin >> nodeNum;
