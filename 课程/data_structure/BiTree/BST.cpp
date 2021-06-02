@@ -15,7 +15,7 @@ template<typename T> using BiTree = BiTNode<T> *;
 
 template<typename T> class BST
 {
-public:
+private:
 	using ElemType = T;
 	using BiTNode = BiTNode<T>;
 	using BiTree = BiTree<T>;
@@ -24,7 +24,7 @@ public:
 
 	void (*visit)(ElemType &e) = printElement;
 
-private:
+public:
 	/* 二叉排序树的查找 */
 	BiTNode *searchBST(BiTree T, ElemType key) {
 		while (T != nullptr && key != T->data) {   // 若树空或等于根结点值，则结束循环
