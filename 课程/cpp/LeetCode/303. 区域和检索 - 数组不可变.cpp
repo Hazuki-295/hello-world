@@ -10,7 +10,7 @@ public:
 	NumArray(vector<int> &nums) { // 预处理，计算出数组nums在每个下标处的前缀和
 		int n = nums.size();
 		sums.resize(n + 1); 
-		// 长度为 n - 1，方便计算 sumRange(i, j)
+		// 长度为 n + 1，方便计算 sumRange(i, j)
 		for (int i = 0; i < n; i++) {        // 遍历数组 nums 计算前缀和
 			sums[i + 1] = sums[i] + nums[i]; // nums[0 ~ i] = nums[0 ~ (i - 1)] + nums[i]
 		}
