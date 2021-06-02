@@ -7,7 +7,7 @@ public:
 	vector<int> sums; 
 	// 前缀和数组，sums[i]表示数组nums从下标0到下标i-1的前缀和。sums[0] = 0，无实际意义
 
-	NumArray(vector<int> &nums) {
+	NumArray(vector<int> &nums) { // 预处理，计算出数组nums在每个下标处的前缀和
 		int n = nums.size();
 		sums.resize(n + 1); 
 		// 长度为 n - 1，方便计算 sumRange(i, j)
@@ -16,7 +16,7 @@ public:
 		}
 	}
 
-	int sumRange(int i, int j) {      // 每次检索只需要得到两个下标处的前缀和，然后计算差值
+	int sumRange(int i, int j) {      // 每次检索只需要得到两个下标处的前缀和，然后计算差值，时间复杂度为O(1)
 		return sums[j + 1] - sums[i]; // sumRange(i, j) = nums[0 ~ j] - nums[0 ~ (i - 1)]
 	}
 };
