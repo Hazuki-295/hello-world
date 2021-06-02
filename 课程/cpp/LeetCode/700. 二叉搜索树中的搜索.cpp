@@ -19,6 +19,6 @@ public:
 			else if (val > root->val) // 大于，则在右子树上查找
 				root = root->right;
 		}
-		return root;
+		return root; // 返回以该节点为根的子树。若结点不存在，则返回 NULL
 	}
 };
