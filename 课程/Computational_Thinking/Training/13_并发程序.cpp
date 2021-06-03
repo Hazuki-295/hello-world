@@ -132,7 +132,7 @@ public:
 						// waiting.push_front(block.front()); // 插队到队头
 						waiting.insert(waiting.begin() + 1, block.front()); // 注意，当前的程序还没处理完
 						block.pop();
-						cur = &(waiting.front()); // 注意：因为头插会改变当前指针所指的元素，需要显式地重新取队头
+						cur = &(waiting.front()); // 注意：因为中间插入会移动元素，需要显式地重新取队头
 					}
 					cur->statements.pop(); // 执行下一条语句
 					break;
