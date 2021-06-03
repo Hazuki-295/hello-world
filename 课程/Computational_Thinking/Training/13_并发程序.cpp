@@ -40,7 +40,7 @@ private:
 	unordered_map<char, int> variables;
 
 	// 操作数 和 操作符
-	char operand1 = 0;
+	char operand1 = 'a';  // 变量用单个小写字母表示
 	string op, operand2;
 
 public:
