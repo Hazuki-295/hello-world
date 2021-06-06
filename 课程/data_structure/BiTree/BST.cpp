@@ -40,7 +40,7 @@ public:
 	bool insertBST(BiTree &T, ElemType val)
 	{
 		if (T == nullptr) { // 原树为空，新插入的记录为根结点
-			T = new BiTree;
+			T = new BiTNode;
 			T->data = val;
 			T->lchild = T->rchild = nullptr;
 			return true;
