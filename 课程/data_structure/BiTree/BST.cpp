@@ -65,7 +65,7 @@ public:
 	}
 
 	/* 访问结点 */
-	static void printElement(ElemType &e) { cout << e; }
+	static void printElement(ElemType &e) { cout << e << " "; }
 
 	/* 接口 */
 	BiTNode *searchBST(ElemType key) { return searchBST(root, key); }
