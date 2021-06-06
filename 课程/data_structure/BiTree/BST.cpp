@@ -65,6 +65,9 @@ public:
 	/* 访问结点 */
 	static void printElement(ElemType &e) { cout << e; }
 
+	/* 接口 */
+	BiTNode *searchBST(ElemType key) { return searchBST(root, key); }
+	bool insertBST(ElemType val) { return insertBST(root, val); }
 	void inorderTraverse() { inorderTraverse(root); }
 
 	/* 中序遍历 */
@@ -78,3 +81,22 @@ public:
 		}
 	}
 };
+
+int main()
+{
+	int nodeNum; cin >> nodeNum;
+	BST<int> Tree; Tree.creatBST(nodeNum);
+	Tree.inorderTraverse(); cout << endl;// 中序遍历原二叉排序树后的有序序列
+	int val; cin >> val;
+	if (Tree.searchBST(val) == nullptr)
+	{
+		Tree.insertBST(val);
+		cout << "插入成功" << endl;
+		Tree.inorderTraverse(); cout << endl;
+	}
+	else
+	{
+		cout << "查找成功 " << endl;
+	}
+	return 0;
+}
