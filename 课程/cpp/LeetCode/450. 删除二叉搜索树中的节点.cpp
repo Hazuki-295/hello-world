@@ -1,7 +1,6 @@
 #include <iostream>
 using namespace std;
 
-// Definition for a binary tree node.
 struct TreeNode {
 	int val;
 	TreeNode *left;
@@ -18,7 +17,7 @@ public:
 		root = root->right;           // 先取当前节点的右节点(后继在右子树)
 		while (root->left != nullptr) // 然后一直取该节点的左节点，直到左节点为空
 			root = root->left;
-		return root->val; // 返回后继结点的值
+		return root->val; // 返回后继节点的值
 	}
 
 	/* 直接前驱，中序遍历序列的前一个节点，即比当前节点小的最大节点。 */
@@ -26,7 +25,7 @@ public:
 		root = root->left;             // 先取当前节点的左节点(前驱在左子树)
 		while (root->right != nullptr) // 然后一直取该结点的右节点，直到右节点为空
 			root = root->right;
-		return root->val; // 返回前驱结点的值
+		return root->val; // 返回前驱节点的值
 	}
 
 	/* 删除二叉搜索树中的 key 对应的节点，返回二叉搜索树（有可能被更新）的根节点的引用。 */
