@@ -23,3 +23,13 @@ public:
 		return root; // 返回以该节点为根的子树。若结点不存在，则返回 NULL
 	}
 };
+
+/* 递归实现 */
+class Solution {
+public:
+	TreeNode *searchBST(TreeNode *root, int val) {
+		if (root == nullptr || val == root->val) // 若树空或等于根结点值，则结束循环
+			return root;
+		return val < root->val ? searchBST(root->left, val) : searchBST(root->right, val); // 小于，则在左子树上查找
+	}
+};
