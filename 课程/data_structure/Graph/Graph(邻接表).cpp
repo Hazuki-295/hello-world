@@ -115,15 +115,6 @@ public:
 		else // 若x有邻接点，则p指向最后一个邻接边
 			p->nextarc = new ArcNode(index_y, w); // 添加下一条弧
 		return true;
-
-		/* 采用头插法 */
-		ArcNode *p, *q; // 辅助指针
-		int index_x = LocateVex(x), index_y = LocateVex(y);
-
-		p = vertices[index_x].firstarc; // 头结点
-		q = new ArcNode(index_y, w);    // 创建新结点
-
-
 	}
 	bool InsertArc2(VertexType x, VertexType y, InfoType w)
 	{
