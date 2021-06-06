@@ -28,10 +28,12 @@ public:
 	/* 二叉排序树的查找 */
 	BiTNode *searchBST(BiTree T, ElemType key) {
 		while (T != nullptr && key != T->data) {   // 若树空或等于根结点值，则结束循环
-			if (key < T->data) T = T->lchild;      // 小于，则在左子树上查找
-			else if (key > T->data) T = T->rchild; // 大于，则在右子树上查找
+			if (key < T->data)      // 小于，则在左子树上查找
+				T = T->lchild;
+			else if (key > T->data) // 大于，则在右子树上查找
+				T = T->rchild;
 		}
-		return root; // 返回以该节点为根的子树。若结点不存在，则返回 NULL
+		return T; // 返回以该节点为根的子树。若结点不存在，则返回 NULL
 	}
 
 	/* 二叉排序树的插入 */
