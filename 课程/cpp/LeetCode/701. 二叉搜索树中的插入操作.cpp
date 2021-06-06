@@ -14,7 +14,7 @@ struct TreeNode {
 class Solution {
 public:
 	TreeNode *insertIntoBST(TreeNode *root, int val) {
-		if (root == nullptr) { // 原树为空，新插入的记录为根结点
+		if (root == nullptr) { // 原树为空树，新插入的记录为根结点
 			TreeNode *node = new TreeNode(val);
 			return node;       // 返回插入后二叉搜索树的根节点
 		}
@@ -30,6 +30,6 @@ public:
 		TreeNode *node = new TreeNode(val);         // 新插入的结点
 		if (val < parent->val) parent->left = node; // 完成父子节点的赋值
 		else parent->right = node;
-		return root;
+		return root; // 二叉搜索树的树根 root 是一直保留的，返回
 	}
 };
