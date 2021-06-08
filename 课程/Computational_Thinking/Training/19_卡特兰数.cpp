@@ -2,13 +2,13 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include <unordered_map>
+#include <unordered_set>
 using namespace std;
 
 class Solution
 {
 private:
-	vector<string> res; int length;
+	unordered_set<string> res; int length;
 public:
 	// 从A串的第一个字符开始，依次取出串中的每个字符
 	// 可以选择将取出的字符直接放入字符串B或C的尾部
@@ -18,26 +18,23 @@ public:
 	Solution(int length) :length(length) {}
 
 	void backtrack(string &A, string &B, string &C) {
-		if (C.size() == length) { // 所有字符都放入C了
-			res.push_back(C); // 得到一个等价串
+		if (A.size() == 0 && B.size() == 0) { // 所有字符都放入C了
+			res.insert(C); // 得到一个等价串
 			return;
 		}
 
-		if (A.size() + B.size() + C.size() != length) return;
-
-		string copy_A(A), copy_B(B), copy_C(C);
 		if (B.size() != 0) {
 			char temp = B.back();
-			B.pop_back(); C.push_back(temp);    // 尝试
+			B.pop_back(); C.push_back(temp); // 尝试
 			backtrack(A, B, C);
-			A = copy_A; B = copy_B; C = copy_C; // 回溯
+			B.push_back(temp); C.pop_back(); // 回溯
 		}
 
 		if (A.size() != 0) {
 			char temp = A.front(); A.erase(A.begin());
-			B.push_back(temp); backtrack(A, B, C);  // 尝试
-			A = copy_A; B = copy_B; C = copy_C;     // 回溯
-			C.push_back(temp); backtrack(A, B, C);
+			B.push_back(temp); backtrack(A, B, C); B.pop_back(); // 尝试并回溯
+			C.push_back(temp); backtrack(A, B, C); C.pop_back(); // 尝试并回溯
+			A.insert(A.begin(), temp);
 		}
 	}
 
