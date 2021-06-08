@@ -10,7 +10,6 @@ private:
 public:
 	/* 回溯法，一种通过探索所有可能的候选解来找出所有的解的算法。 */
 	void backtrack(vector<vector<int>> &res, vector<int> &nums) {
-
 		if (output.size() == nums.size()) { // 所有数都填完了
 			res.emplace_back(output); // 得到一个排列的结果
 			return;
