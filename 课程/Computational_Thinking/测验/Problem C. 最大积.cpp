@@ -91,9 +91,16 @@ int main()
 		long long ans = 0; int min = 0; // ans为满足要求的最大乘积，min为得到该最大积的最少因数个数
 
 		vector<product> result; // 两部分相乘
-		result.push_back(product(sum_posi, count_posi));
-		result.push_back(product(sum_nege, count_nege));
-		result.push_back(product(sum_posi * sum_nege, count_posi + count_nege));
+		if (sum_posi != 0) {
+			result.push_back(product(sum_posi, count_posi));
+		}
+		if (sum_nege != 0) {
+			result.push_back(product(sum_nege, count_nege));
+		}
+		if (sum_posi != 0 && sum_nege != 0)
+		{
+			result.push_back(product(sum_posi * sum_nege, count_posi + count_nege));
+		}
 		sort(result.begin(), result.end());
 		ans = result.back().val; min = result.back().count;
 
