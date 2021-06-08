@@ -36,7 +36,7 @@ int main()
 		cout << "Case " << ++cases << ":";
 		stringstream buffer(line);
 
-		int temp;
+		long long temp;
 		vector<int> factors; // 因子
 
 		while (buffer >> temp) factors.push_back(temp);
@@ -56,7 +56,7 @@ int main()
 			}
 		}
 
-		long long ans = 0; // ans为满足要求的最大乘积及对应的起止范围
+		long long ans; // ans为满足要求的最大乘积及对应的起止范围
 
 		sort(result.begin(), result.end());
 		product answer(result.back());
