@@ -97,8 +97,7 @@ int main()
 		if (sum_nege != 0) {
 			result.push_back(product(sum_nege, count_nege));
 		}
-		if (sum_posi != 0 && sum_nege != 0)
-		{
+		if (sum_posi != 0 && sum_nege != 0) {
 			result.push_back(product(sum_posi * sum_nege, count_posi + count_nege));
 		}
 		sort(result.begin(), result.end());
