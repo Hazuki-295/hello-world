@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <vector>
 #include <queue>
 #include <unordered_set>
@@ -6,53 +6,45 @@ using namespace std;
 
 #define NULLKEY -999
 
-template <typename K, typename V> struct Entry { //´ÊÌõÄ£°åÀà
-	K key; V value; //¹Ø¼üÂë¡¢ÊıÖµ
-	Entry(K k = K(), V v = V()) : key(k), value(v) {}; //Ä¬ÈÏ¹¹Ôìº¯Êı
-	Entry(Entry<K, V> const &e) : key(e.key), value(e.value) {}; //»ùÓÚ¿ËÂ¡µÄ¹¹Ôìº¯Êı
-	bool operator< (Entry<K, V> const &e) { return key < e.key; }  //±È½ÏÆ÷£ºĞ¡ÓÚ
-	bool operator> (Entry<K, V> const &e) { return key > e.key; }  //±È½ÏÆ÷£º´óÓÚ
-	bool operator== (Entry<K, V> const &e) { return key == e.key; } //ÅĞµÈÆ÷£ºµÈÓÚ
-	bool operator!= (Entry<K, V> const &e) { return key != e.key; } //ÅĞµÈÆ÷£º²»µÈÓÚ
-}; //µÃÒæÓÚ±È½ÏÆ÷ºÍÅĞµÈÆ÷£¬´Ó´ËÍùºó£¬²»±ØÑÏ¸ñÇø·Ö´ÊÌõ¼°Æä¶ÔÓ¦µÄ¹Ø¼üÂë
+template <typename K, typename V> struct Entry { //è¯æ¡æ¨¡æ¿ç±»
+	K key; V value; //å…³é”®ç ã€æ•°å€¼
+	Entry(K k = K(), V v = V()) : key(k), value(v) {}; //é»˜è®¤æ„é€ å‡½æ•°
+	Entry(Entry<K, V> const &e) : key(e.key), value(e.value) {}; //åŸºäºå…‹éš†çš„æ„é€ å‡½æ•°
+	bool operator< (Entry<K, V> const &e) { return key < e.key; }  //æ¯”è¾ƒå™¨ï¼šå°äº
+	bool operator> (Entry<K, V> const &e) { return key > e.key; }  //æ¯”è¾ƒå™¨ï¼šå¤§äº
+	bool operator== (Entry<K, V> const &e) { return key == e.key; } //åˆ¤ç­‰å™¨ï¼šç­‰äº
+	bool operator!= (Entry<K, V> const &e) { return key != e.key; } //åˆ¤ç­‰å™¨ï¼šä¸ç­‰äº
+}; //å¾—ç›Šäºæ¯”è¾ƒå™¨å’Œåˆ¤ç­‰å™¨ï¼Œä»æ­¤å¾€åï¼Œä¸å¿…ä¸¥æ ¼åŒºåˆ†è¯æ¡åŠå…¶å¯¹åº”çš„å…³é”®ç 
 
-template<typename KeyType, typename ValueType> struct hashElem {
-	// Êı¾İ³ÉÔ±
-	KeyType key; ValueType val; // ĞÅÏ¢Ö»ÓĞÒ»¸ö£¬¹Ø¼üÂëkey±¾Éí
-	// ¹¹Ôìº¯Êı
-	hashElem(KeyType key = KeyType(), ValueType val = ValueType()) :key(NULLKEY), val(val) {}
-	hashElem(KeyType key, ValueType val = ValueType()) :key(key), val(0) {}
+template<typename K, typename V> struct HashElem {
+	// æ•°æ®æˆå‘˜
+	K key; V val; // ä¿¡æ¯åªæœ‰ä¸€ä¸ªï¼Œå…³é”®ç keyæœ¬èº«
+	// æ„é€ å‡½æ•°
+	HashElem() :key(NULLKEY), val(V()) {}
+	HashElem(K key) :key(key), val(val) {}
 };
 
-template<typename KeyType> struct hashElem {
-	// Êı¾İ³ÉÔ±
-	KeyType key; int val; // ĞÅÏ¢Ö»ÓĞÒ»¸ö£¬¹Ø¼üÂëkey±¾Éí
-	// ¹¹Ôìº¯Êı
-	hashElem() :key(NULLKEY), val(0) {}
-	hashElem(KeyType key) :key(key), val(0) {}
-};
-
-istream &operator>>(istream &is, hashElem<int> &temp) {
-	is >> temp.key;
+istream &operator>>(istream &is, HashElem<int, int> &HashElem) {
+	is >> HashElem.key;
 	return is;
 }
 
-ostream &operator<<(ostream &os, hashElem<int> &temp) {
-	os << temp.key;
+ostream &operator<<(ostream &os, HashElem<int, int> &HashElem) {
+	os << HashElem.key;
 	return os;
 }
 
-/* ¿ª·Å¶¨Ö·¹şÏ£±í */
-template<typename KeyType, typename ElemType> class HashTable // keyÎª¹Ø¼üÂë
+/* å¼€æ”¾å®šå€å“ˆå¸Œè¡¨ */
+template<typename KeyType, typename ElemType> class HashTable // keyä¸ºå…³é”®ç 
 {
 private:
 	vector<ElemType> elem;
 	int hashsize = 15;
 public:
-	queue<ElemType> print; // ÓÃÓÚ´¦ÀíÊä³ö½á¹û
+	queue<ElemType> print; // ç”¨äºå¤„ç†è¾“å‡ºç»“æœ
 
 	HashTable(int size) {
-		elem.resize(hashsize); // ¹şÏ£±í³¤Îª15£¬µØÖ·Îª0¡­14£¬³õÊ¼¾ùÎª-999
+		elem.resize(hashsize); // å“ˆå¸Œè¡¨é•¿ä¸º15ï¼Œåœ°å€ä¸º0â€¦14ï¼Œåˆå§‹å‡ä¸º-999
 		ElemType temp;
 		for (int i = 0; i < size; i++) {
 			cin >> temp;
@@ -60,30 +52,30 @@ public:
 		}
 	}
 
-	int Hash(KeyType key) { return key % 11; } // ¹şÏ£º¯ÊıÎªH(key)=key mod 11
+	int Hash(KeyType key) { return key % 11; } // å“ˆå¸Œå‡½æ•°ä¸ºH(key)=key mod 11
 
-	bool searchHash(KeyType key, int &poi, int &count) { // ¹Ø¼üÂë£¬²åÈëÎ»ÖÃ£¬²éÕÒ´ÎÊı
-		poi = Hash(key); // ÇóµÃ¹şÏ£µØÖ·
-		while (elem[poi].key != NULLKEY && elem[poi].key != key) { // ¸ÃÎ»ÖÃÌîÓĞ¼ÇÂ¼£¬²¢ÇÒ¹Ø¼ü×Ö²»µÈ
-			count++; // ÇóµÃÏÂÒ»Ì½²éµØÖ·p
+	bool searchHash(KeyType key, int &poi, int &count) { // å…³é”®ç ï¼Œæ’å…¥ä½ç½®ï¼ŒæŸ¥æ‰¾æ¬¡æ•°
+		poi = Hash(key); // æ±‚å¾—å“ˆå¸Œåœ°å€
+		while (elem[poi].key != NULLKEY && elem[poi].key != key) { // è¯¥ä½ç½®å¡«æœ‰è®°å½•ï¼Œå¹¶ä¸”å…³é”®å­—ä¸ç­‰
+			count++; // æ±‚å¾—ä¸‹ä¸€æ¢æŸ¥åœ°å€p
 			collision(poi);
 		}
-		if (elem[poi].key == key) { // ²éÕÒ³É¹¦
-			count++; // ½øĞĞÁË±È½Ï¾Í+1
-			cout << "²éÕÒ³É¹¦ " << count << endl; /* ²âÊÔ´úÂë */
+		if (elem[poi].key == key) { // æŸ¥æ‰¾æˆåŠŸ
+			count++; // è¿›è¡Œäº†æ¯”è¾ƒå°±+1
+			cout << "æŸ¥æ‰¾æˆåŠŸ " << count << endl; /* æµ‹è¯•ä»£ç  */
 			return true;
 		}
 
-		return false; // ²éÕÒ²»³É¹¦£¬ÔòpoiÎª²åÈëÎ»ÖÃ(elem[poi].key == NULLKEY)
+		return false; // æŸ¥æ‰¾ä¸æˆåŠŸï¼Œåˆ™poiä¸ºæ’å…¥ä½ç½®(elem[poi].key == NULLKEY)
 	}
 
-	void collision(int &key) { // ´¦Àí³åÍ»
-		key = (key + 1) % hashsize;  // ÏßĞÔÌ½²âÔÙÉ¢ÁĞ(Ó¦¶Ô±í³¤È¡Óà)
+	void collision(int &key) { // å¤„ç†å†²çª
+		key = (key + 1) % hashsize;  // çº¿æ€§æ¢æµ‹å†æ•£åˆ—(åº”å¯¹è¡¨é•¿å–ä½™)
 	}
 
 	bool insertHash(ElemType e) {
-		int poi, count = 0; // ²åÈëµØÖ·£¬²éÕÒ´ÎÊı¼ÆÊıÆ÷
-		if (searchHash(e.key, poi, count) == true) // ±íÖĞÒÑÓĞÓëeÓĞÏàÍ¬¹Ø¼ü×ÖµÄÔªËØ
+		int poi, count = 0; // æ’å…¥åœ°å€ï¼ŒæŸ¥æ‰¾æ¬¡æ•°è®¡æ•°å™¨
+		if (searchHash(e.key, poi, count) == true) // è¡¨ä¸­å·²æœ‰ä¸eæœ‰ç›¸åŒå…³é”®å­—çš„å…ƒç´ 
 			return false;
 		else {
 			elem[poi] = e;
@@ -91,18 +83,18 @@ public:
 		}
 	}
 	bool insertHash2(ElemType e) {
-		int poi, count = 0; // ²åÈëµØÖ·£¬²éÕÒ´ÎÊı¼ÆÊıÆ÷
-		if (searchHash(e.key, poi, count) == true) // ±íÖĞÒÑÓĞÓëeÓĞÏàÍ¬¹Ø¼ü×ÖµÄÔªËØ
+		int poi, count = 0; // æ’å…¥åœ°å€ï¼ŒæŸ¥æ‰¾æ¬¡æ•°è®¡æ•°å™¨
+		if (searchHash(e.key, poi, count) == true) // è¡¨ä¸­å·²æœ‰ä¸eæœ‰ç›¸åŒå…³é”®å­—çš„å…ƒç´ 
 			return false;
 		else {
 			elem[poi] = e;
-			cout << "²åÈë³É¹¦ " << poi << endl; /* ²âÊÔ´úÂë */
+			cout << "æ’å…¥æˆåŠŸ " << poi << endl; /* æµ‹è¯•ä»£ç  */
 			return true;
 		}
 	}
 
 	void printHash() {
-		cout << elem[0].key; // Êä³ö¹şÏ£±íÖĞµÄËùÓĞ¹Ø¼ü×Ö£¬¿Õ¸ñ·Ö¸ô
+		cout << elem[0].key; // è¾“å‡ºå“ˆå¸Œè¡¨ä¸­çš„æ‰€æœ‰å…³é”®å­—ï¼Œç©ºæ ¼åˆ†éš”
 		for (int i = 1; i < hashsize; i++) {
 			cout << " " << elem[i].key;
 		}
@@ -113,10 +105,10 @@ public:
 int main()
 {
 	int keyNum; cin >> keyNum;
-	HashTable<int, hashElem<int>> *obj = new HashTable<int, hashElem<int>>(keyNum);
+	HashTable<int, HashElem<int, int>> *obj = new HashTable<int, HashElem<int, int>>(keyNum);
 	obj->printHash();
 	int key; cin >> key;
-	obj->insertHash2(hashElem<int>(key));
+	obj->insertHash2(HashElem<int, int>(key));
 
 	return 0;
 }
