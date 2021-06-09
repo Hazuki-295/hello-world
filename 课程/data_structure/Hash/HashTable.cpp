@@ -6,6 +6,24 @@ using namespace std;
 
 #define NULLKEY -999
 
+template <typename K, typename V> struct Entry { //词条模板类
+	K key; V value; //关键码、数值
+	Entry(K k = K(), V v = V()) : key(k), value(v) {}; //默认构造函数
+	Entry(Entry<K, V> const &e) : key(e.key), value(e.value) {}; //基于克隆的构造函数
+	bool operator< (Entry<K, V> const &e) { return key < e.key; }  //比较器：小于
+	bool operator> (Entry<K, V> const &e) { return key > e.key; }  //比较器：大于
+	bool operator== (Entry<K, V> const &e) { return key == e.key; } //判等器：等于
+	bool operator!= (Entry<K, V> const &e) { return key != e.key; } //判等器：不等于
+}; //得益于比较器和判等器，从此往后，不必严格区分词条及其对应的关键码
+
+template<typename KeyType, typename ValueType> struct hashElem {
+	// 数据成员
+	KeyType key; ValueType val; // 信息只有一个，关键码key本身
+	// 构造函数
+	hashElem(KeyType key = KeyType(), ValueType val = ValueType()) :key(NULLKEY), val(val) {}
+	hashElem(KeyType key, ValueType val = ValueType()) :key(key), val(0) {}
+};
+
 template<typename KeyType> struct hashElem {
 	// 数据成员
 	KeyType key; int val; // 信息只有一个，关键码key本身
