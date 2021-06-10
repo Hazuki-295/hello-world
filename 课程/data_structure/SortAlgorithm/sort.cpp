@@ -84,7 +84,7 @@ public:
 
 	int partition(vector<int> &nums, int low, int high) {
 		int pivot = nums[low]; // 将当前表中的第一个元素设为枢轴，对表进行划分
-		while (low < high) {
+		while (low < high) {   // 从两端交替地向中间扫描，low=high时一趟排序结束
 			while (low < high && nums[high] >= pivot) // 右端找到第一个小于枢轴的元素
 				high--;
 			nums[low] = nums[high]; // 将比枢轴小的元素移动到左端
