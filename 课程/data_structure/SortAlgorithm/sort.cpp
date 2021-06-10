@@ -67,6 +67,21 @@ void binaryInsertSort(vector<int> &A) { // 折半插入排序
 	/* 测试 */A.erase(A.begin()); // 完成后移除哨兵
 }
 
+void selectSort(vector<int> &A) {
+	int n = A.size(), min;
+	for (int i = 0; i < n - 1; i++) { // 共进行n-1趟
+		min = i; // 记录最小元素位置
+		for (int j = i + 1; j < n; j++) { // 在A[i,n-1]中选择最小的元素
+			if (A[j] < A[min]) {          // 更新最小元素位置
+				min = j;
+			}
+		}
+		if (min != i) {         // 若最小的元素确实在A[i]的右边，则
+			swap(A[i], A[min]); // 交换之
+		}
+	}
+}
+
 class Solution {
 public:
 	vector<int> sortArray(vector<int> &nums) {
@@ -107,11 +122,14 @@ int main()
 		num.push_back(temp);
 	}
 	vector<vector<int>> nums(6, num);
+	Solution *obj = new Solution;
 
 	bubblesort(nums[0]);       // 冒泡排序
 	binaryInsertSort(nums[1]); // 折半插入排序
 	insertSort(nums[2]);       // 插入排序
 	bubblesort2(nums[3]);      // 冒泡排序2
+	obj->quickSort(nums[4], 0, (int)nums[4].size() - 1); // 快速排序
+	selectSort(nums[5]);       // 简单选择排序
 
 	for (int i = 0; i < nums.size(); i++) {
 		for (int j = 0; j < nums[i].size() - 1; j++) {
