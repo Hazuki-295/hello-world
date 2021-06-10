@@ -124,9 +124,9 @@ int main()
 	vector<vector<int>> nums(6, num);
 	Solution *obj = new Solution;
 
-	bubblesort(nums[0]);       // 冒泡排序
+	insertSort(nums[0]);       // 插入排序
 	binaryInsertSort(nums[1]); // 折半插入排序
-	insertSort(nums[2]);       // 插入排序
+	bubblesort(nums[2]);       // 冒泡排序
 	bubblesort2(nums[3]);      // 冒泡排序2
 	obj->quickSort(nums[4], 0, (int)nums[4].size() - 1); // 快速排序
 	selectSort(nums[5]);       // 简单选择排序
