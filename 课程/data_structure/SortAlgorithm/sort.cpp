@@ -67,6 +67,38 @@ void binaryInsertSort(vector<int> &A) { // 折半插入排序
 	/* 测试 */A.erase(A.begin()); // 完成后移除哨兵
 }
 
+class Solution {
+public:
+	vector<int> sortArray(vector<int> &nums) {
+		quickSort(nums, 0, (int)nums.size() - 1);
+		return nums;
+	}
+
+	void quickSort(vector<int> &nums, int low, int high) {
+		if (low < high) {
+			int poi = partition(nums, low, high); // 划分
+			quickSort(nums, low, poi - 1);        // 递归对两个子表进行排序
+			quickSort(nums, poi + 1, high);
+		}
+	}
+
+	int partition(vector<int> &nums, int low, int high) {
+		int pivot = nums[low]; // 将当前表中的第一个元素设为枢轴，对表进行划分
+		while (low < high) {
+			while (low < high && nums[high] >= pivot) // 右端找到第一个小于枢轴的元素
+				high--;
+			nums[low] = nums[high]; // 将比枢轴小的元素移动到左端
+
+			while (low < high && nums[low] <= pivot) // 左端找到第一个大于枢轴的元素
+				low++;
+			nums[high] = nums[low]; // 将比枢轴大的元素移动到右端
+		}
+		nums[low] = pivot; // 枢轴元素存放到最终位置
+
+		return low; // 返回划分点
+	}
+};
+
 int main()
 {
 	int size, temp; vector<int> num; cin >> size;
