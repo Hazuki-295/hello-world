@@ -2,6 +2,61 @@
 #include <vector>
 using namespace std;
 
+/* 插入排序 */
+void insertSort(vector<int> &A) { // 直接插入排序
+	int length = A.size(), j;
+	/* 测试 */A.insert(A.begin(), 0);   // 插入哨兵
+	for (int i = 2; i <= length; i++) { // 依次将A[2]~A[n]插入到前面已排序的序列
+		if (A[i] < A[i - 1]) { // 若发现逆序，则需要插入。否则跳过。
+			A[0] = A[i];       // 复制为哨兵，暂存
+			for (j = i - 1; A[0] < A[j]; j--) { // 查找插入位置，仍然逆序时继续(若遇哨兵，则相等退出)
+				A[j + 1] = A[j]; // 同时后移元素，腾出位置
+			}
+			A[j + 1] = A[0]; // 插入到正确位置(A[0]<A[j]不满足，为不大于A[0]的最大元素，插入到后面)
+		}
+	}
+	/* 测试 */A.erase(A.begin()); // 完成后移除哨兵
+}
+
+void binaryInsertSort(vector<int> &A) { // 折半插入排序
+	int length = A.size(), low, high, mid;
+	/* 测试 */A.insert(A.begin(), 0);   // 插入哨兵
+	for (int i = 2; i <= length; i++) { // 依次将A[2]~A[n]插入到前面已排序的序列
+		A[0] = A[i]; // 将A[i]暂存到A[0]
+		low = 1; high = i - 1;
+		while (low <= high) {  // 折半查找找到A[i]的插入位置
+			mid = (low + high) / 2;
+			if (A[0] < A[mid]) // 插入点在左半区
+				high = mid - 1;
+			else               // 插入点在右半区
+				low = mid + 1;
+		}
+		for (int j = i - 1; j >= high + 1; j--) { // 插入位置及之后的元素后移
+			A[j + 1] = A[j];
+		}
+		A[high + 1] = A[0]; // 插入
+	}
+	/* 测试 */A.erase(A.begin()); // 完成后移除哨兵
+}
+
+void shellSort(vector<int> &A) { // 希尔排序
+	int length = A.size(), dk, j;
+	/* 测试 */A.insert(A.begin(), 0);   // 插入哨兵
+	for (dk = length / 2; dk >= 1; dk = dk / 2) { // 步长变化
+		for (int i = dk + 1; i <= length; i++) {
+			if (A[i] < A[i - dk]) { // 若发现逆序，则需要插入。否则跳过。
+				A[0] = A[i];        // 复制为哨兵，暂存
+				for (j = i - dk; j > 0 && A[0] < A[j]; j -= dk) { // 查找插入位置，仍然逆序时继续(j<=0时，插入位置已找到)
+					A[j + dk] = A[j]; // 同时后移元素，腾出位置
+				}
+				A[j + dk] = A[0]; // 插入到正确位置
+			}
+		}
+	}
+	/* 测试 */A.erase(A.begin()); // 完成后移除哨兵
+}
+
+/* 交换排序 */
 void bubblesort(vector<int> &A) { // 起泡排序算法
 	int n = A.size();
 	bool sorted = false; // 整体排序标志，首先假定尚未排序
@@ -31,57 +86,6 @@ void bubblesort2(vector<int> &A) { // 起泡排序算法(复杂版)
 	}
 }
 
-void insertSort(vector<int> &A) { // 直接插入排序
-	int length = A.size(), j;
-	/* 测试 */A.insert(A.begin(), 0);   // 插入哨兵
-	for (int i = 2; i <= length; i++) { // 依次将A[2]~A[n]插入到前面已排序的序列
-		if (A[i] < A[i - 1]) { // 若发现逆序，则需要插入。否则跳过。
-			A[0] = A[i];       // 复制为哨兵，暂存
-			for (j = i - 1; A[0] < A[j]; j--) { // 查找插入位置，仍然逆序时继续(若遇哨兵，则相等退出)
-				A[j + 1] = A[j]; // 同时后移元素，腾出位置
-			}
-			A[j + 1] = A[0]; // 插入到正确位置(A[0]<A[j]不满足，为不大于A[0]的最大元素，插入到后面)
-		}
-	}
-	/* 测试 */A.erase(A.begin()); // 完成后移除哨兵
-}
-
-void binaryInsertSort(vector<int> &A) { // 折半插入排序
-	int length = A.size(), low, high, mid;
-	/* 测试 */A.insert(A.begin(), 0); // 插入哨兵
-	for (int i = 2; i <= length; i++) {
-		A[0] = A[i]; // 将A[i]暂存到A[0]
-		low = 1; high = i - 1;
-		while (low <= high) {  // 折半查找A[i]的插入位置
-			mid = (low + high) / 2;
-			if (A[0] < A[mid]) // 插入点在左半区
-				high = mid - 1;
-			else               // 插入点在右半区
-				low = mid + 1;
-		}
-		for (int j = i - 1; j >= high + 1; j--) { // 插入位置及之后的元素后移
-			A[j + 1] = A[j];
-		}
-		A[high + 1] = A[0]; // 插入
-	}
-	/* 测试 */A.erase(A.begin()); // 完成后移除哨兵
-}
-
-void selectSort(vector<int> &A) {
-	int n = A.size(), min;
-	for (int i = 0; i < n - 1; i++) { // 共进行n-1趟
-		min = i; // 记录最小元素位置
-		for (int j = i + 1; j < n; j++) { // 在A[i,n-1]中选择最小的元素
-			if (A[j] < A[min]) {          // 更新最小元素位置
-				min = j;
-			}
-		}
-		if (min != i) {         // 若最小的元素确实在A[i]的右边，则
-			swap(A[i], A[min]); // 交换之
-		}
-	}
-}
-
 class Solution {
 public:
 	vector<int> sortArray(vector<int> &nums) {
@@ -89,7 +93,7 @@ public:
 		return nums;
 	}
 
-	void quickSort(vector<int> &nums, int low, int high) {
+	void quickSort(vector<int> &nums, int low, int high) { // 快速排序
 		if (low < high) {
 			int poi = partition(nums, low, high); // 划分
 			quickSort(nums, low, poi - 1);        // 递归对两个子表进行排序
@@ -114,6 +118,22 @@ public:
 	}
 };
 
+/* 选择排序 */
+void selectSort(vector<int> &A) { // 简单选择排序
+	int n = A.size(), min;
+	for (int i = 0; i < n - 1; i++) { // 共进行n-1趟
+		min = i; // 记录最小元素位置
+		for (int j = i + 1; j < n; j++) { // 在A[i,n-1]中选择最小的元素
+			if (A[j] < A[min]) {          // 更新最小元素位置
+				min = j;
+			}
+		}
+		if (min != i) {         // 若最小的元素确实在A[i]的右边，则
+			swap(A[i], A[min]); // 交换之
+		}
+	}
+}
+
 int main()
 {
 	int size, temp; vector<int> num; cin >> size;
@@ -121,16 +141,21 @@ int main()
 		cin >> temp;
 		num.push_back(temp);
 	}
-	vector<vector<int>> nums(6, num);
+	vector<vector<int>> nums(10, num);
 	Solution *obj = new Solution;
 
+	/* 插入排序 */
 	insertSort(nums[0]);       // 插入排序
 	binaryInsertSort(nums[1]); // 折半插入排序
-	bubblesort(nums[2]);       // 冒泡排序
-	bubblesort2(nums[3]);      // 冒泡排序2
-	obj->quickSort(nums[4], 0, (int)nums[4].size() - 1); // 快速排序
-	selectSort(nums[5]);       // 简单选择排序
+	shellSort(nums[2]);        // 希尔排序
+	/* 交换排序 */
+	bubblesort(nums[3]);       // 冒泡排序
+	bubblesort2(nums[4]);      // 冒泡排序2
+	obj->quickSort(nums[5], 0, (int)nums[5].size() - 1); // 快速排序
+	/* 选择排序 */
+	selectSort(nums[6]);       // 简单选择排序
 
+	cout << endl;
 	for (int i = 0; i < nums.size(); i++) {
 		for (int j = 0; j < nums[i].size() - 1; j++) {
 			cout << nums[i][j] << " ";
