@@ -5,6 +5,7 @@ using namespace std;
 class Solution {
 public:
 	vector<int> sortArray(vector<int> &nums) {
+		srand((unsigned)time(NULL));
 		quickSort(nums, 0, (int)nums.size() - 1);
 		return nums;
 	}
@@ -18,6 +19,9 @@ public:
 	}
 
 	int partition(vector<int> &nums, int low, int high) {
+		int i = rand() % (high - low + 1) + low; // 随机选一个作为我们的主元
+		swap(nums[low], nums[i]);
+
 		int pivot = nums[low]; // 将当前表中的第一个元素设为枢轴，对表进行划分
 		while (low < high) {   // 从两端交替地向中间扫描，low=high时一趟排序结束
 			while (low < high && nums[high] >= pivot) // 右端找到第一个小于枢轴的元素
