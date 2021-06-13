@@ -178,6 +178,46 @@ public:
 	}
 };
 
+/* 归并排序 */
+class MergeSort {
+private:
+	vector<int> B; // 辅助数组B
+public:
+	vector<int> sortArray(vector<int> &nums) {
+		B.resize(nums.size());
+		mergeSort(nums, 0, nums.size() - 1);
+		return nums;
+	}
+
+	// 表A的两段 A[low...mid] 和 A[mid+1...high] 各自有序，将它们合并成一个有序表。
+	void merge(vector<int> &A, int low, int mid, int high) {
+		int i, j, k;
+
+		for (int k = low; k <= high; k++) { // 将A中所有元素复制到B中
+			B[k] = A[k];
+		}
+		for (i = low, j = mid + 1, k = i; i <= mid && j <= high; k++) {
+			if (B[i] <= B[j]) { // 比较B的左右两段中的元素
+				A[k] = B[i++];  // 将较小值复制到A中
+			}
+			else {
+				A[k] = B[j++];
+			}
+		}
+		while (i <= mid)  A[k++] = B[i++]; // 若第一个表未检测完，复制
+		while (j <= high) A[k++] = B[j++]; // 若第二个表未检测完，复制
+	}
+
+	void mergeSort(vector<int> &A, int low, int high) {
+		if (low < high) {
+			int mid = (low + high) / 2;   // 从中间划分两个子序列
+			mergeSort(A, low, mid);       // 对左侧子序列递归
+			mergeSort(A, mid + 1, high);  // 对右侧子序列递归
+			merge(A, low, mid, high);     // 归并
+		}
+	}
+};
+
 int main()
 {
 	int size, temp; vector<int> num; cin >> size;
@@ -185,9 +225,10 @@ int main()
 		cin >> temp;
 		num.push_back(temp);
 	}
-	vector<vector<int>> nums(10, num);
+	vector<vector<int>> nums(9, num);
 	QuickSort *obj = new QuickSort;
 	HeapSort *obj2 = new HeapSort;
+	MergeSort *obj3 = new MergeSort;
 
 	/* 插入排序 */
 	insertSort(nums[0]);       // 插入排序
@@ -200,7 +241,8 @@ int main()
 	/* 选择排序 */
 	selectSort(nums[6]);       // 简单选择排序
 	obj2->heapSort(nums[7]);   // 堆排序
-
+	/* 归并排序 */
+	obj3->sortArray(nums[8]);  // 归并排序
 
 	cout << endl;
 	for (int i = 0; i < nums.size(); i++) {
