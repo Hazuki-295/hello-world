@@ -77,9 +77,7 @@ public:
 
 	/* 按序号查找，返回位置x处的链表结点(带头结点) */
 	LNode *GetElem(int x) {
-		LNode *p; int j;
-
-		p = L->next; j = 1; // 初始化，p指向第一个结点，j为计数器
+		LNode *p = L->next; int j = 1; // 初始化，p指向第一个结点，j为计数器
 
 		if (x == 0)
 			return L;       // 若x等于0，则返回头结点

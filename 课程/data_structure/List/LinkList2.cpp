@@ -76,11 +76,10 @@ public:
 
 	/* 按序号查找，返回位置x处的链表结点(不带头结点) */
 	LNode *GetElem(int x) {
-		LNode *p; int j;
+		LNode *p = L; int j = 1; // 初始化，p指向第一个结点(若为空表，则为nullptr)，j为计数器
 
-		p = L; j = 1; // 初始化，p指向第一个结点(若为空表，则为nullptr)，j为计数器
 		//if (x == 0)
-			//return L;     // 不存在位序为0的结点
+			//return L;     // 不存在位序为0的结点！
 		if (x < 1)
 			return nullptr; // 若x无效，则直接返回NULL
 		while (p != nullptr && j < x) { // 从第1个结点开始找，直到 p指向第x个元素(j=x) 或 p为空(达到尾结点)
