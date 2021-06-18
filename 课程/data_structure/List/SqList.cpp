@@ -1,42 +1,43 @@
 #include <iostream>
 using namespace std;
 
-#define MaxSize 50 // 线性表的最大长度
-
 /* 顺序列表模板类 */
 template <typename T> class List {
 
 private:
 	using ElemType = T;
 
-	/* 线性表的顺序存储结构(静态分配) */
-	ElemType *data; // 顺序表的元素
-	int length;     // 顺序表的当前长度
+	/* 线性表的顺序存储结构(静态大小) */
+	ElemType *data;      // 存储空间基址
+	int MaxSize, length; // 顺序表的最大容量和当前元素个数(长度)
 
 public:
 	// 构造函数
-	List() { InitList(); } //默认
+	List(int MaxSize = 50) { InitList(MaxSize); } // 默认
 
 	/* 初始化一个空的顺序表(为顺序表分配存储空间) */
-	void InitList()
-	{
+	void InitList(int MaxSize = 50) {
+		this->MaxSize = MaxSize;
 		data = new ElemType[MaxSize];
 		length = 0;  // 空表长度为0
 	}
 
-	void CreatList(int n)
-	{
-		length = n; ElemType temp;
-		for (int i = 0; i < n; i++)
-		{
+	/* 初始创建有n个元素的顺序表 */
+	bool CreatList(int n) {
+		if (n > MaxSize) {
+			return false;
+		}
+
+		ElemType temp; length = n;
+		for (int i = 0; i < n; i++) {
 			cin >> temp;
 			data[i] = temp;
 		}
+		return true;
 	}
 
 	/* 插入操作，在表L中第x个位置之前插入新的数据元素e */
-	bool ListInsert(int x, ElemType e)
-	{
+	bool ListInsert(int x, ElemType e) {
 		if (x<1 || x > length + 1) // 插入的位置非法
 			return false;
 
@@ -45,18 +46,16 @@ public:
 
 		ElemType *p, *q;    // p和q为辅助指针 
 		q = &(data[x - 1]); // q为插入位置
-		for (p = &(data[length - 1]); p >= q; p--) // 插入位置及之后的元素右移
-		{
+		for (p = &(data[length - 1]); p >= q; p--) { // 插入位置及之后的元素右移
 			*(p + 1) = *p;
 		}
-		*q = e;     // 在插入位置 q 插入新的元素e
-		length++; // 表长加1
+		*q = e;      // 在插入位置 q 插入新的元素e
+		length++;    // 表长加1
 		return true;
 	}
 
 	/* 删除操作，删除表L中第x个位置的元素，并用e返回删除元素的值 */
-	bool ListDelete(int x, ElemType &e)
-	{
+	bool ListDelete(int x, ElemType &e) {
 		if (x<1 || x>length) // 删除的位置非法
 			return false;
 
@@ -65,37 +64,34 @@ public:
 		p = &(data[x - 1]);        // p为被删除元素的位置
 		e = *p;                    // 被删除元素的值赋给e
 		q = &(data[length - 1]);   // 表尾元素的位置
-		for (p++; p <= q; p++)     // 被删除元素之后的元素左移
-		{
+		for (p++; p <= q; p++) {   // 被删除元素之后的元素左移，覆盖
 			*(p - 1) = *p;
 		}
-		length--; // 表长减1
+		length--;   // 表长减1
 		return true;
 	}
 
-	/* 按值查找操作，在表L中查找具有给定关键字(e)值的元素 */
-	int LocateElem(ElemType e)
-	{
-		for (int i = 0; i < length; i++)
-			if (data[i] == e)
-				return i + 1; // 下标为i的元素值等于e，返回其位序i+1
-		return 0;             // 退出循环，说明查找失败(0表示未找到)
+	/* 按值查找操作，在表L中查找具有给定关键字(e)值的元素，返回其位序 */
+	int LocateElem(ElemType e) {
+		for (int i = 0; i < length; i++) {
+			if (data[i] == e) {
+				return i + 1; // 下标为i的元素值等于e，返回其位序i+1。
+			}
+		}
+		return 0; // 退出循环，说明查找失败(0表示未找到)
 	}
 
 	/* 按位查找操作，找到表L中第i个位置的元素，并用e返回其值 */
-	bool GetElem(int x, ElemType &e)
-	{
+	bool GetElem(int x, ElemType &e) {
 		if (x<1 || x>length)
 			return false;
-		e = data[x - 1]; // 位序为i的元素，其下标为i-1
+		e = data[x - 1]; // 位序为i的元素，其下标为i-1。
 		return true;
 	}
 
 	/* 输出操作，顺序输出线性表L的所有元素值 */
-	void PrintList()
-	{
-		for (int i = 0; i < length; i++)
-		{
+	void PrintList() {
+		for (int i = 0; i < length; i++) {
 			cout << data[i] << ' ';
 		}
 		cout << endl;
