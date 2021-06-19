@@ -102,10 +102,19 @@ public:
 		front = (front + 1) % MaxSize; // 队头指针加1取模
 		return true;
 	}
+
+	/* 读队头元素，若队列 Q 非空，则用 x 返回队头元素 。 */
+	bool GetHead(ElemType &x) {
+		if (rear == front) { // 队空则报错
+			return false;
+		}
+		x = data[front]; // 取队头元素
+		return true;
+	}
 }; // SqQueue
 
 int main() {
-	Stack<int> S; S.InitStack();
+	Stack<int> S;
 
 	cout << "请输入入栈元素个数：";
 	int num; cin >> num;
@@ -125,6 +134,29 @@ int main() {
 	cout << "出栈元素：\n";
 	while (!S.StackEmpty()) {
 		S.Pop(delete1);
+		cout << delete1 << " ";
+	}
+	cout << endl << endl;
+
+	Queue<int> Q;
+
+	cout << "请输入队列元素个数：";
+	cin >> num;
+
+	cout << "请输入" << num << "个队列元素：";
+	for (int i = 0; i < num; i++) {
+		cin >> insert1;
+		Q.EnQueue(insert1);
+	}
+
+	/* 取栈顶 */
+	Q.GetHead(top);
+	cout << "队首元素：" << top << endl;
+
+	/* 出栈测试 */
+	cout << "出队元素：\n";
+	while (!Q.QueueEmpty()) {
+		Q.DeQueue(delete1);
 		cout << delete1 << " ";
 	}
 	cout << endl;
