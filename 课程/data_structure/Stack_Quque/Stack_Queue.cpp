@@ -1,11 +1,10 @@
 ﻿#include <iostream>
 using namespace std;
 
-#define MaxSize 50
+#define MAXSIZE 50
 
 /* 顺序栈模板类 */
 template<typename T> class Stack {
-
 private:
 	using ElemType = T;
 
@@ -13,62 +12,46 @@ private:
 	ElemType *data;     // 存放栈中元素
 	int top;            // 栈顶指针
 
-	int maxsize;	    // 栈的最大元素个数
+	int MaxSize;        // 栈中元素的最大个数
 
 public:
 	// 构造函数
-	Stack() { InitStack(); } //默认
+	Stack(int size = MAXSIZE) :MaxSize(size) { InitStack(); } //默认
 
 	/* 初始化一个空栈 */
-	void InitStack()
-	{
+	void InitStack() {
 		top = -1; // 初始化栈顶指针
-
-		maxsize = MaxSize;
-		data = new ElemType[maxsize]; // 数据域
-	}
-
-	/* 初始化一个空栈(指定大小) */
-	void InitStack(int size)
-	{
-		top = -1; // 初始化栈顶指针
-
-		maxsize = size;
-		data = new ElemType[maxsize]; // 数据域
+		data = new ElemType[MaxSize]; // 数据域
 	}
 
 	/* 判栈空 */
-	bool StackEmpty()
-	{
-		if (top == -1)    // 栈空
-			return true;
-		else              // 栈不空
-			return false;
+	bool StackEmpty() {
+		return top == -1;
 	}
 
 	/* 进栈，若栈S未满，则将x加入使之成为新的栈顶 */
-	bool Push(ElemType x)
-	{
-		if (top == maxsize - 1)  // 栈满，报错
+	bool Push(ElemType x) {
+		if (top == MaxSize - 1) { // 栈满，报错
 			return false;
-		data[++top] = x;         // 指针先加1，再入栈
+		}
+		data[++top] = x; // 指针先加1，再入栈
 		return true;
 	}
 
 	/* 出栈，若栈S非空，则弹出栈顶元素，并用x返回其值 */
-	bool Pop(ElemType &x)
-	{
-		if (top == -1)     // 栈空，报错
+	bool Pop(ElemType &x) {
+		if (top == -1) {  // 栈空，报错
 			return false;
-		x = data[top--];   // 先出栈，指针再减1
+		}
+		x = data[top--];  // 先出栈，指针再减1
 		return true;
 	}
 
 	/* 读栈顶元素 */
-	bool GetTop(ElemType &x)
-	{
-		if (top == -1)     // 栈空，报错
+	bool GetTop(ElemType &x) {
+		if (top == -1) {   // 栈空，报错
 			return false;
+		}
 		x = data[top];     // x记录栈顶元素
 		return true;
 	}
