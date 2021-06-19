@@ -12,11 +12,11 @@ private:
 	ElemType *data;     // 存放栈中元素
 	int top;            // 栈顶指针
 
-	int MaxSize;        // 栈中元素的最大个数
+	int MaxSize;        // 栈的最大元素个数
 
 public:
 	// 构造函数
-	Stack(int size = MAXSIZE) :MaxSize(size) { InitStack(); } //默认
+	Stack(int size = MAXSIZE) :MaxSize(size) { InitStack(); } // 默认
 
 	/* 初始化一个空栈 */
 	void InitStack() {
@@ -59,7 +59,6 @@ public:
 
 /* 顺序队列模板类 */
 template<typename T> class Queue {
-
 private:
 	using ElemType = T;
 
@@ -67,54 +66,38 @@ private:
 	ElemType *data;      // 存放队列元素
 	int front, rear;     // 队头指针和队尾指针
 
-	int maxsize;	     // 队列的最大元素个数
+	int MaxSize;	     // 队列的最大元素个数
 
 public:
 	// 构造函数
-	Queue() { InitQueue(); } //默认
+	Queue(int size = MAXSIZE) :MaxSize(size) { InitQueue(); } // 默认
 
 	/* 初始化一个空队列 */
-	void InitQueue()
-	{
+	void InitQueue() {
 		rear = front = 0;			  // 初始化队首、队尾指针
-
-		maxsize = MaxSize;
-		data = new ElemType[maxsize]; // 数据域
-	}
-
-	/* 初始化一个空队列(指定大小) */
-	void InitQueue(int size)
-	{
-		rear = front = 0;			  // 初始化队首、队尾指针
-
-		maxsize = size;
-		data = new ElemType[maxsize]; // 数据域
+		data = new ElemType[MaxSize]; // 数据域
 	}
 
 	/* 判队列空 */
-	bool QueueEmpty()
-	{
-		if (rear == front) //队空条件
-			return true;
-		else
-			return false;
+	bool QueueEmpty() {
+		return rear == front; // 队空条件
 	}
 
 	/* 入队，若队列Q未满，将x加入，使之成为新的队尾 */
-	bool EnQueue(ElemType x)
-	{
-		if ((rear + 1) % maxsize == front) // 队满则报错
+	bool EnQueue(ElemType x) {
+		if ((rear + 1) % maxsize == front) { // 队满则报错
 			return false;
+		}
 		data[rear] = x;
 		rear = (rear + 1) % maxsize; // 队尾指针加1取模
 		return true;
 	}
 
 	/* 出队，若队列Q非空，删除队头元素，并用x返回 */
-	bool DeQueue(ElemType &x)
-	{
-		if (rear == front) // 队空则报错
+	bool DeQueue(ElemType &x) {
+		if (rear == front) { // 队空则报错
 			return false;
+		}
 		x = data[front];
 		front = (front + 1) % maxsize; // 队头指针加1取模
 		return true;
