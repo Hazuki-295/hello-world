@@ -149,11 +149,11 @@ int main() {
 		Q.EnQueue(insert1);
 	}
 
-	/* 取栈顶 */
+	/* 取队头 */
 	Q.GetHead(top);
 	cout << "队首元素：" << top << endl;
 
-	/* 出栈测试 */
+	/* 出队测试 */
 	cout << "出队元素：\n";
 	while (!Q.QueueEmpty()) {
 		Q.DeQueue(delete1);
