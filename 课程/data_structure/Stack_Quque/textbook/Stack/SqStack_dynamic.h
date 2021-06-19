@@ -55,9 +55,10 @@ bool Pop(SqStack &S, ElemType &x) {
 
 /* 读栈顶元素，若栈非空，则用x返回栈顶元素 */
 bool GetTop(SqStack S, ElemType &x) {
-	if (S.top == S.base)     // 栈空，报错
+	if (S.top == S.base) { // 栈空，报错
 		return false;
-	x = *(S.top - 1);   // x记录栈顶元素
+	}
+	x = *(S.top - 1); // x记录栈顶元素
 	return true;
 }
 
