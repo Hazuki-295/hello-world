@@ -88,7 +88,7 @@ public:
 		if ((rear + 1) % MaxSize == front) { // 队满则报错
 			return false;
 		}
-		data[rear] = x;
+		data[rear] = x; // 在队尾元素的下一个位置填入元素
 		rear = (rear + 1) % MaxSize; // 队尾指针加1取模
 		return true;
 	}
@@ -98,7 +98,7 @@ public:
 		if (rear == front) { // 队空则报错
 			return false;
 		}
-		x = data[front];
+		x = data[front]; // 取队头元素
 		front = (front + 1) % MaxSize; // 队头指针加1取模
 		return true;
 	}
