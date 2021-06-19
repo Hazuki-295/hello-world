@@ -85,11 +85,11 @@ public:
 
 	/* 入队，若队列Q未满，将x加入，使之成为新的队尾 */
 	bool EnQueue(ElemType x) {
-		if ((rear + 1) % maxsize == front) { // 队满则报错
+		if ((rear + 1) % MaxSize == front) { // 队满则报错
 			return false;
 		}
 		data[rear] = x;
-		rear = (rear + 1) % maxsize; // 队尾指针加1取模
+		rear = (rear + 1) % MaxSize; // 队尾指针加1取模
 		return true;
 	}
 
@@ -99,7 +99,33 @@ public:
 			return false;
 		}
 		x = data[front];
-		front = (front + 1) % maxsize; // 队头指针加1取模
+		front = (front + 1) % MaxSize; // 队头指针加1取模
 		return true;
 	}
 }; // SqQueue
+
+int main() {
+	Stack<int> S; S.InitStack();
+
+	cout << "请输入入栈元素个数：";
+	int num; cin >> num;
+
+	cout << "请输入" << num << "个入栈元素：";
+	int delete1, insert1;
+	for (int i = 0; i < num; i++) {
+		cin >> insert1;
+		S.Push(insert1);
+	}
+
+	/* 取栈顶 */
+	int top; S.GetTop(top);
+	cout << "栈顶元素：" << top << endl;
+
+	/* 出栈测试 */
+	cout << "出栈元素：\n";
+	while (!S.StackEmpty()) {
+		S.Pop(delete1);
+		cout << delete1 << " ";
+	}
+	cout << endl;
+}
