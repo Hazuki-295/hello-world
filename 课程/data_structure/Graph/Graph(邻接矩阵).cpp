@@ -216,8 +216,7 @@ public:
 	}
 };
 
-int main()
-{
+int main() {
 	int n, m; cin >> n >> m;
 
 	Graph<int, int> G(n, m); // 构造图
