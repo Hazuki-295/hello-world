@@ -2,8 +2,7 @@
 using namespace std;
 
 /* 二叉树的二叉链表存储表示 */
-template<typename T> struct BiTNode
-{
+template<typename T> struct BiTNode {
 	// 成员
 	T data; BiTNode *lchild, *rchild; // 值、左右孩子指针
 	// 构造函数
@@ -13,8 +12,7 @@ template<typename T> struct BiTNode
 };
 template<typename T> using BiTree = BiTNode<T> *;
 
-template<typename T> class BST
-{
+template<typename T> class BST {
 private:
 	using ElemType = T;
 	using BiTNode = BiTNode<T>;
@@ -37,8 +35,7 @@ public:
 	}
 
 	/* 二叉排序树的插入 */
-	bool insertBST(BiTree &T, ElemType val)
-	{
+	bool insertBST(BiTree &T, ElemType val) {
 		if (T == nullptr) { // 原树为空，新插入的记录为根结点
 			T = new BiTNode;
 			T->data = val;
@@ -54,11 +51,9 @@ public:
 	}
 
 	/* 二叉排序树的构造 */
-	void creatBST(int n)
-	{
+	void creatBST(int n) {
 		root = nullptr; ElemType temp; // 初始时为空树
-		for (int i = 0; i < n; i++)    // 树中含有n个结点
-		{
+		for (int i = 0; i < n; i++) {  // 树中含有n个结点
 			cin >> temp;
 			insertBST(root, temp);
 		}
@@ -73,10 +68,8 @@ public:
 	void inorderTraverse() { inorderTraverse(root); }
 
 	/* 中序遍历 */
-	void inorderTraverse(BiTree T)
-	{
-		if (T != nullptr)
-		{
+	void inorderTraverse(BiTree T) {
+		if (T != nullptr) {
 			inorderTraverse(T->lchild); // 遍历左子树
 			visit(T->data);             // 访问根结点
 			inorderTraverse(T->rchild); // 遍历右子树
@@ -84,20 +77,17 @@ public:
 	}
 };
 
-int main()
-{
+int main() {
 	int nodeNum; cin >> nodeNum;
 	BST<int> Tree; Tree.creatBST(nodeNum);
 	Tree.inorderTraverse(); cout << endl;// 中序遍历原二叉排序树后的有序序列
 	int val; cin >> val;
-	if (Tree.searchBST(val) == nullptr)
-	{
+	if (Tree.searchBST(val) == nullptr) {
 		Tree.insertBST(val);
 		cout << "插入成功" << endl;
 		Tree.inorderTraverse(); cout << endl;
 	}
-	else
-	{
+	else {
 		cout << "查找成功 " << endl;
 	}
 	return 0;
