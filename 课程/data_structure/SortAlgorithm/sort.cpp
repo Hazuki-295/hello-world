@@ -218,8 +218,7 @@ public:
 	}
 };
 
-int main()
-{
+int main() {
 	int size, temp; vector<int> num; cin >> size;
 	for (int i = 0; i < size; i++) {
 		cin >> temp;
