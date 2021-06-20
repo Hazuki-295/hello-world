@@ -35,8 +35,7 @@ ostream &operator<<(ostream &os, HashElem<int, int> &HashElem) {
 }
 
 /* 开放定址哈希表 */
-template<typename KeyType, typename ElemType> class HashTable // key为关键码
-{
+template<typename KeyType, typename ElemType> class HashTable { // key为关键码
 private:
 	vector<ElemType> elem;
 	int hashsize = 15;
@@ -102,8 +101,7 @@ public:
 	}
 };
 
-int main()
-{
+int main() {
 	int keyNum; cin >> keyNum;
 	HashTable<int, HashElem<int, int>> *obj = new HashTable<int, HashElem<int, int>>(keyNum);
 	obj->printHash();
