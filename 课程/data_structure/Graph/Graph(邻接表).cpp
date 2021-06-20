@@ -49,23 +49,20 @@ public:
 	queue<int> print; // 用于处理输出结果
 
 	/* (带权)无向图构造 */
-	Graph(int _vexnum, int _arcnum) :vexnum(_vexnum), arcnum(_arcnum)
-	{
+	Graph(int _vexnum, int _arcnum) :vexnum(_vexnum), arcnum(_arcnum) {
 		/* 初始化顶点集、边集 */
 		vertices = vector<VNode>(vexnum);
 		for (int i = 0; i < vexnum; i++) vertices[i].data = i; // 顶点信息从0计起
 
 		VertexType x, y; InfoType w; // 邻接的两个顶点、边权值
-		for (int i = 0; i < arcnum; i++) // 输入每条边
-		{
+		for (int i = 0; i < arcnum; i++) { // 输入每条边
 			cin >> x >> y >> w;
 			InsertArc(x, y, w);
 			// 若为无向图，置对称弧
 			InsertArc(y, x, w);
 		}
 	}
-	Graph() // 构造图
-	{
+	Graph() { // 构造图
 		int i, j, k;
 		cout << "请输入顶点数和边数：" << endl;
 		cin >> vexnum >> arcnum;
@@ -75,8 +72,7 @@ public:
 		for (int i = 0; i < vexnum; i++) // 顶点集
 			cin >> vertices[i].data;
 
-		for (int k = 0; k < arcnum; k++) // 边集
-		{
+		for (int k = 0; k < arcnum; k++) { // 边集
 			cout << "请输入边(vi, vj)的下标i, j：";
 			cin >> i >> j;
 			InsertArc2(i, j, 1);
@@ -86,38 +82,38 @@ public:
 	}
 
 	/* 输出邻接表 */
-	void Print()
-	{
+	void Print() {
 		cout << "邻接表：" << endl;
 		ArcNode *p; // 辅助指针
-		for (int i = 0; i < vexnum; i++)
-		{
+		for (int i = 0; i < vexnum; i++) {
 			cout << "顶点：" << vertices[i].data << "：";
-			for (p = vertices[i].firstarc; p != nullptr; p = p->nextarc)
+			for (p = vertices[i].firstarc; p != nullptr; p = p->nextarc) {
 				cout << p->adjvex << " ";
+			}
 			cout << endl;
 		}
 	}
 
 	/* 在图G中增添弧<x,y>，权值为w */
-	bool InsertArc(VertexType x, VertexType y, InfoType w)
-	{
+	bool InsertArc(VertexType x, VertexType y, InfoType w) {
 		ArcNode *p; // 辅助指针
 		int index_x = LocateVex(x), index_y = LocateVex(y);
 
-		for (p = vertices[index_x].firstarc; p != nullptr; p = p->nextarc) // 若x没有邻接边，则直接退出循环
-		{
-			if (p->nextarc == nullptr) // 找到该顶点的最后一个邻接边
+		for (p = vertices[index_x].firstarc; p != nullptr; p = p->nextarc) { // 若x没有邻接边，则直接退出循环
+			if (p->nextarc == nullptr) { // 找到该顶点的最后一个邻接边
 				break;
+			}
+				
 		}
-		if (p == nullptr) // 若x没有邻接点
+		if (p == nullptr) { // 若x没有邻接点
 			vertices[index_x].firstarc = new ArcNode(index_y, w); // 添加第一条弧
-		else // 若x有邻接点，则p指向最后一个邻接边
+		}
+		else { // 若x有邻接点，则p指向最后一个邻接边
 			p->nextarc = new ArcNode(index_y, w); // 添加下一条弧
+		}
 		return true;
 	}
-	bool InsertArc2(VertexType x, VertexType y, InfoType w)
-	{
+	bool InsertArc2(VertexType x, VertexType y, InfoType w) {
 		/* 采用头插法 */
 		ArcNode *p, *q; // 辅助指针
 		int index_x = LocateVex(x), index_y = LocateVex(y);
@@ -130,8 +126,7 @@ public:
 	}
 
 	/* 获取图G中弧<x,y>对应的权值 */
-	bool Get_edge_value(int x, int y, InfoType &w)
-	{
+	bool Get_edge_value(int x, int y, InfoType &w) {
 		ArcNode *p; // 辅助指针
 
 		for (p = vertices[x].firstarc; p->adjvex != y; p = p->nextarc); // 找到邻接边<x,y>
@@ -143,8 +138,7 @@ public:
 	}
 
 	/* 按值查找。若图G中存在值为val的顶点，则返回该顶点在图中的位置，否则返回-1 */
-	int LocateVex(VertexType val)
-	{
+	int LocateVex(VertexType val) {
 		for (int i = 0; i < vexnum; i++) // 顶点集中查找值为val的顶点
 			if (vertices[i].data == val)
 				return i;
@@ -152,8 +146,7 @@ public:
 	}
 
 	/* 求图G中位置为x的顶点的第一个邻接点，若有则返回顶点号。若其没有邻接点或在图中不存在，则返回-1 */
-	int FirstNeighbor(int x)
-	{
+	int FirstNeighbor(int x) {
 		if (x < 0 || x >= vexnum) return -1; // 图中不存在位置为x的顶点，返回-1
 
 		ArcNode *p = vertices[x].firstarc;   // 第一个邻接点
@@ -165,8 +158,7 @@ public:
 	}
 
 	/* 求图G中位置为x的顶点(相对于y处的)下一个邻接点的位置。若y是x的最后一个邻接点，则返回-1 */
-	int NextNeighbor(int x, int y)
-	{
+	int NextNeighbor(int x, int y) {
 		ArcNode *p; // 辅助指针
 		for (p = vertices[x].firstarc; p->adjvex != y; p = p->nextarc); // 找到邻接边<x,y>
 		if (p->nextarc != nullptr)
@@ -179,16 +171,14 @@ public:
 	void visit(int x) { print.push(vertices[x].data); }
 
 	/* 深度优先遍历，从第一个顶点出发 */
-	void DFSTraverse()
-	{
+	void DFSTraverse() {
 		for (int i = 0; i < vexnum; i++) // 初始化访问标记数组
 			visited[i] = false;
 		for (int i = 0; i < vexnum; i++) // 本代码中是从v=0(第一个顶点)开始遍历
 			if (!visited[i]) DFS(i);
 	}
 	/* 深度优先遍历，从给定顶点v出发 */
-	void DFSTraverse(VertexType v)
-	{
+	void DFSTraverse(VertexType v) {
 		for (int i = 0; i < vexnum; i++) // 初始化访问标记数组
 			visited[i] = false;
 
@@ -199,16 +189,14 @@ public:
 			if (!visited[i]) DFS(i);
 	}
 	/* 从位置为v的顶点出发，递归地深度优先遍历图G */
-	void DFS(int v)
-	{
+	void DFS(int v) {
 		visit(v); visited[v] = true; // 访问顶点v
 		for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w)) // w为v的尚未访问的邻接点
 			if (!visited[w]) DFS(w); // 递归地遍历其邻接点(深度优先)
 	}
 
 	/* 广度优先遍历，从第一个顶点出发 */
-	void BFSTraverse()
-	{
+	void BFSTraverse() {
 		for (int i = 0; i < vexnum; i++)  // 初始化访问标记数组
 			visited[i] = false;
 
@@ -218,8 +206,7 @@ public:
 			if (!visited[i]) BFS(i);      // 对每个"连通分量"调用一次BFS
 	}
 	/* 广度优先遍历，从给定顶点v出发 */
-	void BFSTraverse(VertexType v)
-	{
+	void BFSTraverse(VertexType v) {
 		for (int i = 0; i < vexnum; i++)  // 初始化访问标记数组
 			visited[i] = false;
 
@@ -232,19 +219,15 @@ public:
 			if (!visited[i]) BFS(i);
 	}
 	/* 从位置为v的顶点出发，非递归地广度优先遍历图G */
-	void BFS(int v)
-	{
+	void BFS(int v) {
 		visit(v); visited[v] = true; // 访问顶点v
 		Q.push(v);                   // 顶点v入队列Q(以检测其所有邻接点)
 
 		/* 开始迭代访问与v有路径相通且路径长度为1,2,3...的顶点 */
-		while (!Q.empty())
-		{
+		while (!Q.empty()) {
 			v = Q.front(); Q.pop(); // 顶点v出队列
-			for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w)) // 检测v所有邻接点
-			{
-				if (!visited[w]) // w为v的尚未访问的邻接点
-				{
+			for (int w = FirstNeighbor(v); w >= 0; w = NextNeighbor(v, w)) { // 检测v所有邻接点
+				if (!visited[w]) { // w为v的尚未访问的邻接点
 					visit(w); visited[w] = true; // 访问顶点w
 					Q.push(w); // 顶点w入队列(其邻接点为下一批被访问的顶点)
 				}
@@ -253,13 +236,10 @@ public:
 	}
 
 	/* 在辅助数组closedge中，从V-U集中选择最小跨越边(lowcost最小)对应的顶点k，返回其位置 */
-	int minimum() // closedge[k].lowcost = min{closedge[v_i].lowcost | closedge[v_i].lowcost>0, v_i属于V-U}
-	{
+	int minimum() { // closedge[k].lowcost = min{closedge[v_i].lowcost | closedge[v_i].lowcost>0, v_i属于V-U}
 		int min_adj; InfoType min_cost = INT_MAX; // 最小跨越边的V-U集顶点、边权值
-		for (int i = 0; i < arcnum; i++) // 遍历closedge数组
-		{
-			if (closedge[i].lowcost != 0 && closedge[i].lowcost < min_cost) // V-U集顶点中，跨越边权值最小
-			{
+		for (int i = 0; i < arcnum; i++) { // 遍历closedge数组
+			if (closedge[i].lowcost != 0 && closedge[i].lowcost < min_cost) { // V-U集顶点中，跨越边权值最小
 				min_adj = i; // V-U集中的顶点k的位置(对应的U集顶点在closedge[i].adjvex中)
 				min_cost = closedge[i].lowcost; // 最小跨越边的权值
 			}
@@ -268,24 +248,20 @@ public:
 	}
 
 	/* 用普里姆(Prim)算法从顶点u出发构造网G的最小生成树T，输出T的各条边。 */
-	void MiniSpanTree_Prim(VertexType u)
-	{
+	void MiniSpanTree_Prim(VertexType u) {
 		ArcNode *p; // 辅助指针
 		int k = LocateVex(u); int sum = 0; // 顶点u的位置、生成树权值之和
 
 		/* 初始时，U仅包含顶点u，即 U = {u} */
-		for (int j = 0; j < vexnum; j++) // 辅助数组初始化
-		{
+		for (int j = 0; j < vexnum; j++) { // 辅助数组初始化
 			if (j != k) closedge[j] = { u ,INT_MAX }; // 不存在边则为INT_MAX
 		}
-		for (p = vertices[k].firstarc; p != nullptr; p = p->nextarc) // 枚举k的所有邻居
-		{
+		for (p = vertices[k].firstarc; p != nullptr; p = p->nextarc) { // 枚举k的所有邻居
 			closedge[p->adjvex] = { u, p->info }; // V-U集的顶点，优先级即为顶点与u邻接的边权值
 		}
 		closedge[k].lowcost = 0; // lowcost置为0则表示已并入U集
 
-		for (int i = 1; i < vexnum; i++) // 选择其余vexnum-1个顶点，因此需迭代vexnum-1次，每次U集并入一个顶点
-		{
+		for (int i = 1; i < vexnum; i++) { // 选择其余vexnum-1个顶点，因此需迭代vexnum-1次，每次U集并入一个顶点
 			k = minimum(); // 从V-U集中选择最小跨越边对应的顶点，它将是最小生成树T的下一个顶点
 			// 即 closedge[k].lowcost = min{closedge[v_i].lowcost | closedge[v_i].lowcost>0, v_i属于V-U}
 
@@ -299,10 +275,8 @@ public:
 			closedge[k].lowcost = 0; // 新顶点k并入U集
 
 			/* 更新顶点优先级数，与顶点k互不关联的顶点都无需考虑 */
-			for (p = vertices[k].firstarc; p != nullptr; p = p->nextarc) // 只需遍历顶点k的每一邻居v
-			{
-				if (p->info < closedge[p->adjvex].lowcost) // 若边kv的权值 小于 当前的优先级数(之前的其他跨越边的权值，如uv)
-				{
+			for (p = vertices[k].firstarc; p != nullptr; p = p->nextarc) { // 只需遍历顶点k的每一邻居v
+				if (p->info < closedge[p->adjvex].lowcost) { // 若边kv的权值 小于 当前的优先级数(之前的其他跨越边的权值，如uv)
 					closedge[p->adjvex] = { vertices[k].data ,p->info }; // 则更新顶点优先级
 				}
 			}
@@ -313,21 +287,18 @@ public:
 	/* 其他算法题 */
 	bool Findpath(int a, int b, int k);
 	bool Existpath(int x, int y);
-	void reset()
-	{
+	void reset() {
 		for (int i = 0; i < vexnum; i++) // 初始化访问标记数组
 			visited[i] = false;
 	}
 };
 
 /* 判断两点是否存在路径(深度优先搜索，遍历x所在连通分量) */
-bool Graph<int, int>::Existpath(int x, int y)
-{
+bool Graph<int, int>::Existpath(int x, int y) {
 	visit(x); visited[x] = true; // 输出路径上的结点
 
 	ArcNode *p; // 辅助指针
-	for (p = vertices[x].firstarc; p != nullptr; p = p->nextarc)
-	{
+	for (p = vertices[x].firstarc; p != nullptr; p = p->nextarc) {
 		int i = p->adjvex;
 		if (i == y)
 			return true;
@@ -338,16 +309,13 @@ bool Graph<int, int>::Existpath(int x, int y)
 }
 
 /* 判断无向图两点间是否存在一条长度为k的简单路径 */
-bool Graph<int, int>::Findpath(int a, int b, int k)
-{
+bool Graph<int, int>::Findpath(int a, int b, int k) {
 	ArcNode *p; // 辅助指针
 	if (a == b && k == 0) // 递归出口，找到b且路径长度为k
 		return true;
-	else if (k > 0)
-	{
+	else if (k > 0) {
 		visited[a] = true;     // 表示将通过该点尝试访问其他点
-		for (p = vertices[a].firstarc; p != nullptr; p = p->nextarc) // 尝试通过相连的点寻找
-		{
+		for (p = vertices[a].firstarc; p != nullptr; p = p->nextarc) { // 尝试通过相连的点寻找
 			int i = p->adjvex; // 第一条边
 			if (!visited[i] && Findpath(i, b, k - 1)) // 往前走
 				return true;
@@ -357,32 +325,27 @@ bool Graph<int, int>::Findpath(int a, int b, int k)
 	return false; // 前面的尝试都失败了，没有路径
 }
 
-int main()
-{
+int main() {
 	int n, m; cin >> n >> m;
 
 	Graph<int, int> G(n, m); // 构造图
 
 	int StartVex; cin >> StartVex;
-	if (G.LocateVex(StartVex) == -1)
-	{
+	if (G.LocateVex(StartVex) == -1) {
 		cout << "起始顶点不存在" << endl;
 	}
-	else
-	{
+	else {
 		stringstream result; cout << endl;
 
 		G.BFSTraverse(StartVex); cout << "BFS:";// 广度优先搜索
-		for (int i = 0; i < n - 1; i++)
-		{
+		for (int i = 0; i < n - 1; i++) {
 			cout << G.print.front() << ' ';
 			G.print.pop();
 		}
 		cout << G.print.front() << endl << endl; G.print.pop();
 
 		G.DFSTraverse(StartVex); cout << "DFS:";// 深度优先搜索
-		for (int i = 0; i < n - 1; i++)
-		{
+		for (int i = 0; i < n - 1; i++) {
 			cout << G.print.front() << ' ';
 			G.print.pop();
 		}
