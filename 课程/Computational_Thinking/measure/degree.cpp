@@ -39,14 +39,12 @@ Degree average(Degree &a, Degree &b) {
 	return Degree(degree, minute, second);
 }
 
-istream &operator>>(istream &is, Degree &temp)
-{
+istream &operator>>(istream &is, Degree &temp) {
 	is >> temp.degree >> temp.minute >> temp.second;
 	return is;
 }
 
-ostream &operator<<(ostream &os, const Degree &temp)
-{
+ostream &operator<<(ostream &os, const Degree &temp) {
 	os << temp.degree << ' ' << temp.minute << ' ' << temp.second;
 	return os;
 }
