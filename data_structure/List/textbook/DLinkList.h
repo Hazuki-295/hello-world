@@ -3,18 +3,18 @@ typedef int ElemType;
 using namespace std;
 
 
-/* ¶¨ÒåË«Á´±í½áµãÀàĞÍ */
+/* å®šä¹‰åŒé“¾è¡¨ç»“ç‚¹ç±»å‹ */
 typedef struct DNode {
 
-	ElemType data; //Êı¾İÓò
-	struct DNode *prior, *next; //Ç°ÇıºÍºó¼ÌÖ¸Õë
+	ElemType data; //æ•°æ®åŸŸ
+	struct DNode *prior, *next; //å‰é©±å’Œåç»§æŒ‡é’ˆ
 
 } DNode, *DLinkList;
 
-#define MAXSIZE 50 //¾²Ì¬Á´±íµÄ×î´ó³¤¶È
+#define MAXSIZE 50 //é™æ€é“¾è¡¨çš„æœ€å¤§é•¿åº¦
 
-/* ¾²Ì¬Á´±í½á¹¹ÀàĞÍµÄ¶¨Òå */
+/* é™æ€é“¾è¡¨ç»“æ„ç±»å‹çš„å®šä¹‰ */
 typedef struct {
-	ElemType data; //´æ´¢Êı¾İÔªËØ
-	int next; //ÏÂÒ»¸öÔªËØµÄÊı×éÏÂ±ê
+	ElemType data; //å­˜å‚¨æ•°æ®å…ƒç´ 
+	int next; //ä¸‹ä¸€ä¸ªå…ƒç´ çš„æ•°ç»„ä¸‹æ ‡
 } SLinkList[MAXSIZE];

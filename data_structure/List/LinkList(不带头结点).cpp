@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 using namespace std;
 
 /* 列表节点模板类（以单链表形式实现） */
