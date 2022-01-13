@@ -1,10 +1,11 @@
 #include <iostream>
+#include <climits>
 using namespace std;
 
 int main() {
-    int maxNum = __INT_MAX__;
-    long biggerNum = __LONG_MAX__;
-    long long bigNum1 = __LONG_LONG_MAX__;
+    int maxNum = INT_MAX;
+    long biggerNum = LONG_MAX;
+    long long bigNum1 = LLONG_MAX;
     long long bigNum2 = 123456789012345;
 
     cout << maxNum << "\n"
