@@ -3,13 +3,13 @@
 using namespace std;
 
 int main() {
-    int maxNum = INT_MAX;
-    long biggerNum = LONG_MAX; // 随操作系统不同。Ubuntu 64 下为 8bytes，Windows 下为 4bytes
+    int num = INT_MAX;
+    long varNum = LONG_MAX; // 随操作系统不同。Ubuntu 64 下为 8bytes，Windows 下为 4bytes
     long long bigNum1 = LLONG_MAX;
     long long bigNum2 = 123456789012345; // 字面值类型也随之改变
 
-    cout << maxNum << "\n"
-         << biggerNum << "\n"
+    cout << num << "\n"
+         << varNum << "\n"
          << bigNum1 << "\n"
          << bigNum2 << endl;
 
