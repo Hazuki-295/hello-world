@@ -9,7 +9,7 @@ int main() {
     long long bigNum1 = LLONG_MAX;        /* 数量级：10^18 */
     long long bigNum2 = 123456789012345;  // 字面值的类型也随之改变
 
-    cout << "整型：\n"
+    cout << "整型:\n"
          << num << "\n"
          << varNum << "\n"
          << bigNum1 << "\n"
@@ -21,7 +21,7 @@ int main() {
     /* 浮点型 */
     float fl = 3.1415;         // 有效精度：6～7 位
     double db = 3.1415926536;  // 有效精度：15～16 位
-    printf("浮点型：%f, %f\n", fl, db);  // 不指定时，默认显示6位小数
+    printf("浮点型: %f, %f\n", fl, db);  // 不指定时，默认显示6位小数
 
     return 0;
 }
