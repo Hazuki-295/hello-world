@@ -6,14 +6,13 @@ int main() {
     /* 整型 */
     int num = INT_MAX;                    /* 数量级：10^9 */
     long varNum = LONG_MAX;               // 随操作系统不同。Ubuntu 64 下为 8bytes，Windows 下为 4bytes
-    long long bigNum1 = LLONG_MAX;        /* 数量级：10^18 */
-    long long bigNum2 = 123456789012345;  // 字面值的类型也随之改变
+    long long bigNum = LLONG_MAX;         /* 数量级：10^18 */
+    long long literal = 123456789012345;  // 字面值的类型也随之改变
 
     cout << "整型:\n"
          << num << "\n"
          << varNum << "\n"
-         << bigNum1 << "\n"
-         << bigNum2 << endl;
+         << bigNum << endl;
 
     bool boolTest = 5;         // (隐式类型转换) 将整型值赋值给bool类型，自动转换成0或1。
     printf("%d\n", boolTest);  // 当然，在实际使用时，直接给布尔变量赋值 true 或 false 就行。
@@ -30,7 +29,7 @@ int main() {
      *      如果是 10^18 以内 (例如 10^10)，或者说 64 位整数，就要用 long long 型来存放。
      * 2. 对浮点型来说，只需要记住一点：
      *      不要使用 float，碰到浮点型的数据都应该用 double 来存储。
-    *****************************************************************************/ 
+     *****************************************************************************/
 
     return 0;
 }
