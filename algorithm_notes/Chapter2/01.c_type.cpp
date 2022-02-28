@@ -5,7 +5,7 @@ using namespace std;
 int main() {
     /* 整型 */
     int num = INT_MAX;                    /* 数量级：10^9 */
-    long varNum = LONG_MAX;               // 随操作系统不同。Ubuntu 64 下为 8bytes，Windows 下为 4bytes
+    long varNum = LONG_MAX;               // 随操作系统-编译器组合而异。Ubuntu 64 下为 8bytes，Windows 下为 4bytes
     long long bigNum = LLONG_MAX;         /* 数量级：10^18 */
     long long literal = 123456789012345;  // 字面值的类型也随之改变
 
