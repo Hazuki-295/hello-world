@@ -10,7 +10,7 @@ int main() {
 
     double num2 = -5.2;
     printf("2. floor(-5.2) = %.0f, ceil(-5.2) = %.0f\n\n", floor(num2), ceil(num2));
-    // double 类型的向下取整(floor)和向上取整(ceil)函数，返回类型也是 double
+    // double 类型的向下取整(floor)，和向上取整(ceiling)函数，返回类型也是 double
 
     double num3 = pow(2.0, 3.0);
     printf("3. pow(2.0, 3.0) = %f\n\n", num3);
