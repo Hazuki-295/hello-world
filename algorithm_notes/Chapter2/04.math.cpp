@@ -34,7 +34,7 @@ int main() {
     double acos_ = acos(-1.0);
     double atan_ = atan(0);
     printf("7. asin(1) = %f, acos(-1.0) = %f, atan(0) = %f\n\n", asin_, acos_, atan_);
-    // 反三角函数
+    // 反三角函数，返回值也是“弧度制”
 
     double num8 = round(3.50);
     printf("8. round(3.5) = %.0f\n\n", num8);
