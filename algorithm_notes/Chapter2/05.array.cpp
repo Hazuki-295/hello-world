@@ -7,16 +7,16 @@ int a[3000000];
 // 2. 全局变量：编译阶段，在”数据段(data segment)“中分配空间，允许申请的空间较大。
 
 int main() {
+    int *b = (int *)malloc(sizeof(int) * 3000000);  // 或者在堆上申请
+    for (int i = 0; i < 3000000; i++) {
+        b[i] = i;
+    }
+    free(b);
+
     int myArray[10] = {};  // all elements 0 in C++
     for (int i = 0; i < 10; i++) {
         printf("myArray[%d] = %d\n", i, myArray[i]);
     }
-
-    int *b = (int *)malloc(sizeof(int) * 3000000);  // 或者在堆上申请
-    for (int i = 0; i < 3000000; i++) {
-        b[i] = 1;
-    }
-    free(b);
 
     return 0;
 }
