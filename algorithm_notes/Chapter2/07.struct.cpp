@@ -27,7 +27,7 @@ int main() {
     q->name = "Peter";
     q->next = nullptr;
 
-    /* 使用指向结构体的指针时，后两种是完全等价的 */
+    /* 使用指向结构体的指针时，后两种写法是完全等价的 */
 
     int count = 0;
     for (studentInfo* p = &stu; p != nullptr; p = p->next) {
