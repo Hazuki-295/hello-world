@@ -3,11 +3,11 @@
 using namespace std;
 
 struct studentInfo {
-    int id;
+    int id = 0;
     string name;
-    studentInfo* next;
+    studentInfo* next = nullptr;
 
-    studentInfo() : id(), name(), next() {}
+    studentInfo() = default;
     studentInfo(int id, string name, studentInfo* next) : id(id), name(name), next(next) {}  // 本文件未使用的构造函数
 };
 
