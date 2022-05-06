@@ -5,7 +5,7 @@ class InvalidParamException extends Exception {
 
     InvalidParamException(Fraction model) {
         this.model = model;
-        System.out.println(model + ": Invalid Arguments");
+        System.out.println(this.model + ": Invalid Arguments");
     }
 }
 
