@@ -1,3 +1,5 @@
+package programmingTest1;
+
 import java.util.Scanner;
 
 public class ProblemC_Pyramid {

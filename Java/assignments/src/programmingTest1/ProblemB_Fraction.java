@@ -1,3 +1,5 @@
+package programmingTest1;
+
 import java.util.Scanner;
 
 class InvalidParamException extends Exception {
@@ -5,7 +7,10 @@ class InvalidParamException extends Exception {
 
     InvalidParamException(Fraction model) {
         this.model = model;
-        System.out.println(this.model + ": Invalid Arguments");
+    }
+
+    public void printMessage() {
+        System.out.println(model + ": Invalid Arguments");
     }
 }
 
@@ -75,7 +80,7 @@ public class ProblemB_Fraction {
                     System.out.println(result[0] + "/" + result[1]);
                 }
             } catch (InvalidParamException ex) {
-                continue;
+                ex.printMessage();
             }
         }
     }
