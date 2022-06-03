@@ -7,7 +7,7 @@ class InvalidParamException extends Exception {
     InvalidParamException() {
     }
 
-    public void printMessage() {
+    public void printErrorMessage() {
         System.out.println("Invalid Arguments");
     }
 }
@@ -115,25 +115,31 @@ class Matrix {
         System.out.println(buffer.toString().trim());
     }
 
-    public boolean equals(Matrix other) {
-        if (other.row != row || other.column != column) {
-            return false;
-        }
-
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                if (matrix[i][j] != other.matrix[i][j]) {
-                    return false;
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Matrix other) {
+            if (other.row != row || other.column != column) {
+                return false;
+            }
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < column; j++) {
+                    if (matrix[i][j] != other.matrix[i][j]) {
+                        return false;
+                    }
                 }
             }
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 
+    @Override
     public int hashCode() {
         return Arrays.deepHashCode(matrix);
     }
 
+    @Override
     public String toString() {
         return Arrays.deepToString(matrix);
     }
@@ -156,7 +162,7 @@ public class ProblemB_Matrix {
                 System.out.printf("Case %d:%n", caseCount++);
                 matrix.solve();
             } catch (InvalidParamException ex) {
-                ex.printMessage();
+                ex.printErrorMessage();
             }
         }
     }
