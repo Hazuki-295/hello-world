@@ -11,6 +11,7 @@ public class isNumericString {
         }
     }
 
+    /** Match a number with optional '-' and decimal. */
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");
     }
