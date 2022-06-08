@@ -5,10 +5,7 @@ import java.util.Scanner;
 
 class InvalidParamException extends Exception {
     InvalidParamException() {
-    }
-
-    public void printErrorMessage() {
-        System.out.println("Invalid Arguments");
+        super("Invalid Arguments");
     }
 }
 
@@ -162,7 +159,7 @@ public class ProblemB_Matrix {
                 System.out.printf("Case %d:%n", caseCount++);
                 matrix.solve();
             } catch (InvalidParamException ex) {
-                ex.printErrorMessage();
+                System.out.println(ex.getMessage());
             }
         }
     }
