@@ -5,7 +5,7 @@ public class isNumericString {
         Scanner input = new Scanner(System.in);
 
         while (true) {
-            System.out.print("Enter a floating point number: ");
+            System.out.print("Enter a numeric number: ");
             String line = input.nextLine();
             System.out.println("Is it matches the token? : " + isNumeric(line));
         }
