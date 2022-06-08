@@ -6,11 +6,8 @@ class InvalidParamException extends Exception {
     private Fraction model;
 
     InvalidParamException(Fraction model) {
+        super(model + ": Invalid Arguments");
         this.model = model;
-    }
-
-    public void printMessage() {
-        System.out.println(model + ": Invalid Arguments");
     }
 }
 
@@ -80,7 +77,7 @@ public class ProblemB_Fraction {
                     System.out.println(result[0] + "/" + result[1]);
                 }
             } catch (InvalidParamException ex) {
-                ex.printMessage();
+                System.out.println(ex.getMessage());
             }
         }
     }
