@@ -1,17 +1,17 @@
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.FileNotFoundException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class TextIODemo {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         Scanner input = new Scanner(System.in);
 
-        String directory = "out/testIO/";
+        String directory = "./out/testIO/";
         File dir = new File(directory);
         if (dir.mkdirs()) {
-            System.out.println("Creat directory: " + dir.getAbsolutePath());
+            System.out.println("Creat directory: " + dir.getCanonicalPath());
         }
         String filename = "output.txt";
         File file = new File(dir, filename);
