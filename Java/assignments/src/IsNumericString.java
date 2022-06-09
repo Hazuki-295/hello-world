@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class isNumericString {
+public class IsNumericString {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
