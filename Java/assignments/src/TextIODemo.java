@@ -8,7 +8,7 @@ public class TextIODemo {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
-        String directory = "./out/testIO/";
+        String directory = "out/testIO/";
         File dir = new File(directory);
         if (dir.mkdirs()) {
             System.out.println("Creat directory: " + dir.getAbsolutePath());
