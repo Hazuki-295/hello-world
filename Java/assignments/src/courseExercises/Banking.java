@@ -1,5 +1,6 @@
-/* PRESET CODE BEGIN - NEVER TOUCH CODE BELOW */
+package courseExercises;
 
+/* PRESET CODE BEGIN - NEVER TOUCH CODE BELOW */
 import java.util.Scanner;
 
 public class Banking {

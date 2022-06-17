@@ -1,3 +1,5 @@
+package courseExercises;
+
 import java.util.Scanner;
 
 public class SmsLanguage {
