@@ -15,7 +15,7 @@ public class ProblemC_ISBN13 {
             }
             StringBuilder buffer = new StringBuilder();
             int[] factor = {1, 3};
-            int flagOfFactor = 0;
+            int indexOfFactor = 0;
             int item = 0; // 12 位数字的加权和
             for (int i = 0; i < line.length(); i++) {
                 if (!Character.isDigit(line.charAt(i))) {
@@ -24,8 +24,8 @@ public class ProblemC_ISBN13 {
                 } else {
                     buffer.append(line.charAt(i));
                 }
-                item += factor[flagOfFactor] * (line.charAt(i) - '0');
-                flagOfFactor = (flagOfFactor + 1) % 2;
+                item += factor[indexOfFactor] * (line.charAt(i) - '0');
+                indexOfFactor = (indexOfFactor + 1) % 2;
             }
             int d13 = 10 - item % 10;
             buffer.append(d13 == 10 ? 0 : d13);
