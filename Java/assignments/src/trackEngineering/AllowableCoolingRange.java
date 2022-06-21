@@ -97,7 +97,7 @@ public class AllowableCoolingRange {
         /* 计算钢轨动弯应力 sigma_d */
         double sigma_d = M_d / (W_底 * 1e3);
 
-        /* 计算允许的降温幅度 */
+        /* 计算允许的降温幅度 [Δt_d] */
         final double sigma_f = 10;     // 钢轨附加应力，取 10 MPa
         final double alpha_ = 11.8e-6; // 温度线膨胀系数
         double delta_t_d = (sigma_s / 1.3 - sigma_d - sigma_f) / (E * alpha_); // 允许的降温幅度，安全系数 K 取 1.3
