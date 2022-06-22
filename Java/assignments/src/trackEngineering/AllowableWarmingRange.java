@@ -92,8 +92,8 @@ public class AllowableWarmingRange {
         System.out.println("计算结果如下：");
         System.out.printf("[1] 换算曲率 1/R' = %f (cm^-1) \n", reciprocalOfR_prime);
         System.out.printf("[2] 最后计算得 f_0e = %.4f (cm), l = %.1f (cm) \n", f_0e, l);
-        System.out.printf("[3] 计算温度力 P_N = %.1f (N) \n", P_N);
-        System.out.printf("[4] 允许温度压力 [P] = %.1f (N) \n", P_allow);
+        System.out.printf("[3] 计算温度力 P_N = %.0f (N) \n", P_N);
+        System.out.printf("[4] 允许温度压力 [P] = %.0f (N) \n", P_allow);
         System.out.printf("[5] 允许的升温幅度 [Δt_c] = %.2f (°C) \n", delta_t_c);
     }
 
