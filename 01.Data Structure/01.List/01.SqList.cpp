@@ -6,6 +6,7 @@ using namespace std;
 typedef int ElemType;
 
 /* 线性表的顺序表示（顺序表） */
+#define InitSize 10
 typedef struct {
     ElemType *data; // 顺序表中的元素，动态分配
     int MaxSize;    // 顺序表的最大容量
@@ -17,8 +18,14 @@ bool ListInsert(SqList &L, int i, ElemType e) {
     if (i < 1 || i > L.length + 1) { // 插入的位置非法
         return false;
     }
-    if (L.length >= L.MaxSize) { // 当前存储空间已满，不能插入
-        return false;
+    if (L.length >= L.MaxSize) { // 当前存储空间已满，扩容
+        ElemType *p = L.data;
+        L.data = new ElemType[L.MaxSize << 1]; // 容量加倍
+        for (int j = 0; j < L.length; j++) {   // 将数据复制到新区域
+            L.data[j] = p[j];
+        }
+        L.MaxSize = L.MaxSize << 1;
+        delete[] p;
     }
 
     ElemType *p, *q;      // p和q为辅助指针
@@ -60,9 +67,9 @@ int LocateElem(SqList L, ElemType e) {
 
 /* 初始化表。构造一个空的线性表。 */
 void InitList(SqList &L) {
-    L.MaxSize = 50;
-    L.data = new ElemType[L.MaxSize];
+    L.data = new ElemType[InitSize];
     L.length = 0;
+    L.MaxSize = InitSize;
 }
 
 /* 求表长。返回线性表L的长度，即L中数据元素的个数。 */
