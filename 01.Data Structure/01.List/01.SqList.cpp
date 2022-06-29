@@ -194,7 +194,7 @@ int main() {
                 }
                 break;
             }
-            default:{
+            default: {
                 cout << prefixOut << "输入的操作数错误。" << endl;
             }
         }
