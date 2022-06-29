@@ -60,7 +60,7 @@ int LocateElem(SqList L, ElemType e) {
 
 /* 初始化表。构造一个空的线性表。 */
 void InitList(SqList &L) {
-    L.MaxSize = 10;
+    L.MaxSize = 50;
     L.data = new ElemType[L.MaxSize];
     L.length = 0;
 }
