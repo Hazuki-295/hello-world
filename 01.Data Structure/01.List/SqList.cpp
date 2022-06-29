@@ -131,6 +131,7 @@ int main() {
         cout << prefixIn;
         printf("请输入将要执行的操作（01.插入 02.删除 03.按值查找 04.按位查找）：");
         if (scanf("%d", &opType) == EOF) {
+            printf("\n\n");
             break;
         }
         switch (--opType) {
