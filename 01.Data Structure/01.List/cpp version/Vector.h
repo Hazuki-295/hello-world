@@ -26,6 +26,8 @@ public:
     Vector(Vector<T> const &V, Rank lo, Rank hi) { copyFrom(V._elem, lo, hi); } // 向量区间复制
 // 析构函数
     ~Vector() { delete[] _elem; } // 释放内部空间
+// 可写访问接口
+    Vector<T> &operator=(Vector<T> const &); // 重载赋值操作符，以便直接克隆向量
 }; // Vector
 
 /* 以数组区间A[lo, hi)为蓝本复制向量，由Vector的基于复制的构造函数调用。 */
@@ -36,4 +38,11 @@ void Vector<T>::copyFrom(T const *A, Rank lo, Rank hi) {
     while (lo < hi) { // A[lo, hi)内的元素逐一复制至_elem[0, hi - lo)
         _elem[_size++] = A[lo++];
     }
-} // 用const修饰，保证A中的元素不致被篡改；运行时间 = O(hi - lo)
+} // T为基本类型，或已重载赋值操作符'='。用const修饰，保证A中的元素不致被篡改。运行时间 = O(hi - lo)
+
+template<typename T>
+Vector<T> &Vector<T>::operator=(Vector<T> const &V) { // 重载
+    if (_elem) { delete[] _elem; } // 释放原有内容
+    copyFrom(V._elem, 0, V._size); // 整体复制
+    return *this; // 返回当前对象的引用，以便链式赋值
+}
