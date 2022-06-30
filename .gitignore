@@ -9,3 +9,6 @@
 /out
 /CMakeLists.txt
 /cmake-build-debug
+/01.Data Structure/dsacpp-src/src/.vs
+/01.Data Structure/dsacpp-src/_executable
+*.user
