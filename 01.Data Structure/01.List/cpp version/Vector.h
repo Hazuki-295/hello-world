@@ -20,6 +20,7 @@ public:
         for (_size = 0; _size < s; _elem[_size++] = v); // s<=c
     }
 
+    /* 基于复制的构造函数 */
     Vector(T const *A, Rank n) { copyFrom(A, 0, n); }       // 数组整体复制
     Vector(T const *A, Rank lo, Rank hi) { copyFrom(A, lo, hi); } // 数组区间复制
     Vector(Vector<T> const &V) { copyFrom(V._elem, 0, V._size); }         // 向量整体复制
@@ -41,7 +42,7 @@ void Vector<T>::copyFrom(T const *A, Rank lo, Rank hi) {
 } // T为基本类型，或已重载赋值操作符'='。用const修饰，保证A中的元素不致被篡改。运行时间 = O(hi - lo)
 
 template<typename T>
-Vector<T> &Vector<T>::operator=(Vector<T> const &V) { // 重载
+Vector<T> &Vector<T>::operator=(Vector<T> const &V) { // 深复制
     if (_elem) { delete[] _elem; } // 释放原有内容
     copyFrom(V._elem, 0, V._size); // 整体复制
     return *this; // 返回当前对象的引用，以便链式赋值
