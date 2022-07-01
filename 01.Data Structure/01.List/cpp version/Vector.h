@@ -3,6 +3,8 @@
 using Rank = int; // 秩
 #define DEFAULT_CAPACITY 3 // 默认的初始容量（实际应用中可设置为更大）
 
+#include <iostream> // 引入swap()和rand()
+
 template<typename T>
 class Vector {      // 向量模板类
 protected:
@@ -30,7 +32,12 @@ public:
 // 析构函数
     ~Vector() { delete[] _elem; } // 释放内部空间
 // 可写访问接口
+    T &operator[](Rank r) { return _elem[r]; } // 重载下标操作符，可以类似于数组形式引用各元素
+    const T &operator[](Rank r) const { return _elem[r]; } // 仅限于做右值的重载版本
     Vector<T> &operator=(Vector<T> const &); // 重载赋值操作符，以便直接克隆向量
+
+    void unsort(Rank lo, Rank hi); // 对[lo, hi)置乱
+    void unsort() { unsort(0, _size); } // 整体置乱
 }; // Vector
 
 /* 以数组区间A[lo, hi)为蓝本复制向量，由Vector的基于复制的构造函数调用。 */
@@ -72,4 +79,12 @@ void Vector<T>::shrink() {
         _elem[i] = oldElem[i]; // 复制原向量内容
     }
     delete[] oldElem; // 释放原空间
+}
+
+template<typename T>
+void Vector<T>::unsort(Rank lo, Rank hi) {
+    T *V = _elem + lo; // 起始地址，将子向量_elem[lo, hi)视作另一向量V[0, hi - lo)
+    for (Rank i = hi - lo; i > 0; i--) {    // 自后向前
+        std::swap(V[i - 1], V[rand() % i]); // 将V[i - 1]与V[0, i)中某一元素随机交换
+    }
 }
