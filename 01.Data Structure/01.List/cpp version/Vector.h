@@ -11,6 +11,8 @@ protected:
     T *_elem;       // 数据区
 
     void copyFrom(T const *A, Rank lo, Rank hi); // 复制数组区间A[lo, hi)
+    void expand(); // 空间不足时扩容
+    void shrink(); // 装填因子过小时缩容
 
 public:
 // 构造函数
@@ -46,4 +48,28 @@ Vector<T> &Vector<T>::operator=(Vector<T> const &V) { // 深复制
     if (_elem) { delete[] _elem; } // 释放原有内容
     copyFrom(V._elem, 0, V._size); // 整体复制
     return *this; // 返回当前对象的引用，以便链式赋值
+}
+
+template<typename T>
+void Vector<T>::expand() {
+    if (_size < _capacity) return; // 是否确实需要扩容，采用“懒惰”策略
+    if (_capacity < DEFAULT_CAPACITY) _capacity = DEFAULT_CAPACITY; // 不致低于最小容量
+    T *oldElem = _elem;
+    _elem = new T[_capacity <<= 1]; // 容量加倍
+    for (Rank i = 0; i < _size; i++) {
+        _elem[i] = oldElem[i]; // 复制原向量内容（T为基本类型，或已重载赋值操作符'='）
+    }
+    delete[] oldElem; // 释放原空间
+}
+
+template<typename T>
+void Vector<T>::shrink() {
+    if (_capacity < DEFAULT_CAPACITY << 1) return; // 不致收缩到最小容量以下
+    if (_size << 2 > _capacity) return; // 是否装填因子过小，以25%为界
+    T *oldElem = _elem;
+    _elem = new T[_capacity >>= 1]; // 容量减半
+    for (Rank i = 0; i < _size; i++) {
+        _elem[i] = oldElem[i]; // 复制原向量内容
+    }
+    delete[] oldElem; // 释放原空间
 }
