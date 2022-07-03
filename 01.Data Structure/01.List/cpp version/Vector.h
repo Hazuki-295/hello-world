@@ -34,6 +34,8 @@ public:
 // 只读访问接口
     Rank size() const { return _size; }   // 规模
     bool empty() const { return !_size; } // 判空
+    Rank find(T const &e) const { return fine(e, 0, _size); } // 无序向量整体查找
+    Rank find(T const &e, Rank lo, Rank hi) const; // 无序向量区间查找
 // 可写访问接口
     T &operator[](Rank r) { return _elem[r]; } // 重载下标操作符，可以类似于数组形式引用各元素
     const T &operator[](Rank r) const { return _elem[r]; } // 仅限于做右值的重载版本
@@ -90,4 +92,10 @@ void Vector<T>::unsort(Rank lo, Rank hi) {
     for (Rank i = hi - lo; i > 0; i--) {    // 自后向前
         std::swap(V[i - 1], V[rand() % i]); // 将V[i - 1]与V[0, i)中某一元素随机交换
     }
+}
+
+template<typename T> // 无序向量的顺序查找：返回最后一个元素e的位置；失败时，返回lo - 1
+Rank Vector<T>::find(T const &e, Rank lo, Rank hi) const {
+    while ((lo < hi--) && (e != _elem[hi])); // 从后向前，顺序查找
+    return hi; // 若hi < lo，则意味着失败，返回lo - 1；否则hi即命中元素的秩
 }
