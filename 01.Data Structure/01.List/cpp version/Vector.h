@@ -37,18 +37,19 @@ public:
     Rank find(T const &e) const { return find(e, 0, _size); } // 无序向量整体查找
     Rank find(T const &e, Rank lo, Rank hi) const; // 无序向量区间查找
 // 可写访问接口
+    /* 运算符重载 */
     T &operator[](Rank r) { return _elem[r]; } // 重载下标操作符，可以类似于数组形式引用各元素
     const T &operator[](Rank r) const { return _elem[r]; } // 仅限于做右值的重载版本
     Vector<T> &operator=(Vector<T> const &); // 重载赋值操作符，以便直接克隆向量
-
+    /* 插入与删除 */
     T remove(Rank r); // 删除秩为r的元素
     int remove(Rank lo, Rank hi); // 删除秩在区间[lo, hi)之内的元素
     Rank insert(Rank r, T const &e); // 插入元素
     Rank insert(T const &e) { return insert(_size, e); } // 默认作为末元素插入
-
+    /* 排序与置乱 */
     void unsort(Rank lo, Rank hi); // 对[lo, hi)置乱
     void unsort() { unsort(0, _size); } // 整体置乱
-
+    /* 去重 */
     Rank deduplicate(); // 无序去重
 // 遍历
     void traverse(void(*visit)(T &));  // 遍历（使用函数指针，只读或局部性修改）
