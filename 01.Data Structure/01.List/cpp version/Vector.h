@@ -48,6 +48,12 @@ public:
 
     void unsort(Rank lo, Rank hi); // 对[lo, hi)置乱
     void unsort() { unsort(0, _size); } // 整体置乱
+
+    Rank deduplicate(); // 无序去重
+// 遍历
+    void traverse(void(*visit)(T &));  // 遍历（使用函数指针，只读或局部性修改）
+    template<typename VST>
+    void traverse(VST &visit); // 遍历（使用函数对象，可全局性修改）
 }; // Vector
 
 /* 以数组区间A[lo, hi)为蓝本复制向量，由Vector的基于复制的构造函数调用。 */
@@ -133,4 +139,25 @@ T Vector<T>::remove(Rank r) {
     T e = _elem[r];   // 备份被删除元素
     remove(r, r + 1); // 调用区间删除算法，等效于对区间[r, r + 1)的删除
     return e; // 返回被删除元素
+}
+
+template<typename T>
+Rank Vector<T>::deduplicate() {
+    Rank oldSize = _size; // 记录原规模
+    for (Rank i = 1; i < _size;) {   // 从_elem[1]开始，自前向后逐个考查各元素_elem[i]
+        (find(_elem[i], 0, i) < 0) ? // 在其前缀中寻找与之雷同者（至多一个）
+        i++ : remove(i); // 若无雷同者则继续考查其后继，否则删除雷同者
+    }
+    return oldSize - _size; // 向量规模变化量，即被删除元素总数
+}
+
+template<typename T>
+void Vector<T>::traverse(void (*visit)(T &)) { // 借助函数指针机制
+    for (Rank i = 0; i < _size; i++) visit(_elem[i]); // 遍历向量
+}
+
+template<typename T>
+template<typename VST>
+void Vector<T>::traverse(VST &visit) { // 借助函数对象机制
+    for (Rank i = 0; i < _size; i++) visit(_elem[i]); // 遍历向量
 }
