@@ -34,7 +34,7 @@ public:
 // 只读访问接口
     Rank size() const { return _size; }   // 规模
     bool empty() const { return !_size; } // 判空
-    Rank find(T const &e) const { return fine(e, 0, _size); } // 无序向量整体查找
+    Rank find(T const &e) const { return find(e, 0, _size); } // 无序向量整体查找
     Rank find(T const &e, Rank lo, Rank hi) const; // 无序向量区间查找
 // 可写访问接口
     T &operator[](Rank r) { return _elem[r]; } // 重载下标操作符，可以类似于数组形式引用各元素
