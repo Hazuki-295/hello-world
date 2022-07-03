@@ -41,6 +41,11 @@ public:
     const T &operator[](Rank r) const { return _elem[r]; } // 仅限于做右值的重载版本
     Vector<T> &operator=(Vector<T> const &); // 重载赋值操作符，以便直接克隆向量
 
+    T remove(Rank r); // 删除秩为r的元素
+    int remove(Rank lo, Rank hi); // 删除秩在区间[lo, hi)之内的元素
+    Rank insert(Rank r, T const &e); // 插入元素
+    Rank insert(T const &e) { return insert(_size, e); } // 默认作为末元素插入
+
     void unsort(Rank lo, Rank hi); // 对[lo, hi)置乱
     void unsort() { unsort(0, _size); } // 整体置乱
 }; // Vector
@@ -94,8 +99,38 @@ void Vector<T>::unsort(Rank lo, Rank hi) {
     }
 }
 
-template<typename T> // 无序向量的顺序查找：返回最后一个元素e的位置；失败时，返回lo - 1
+/* 无序向量的顺序查找：返回最后一个元素e的位置；失败时，返回lo - 1 */
+template<typename T>
 Rank Vector<T>::find(T const &e, Rank lo, Rank hi) const {
     while ((lo < hi--) && (e != _elem[hi])); // 从后向前，顺序查找
     return hi; // 若hi < lo，则意味着失败，返回lo - 1；否则hi即命中元素的秩
+}
+
+template<typename T>
+Rank Vector<T>::insert(Rank r, T const &e) {
+    expand(); // 若有必要，扩容
+    for (Rank i = _size; i > r; i--) {
+        _elem[i] = _elem[i - 1]; // 自后向前，后继元素顺次后移一个单元
+    }
+    _elem[r] = e; // 插入位置置入新元素
+    _size++;  // 更新容量
+    return r; // 返回秩
+}
+
+template<typename T>
+int Vector<T>::remove(Rank lo, Rank hi) {
+    if (lo == hi) return 0; // 出于效率考虑，单独处理退化情况，比如remove(0, 0)
+    while (hi < _size) {    // 区间[hi, _size)的元素
+        _elem[lo++] = _elem[hi++]; // 顺次前移hi - lo个单元
+    } // 期间覆盖区间[lo, hi)。执行结束后，lo为实际向量尾部哨兵
+    _size = lo; // 更新规模，直接丢弃尾部[lo, _size = hi)区间
+    shrink();   // 若有必要，则缩容
+    return hi - lo; // 返回被删除元素的数目
+}
+
+template<typename T>
+T Vector<T>::remove(Rank r) {
+    T e = _elem[r];   // 备份被删除元素
+    remove(r, r + 1); // 调用区间删除算法，等效于对区间[r, r + 1)的删除
+    return e; // 返回被删除元素
 }
