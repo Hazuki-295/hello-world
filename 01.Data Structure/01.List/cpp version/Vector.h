@@ -31,6 +31,9 @@ public:
     Vector(Vector<T> const &V, Rank lo, Rank hi) { copyFrom(V._elem, lo, hi); } // 向量区间复制
 // 析构函数
     ~Vector() { delete[] _elem; } // 释放内部空间
+// 只读访问接口
+    Rank size() const { return _size; }   // 规模
+    bool empty() const { return !_size; } // 判空
 // 可写访问接口
     T &operator[](Rank r) { return _elem[r]; } // 重载下标操作符，可以类似于数组形式引用各元素
     const T &operator[](Rank r) const { return _elem[r]; } // 仅限于做右值的重载版本
