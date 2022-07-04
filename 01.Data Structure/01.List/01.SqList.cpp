@@ -20,20 +20,19 @@ bool ListInsert(SqList &L, int i, ElemType e) {
     }
     if (L.length >= L.MaxSize) { // 当前存储空间已满，扩容
         ElemType *p = L.data;
-        L.data = new ElemType[L.MaxSize << 1]; // 容量加倍
-        for (int j = 0; j < L.length; j++) {   // 将数据复制到新区域
+        L.data = new ElemType[L.MaxSize <<= 1]; // 容量加倍
+        for (int j = 0; j < L.length; j++) {    // 将数据复制到新区域
             L.data[j] = p[j];
         }
-        L.MaxSize = L.MaxSize << 1;
         delete[] p;
     }
 
     ElemType *p, *q;      // p和q为辅助指针
     q = &(L.data[i - 1]); // q为插入位置
-    for (p = &(L.data[L.length - 1]); p >= q; p--) { // 插入位置及之后的元素右移
+    for (p = &(L.data[L.length - 1]); p >= q; p--) { // 自后向前，插入位置及之后的元素右移
         *(p + 1) = *p;
     }
-    *q = e;     // 在插入位置q插入新的元素e
+    *q = e;     // 插入位置置入新元素
     L.length++; // 线性表表长加1
     return true;
 }
@@ -48,7 +47,7 @@ bool ListDelete(SqList &L, int i, ElemType &e) {
     p = &(L.data[i - 1]);        // p为被删除元素的位置
     e = *p;                      // 被删除元素的值赋给e
     q = &(L.data[L.length - 1]); // 表尾元素的位置
-    for (p++; p <= q; p++) {     // 被删除元素之后的元素左移，覆盖
+    for (p++; p <= q; p++) {     // 自前向后，被删除元素之后的元素左移，覆盖
         *(p - 1) = *p;
     }
     L.length--; // 线性表表长减1
