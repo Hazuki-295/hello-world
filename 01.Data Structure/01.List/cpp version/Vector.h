@@ -57,7 +57,7 @@ public:
     void traverse(VST &visit); // 遍历（使用函数对象，可全局性修改）
 }; // Vector
 
-/* 以数组区间A[lo, hi)为蓝本复制向量，由Vector的基于复制的构造函数调用。 */
+/* 以数组区间A[lo, hi)为蓝本复制向量，由Vector的基于复制的构造函数以及重载的赋值运算符调用。 */
 template<typename T>
 void Vector<T>::copyFrom(T const *A, Rank lo, Rank hi) {
     _elem = new T[_capacity = 2 * (hi - lo)]; // 分配空间，以初始规模的双倍容量申请
@@ -108,13 +108,13 @@ void Vector<T>::unsort(Rank lo, Rank hi) {
 
 /* 无序向量的顺序查找：返回最后一个元素e的位置；失败时，返回lo - 1 */
 template<typename T>
-Rank Vector<T>::find(T const &e, Rank lo, Rank hi) const {
+Rank Vector<T>::find(T const &e, Rank lo, Rank hi) const { // assert: 0 <= lo < hi <= _size
     while ((lo < hi--) && (e != _elem[hi])); // 从后向前，顺序查找
     return hi; // 若hi < lo，则意味着失败，返回lo - 1；否则hi即命中元素的秩
 }
 
 template<typename T>
-Rank Vector<T>::insert(Rank r, T const &e) {
+Rank Vector<T>::insert(Rank r, T const &e) { // assert: 0 <= r <= size
     expand(); // 若有必要，扩容
     for (Rank i = _size; i > r; i--) {
         _elem[i] = _elem[i - 1]; // 自后向前，后继元素顺次后移一个单元
