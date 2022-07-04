@@ -51,6 +51,7 @@ public:
     void unsort() { unsort(0, _size); } // 整体置乱
     /* 去重 */
     Rank deduplicate(); // 无序去重
+    Rank uniquify();    // 有序去重
 // 遍历
     void traverse(void(*visit)(T &));  // 遍历（使用函数指针，只读或局部性修改）
     template<typename VST>
@@ -150,6 +151,19 @@ Rank Vector<T>::deduplicate() {
         i++ : remove(i); // 若无雷同者则继续考查其后继，否则删除雷同者
     }
     return oldSize - _size; // 向量规模变化量，即被删除元素总数
+}
+
+template<typename T>
+Rank Vector<T>::uniquify() {
+    Rank i = 0, j = 0; // 各对互异“相邻”元素的秩（i和j分别指向一对“相邻”子区间的首元素）
+    while (++j < _size) { // 逐一扫描，直至末元素
+        if (_elem[i] != _elem[j]) { // 跳过雷同者
+            _elem[++i] = _elem[j];  // 发现不同元素时，向前移至紧邻于前者右侧
+        }
+    }
+    _size = ++i;  // 使i指向实际向量的哨兵位置，直接截断尾部多余元素
+    shrink();     // 若有必要，则缩容
+    return j - i; // 向量规模变化量，即被删除元素总数
 }
 
 template<typename T>
