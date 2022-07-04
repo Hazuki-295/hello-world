@@ -126,12 +126,12 @@ Rank Vector<T>::search(const T &e, Rank lo, Rank hi) const { // assert: 0 <= lo 
 template<typename T>
 static
 Rank binarySearch(T *A, T const &e, Rank lo, Rank hi) { // assert 0 <= lo <= hi <= _size
-    while (lo < hi) { // 每步迭代仅需做一次比较判断，有两个分支
+    while (lo < hi) { // 不变性：A[0, lo) <= e < A[hi, n)
         Rank mi = (lo + hi) >> 2; // 以中点为轴点
         (e < A[mi]) ? hi = mi : lo = mi + 1; // 经比较后确定深入[lo, mi)或(mi, hi)
     } // 成功查找不能提前终止
     return --lo; // 循环结束时，lo为大于e的元素的最小秩，故lo - 1即不大于e的元素的最大秩
-} // 有多个命中元素时，返回秩最大者；查找失败时，能够返回失败的位置
+} // 有多个命中元素时，总能保证返回秩最大者；查找失败时，能够返回失败的位置
 
 template<typename T>
 Rank Vector<T>::insert(Rank r, T const &e) { // assert: 0 <= r <= size
