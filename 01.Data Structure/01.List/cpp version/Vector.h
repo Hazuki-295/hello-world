@@ -36,6 +36,8 @@ public:
     bool empty() const { return !_size; } // 判空
     Rank find(T const &e) const { return find(e, 0, _size); } // 无序向量整体查找
     Rank find(T const &e, Rank lo, Rank hi) const; // 无序向量区间查找
+    Rank search(T const &e) const { return search(e, 0, _size); } // 有序向量整体查找
+    Rank search(T const &e, Rank lo, Rank hi) const;  // 有序向量区间查找
 // 可写访问接口
     /* 运算符重载 */
     T &operator[](Rank r) { return _elem[r]; } // 重载下标操作符，可以类似于数组形式引用各元素
@@ -113,6 +115,23 @@ Rank Vector<T>::find(T const &e, Rank lo, Rank hi) const { // assert: 0 <= lo < 
     while ((lo < hi--) && (e != _elem[hi])); // 从后向前，顺序查找
     return hi; // 若hi < lo，则意味着失败，返回lo - 1；否则hi即命中元素的秩
 }
+
+/* 在有序向量的区间[lo, hi)内，确定不大于e的最后一个节点的秩 */
+template<typename T>
+Rank Vector<T>::search(const T &e, Rank lo, Rank hi) const { // assert: 0 <= lo < hi <= _size
+    return binarySearch(_elem, e, lo, hi);
+}
+
+/* 二分查找算法：在有序向量的区间[lo, hi)内查找元素e */
+template<typename T>
+static
+Rank binarySearch(T *A, T const &e, Rank lo, Rank hi) { // assert 0 <= lo <= hi <= _size
+    while (lo < hi) { // 每步迭代仅需做一次比较判断，有两个分支
+        Rank mi = (lo + hi) >> 2; // 以中点为轴点
+        (e < A[mi]) ? hi = mi : lo = mi + 1; // 经比较后确定深入[lo, mi)或(mi, hi)
+    } // 成功查找不能提前终止
+    return --lo; // 循环结束时，lo为大于e的元素的最小秩，故lo - 1即不大于e的元素的最大秩
+} // 有多个命中元素时，返回秩最大者；查找失败时，能够返回失败的位置
 
 template<typename T>
 Rank Vector<T>::insert(Rank r, T const &e) { // assert: 0 <= r <= size
