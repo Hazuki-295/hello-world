@@ -155,7 +155,7 @@ Rank Vector<T>::deduplicate() {
 
 template<typename T>
 Rank Vector<T>::uniquify() {
-    Rank i = 0, j = 0; // 各对互异“相邻”元素的秩（i和j分别指向一对“相邻”子区间的首元素）
+    Rank i = 0, j = 0; // 各对互异“相邻”元素的秩（i和j分别指向一对相邻子区间的首元素）
     while (++j < _size) { // 逐一扫描，直至末元素
         if (_elem[i] != _elem[j]) { // 跳过雷同者
             _elem[++i] = _elem[j];  // 发现不同元素时，向前移至紧邻于前者右侧
