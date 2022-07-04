@@ -30,9 +30,8 @@ void print(Vector<T> &V) { // 打印向量
 }
 
 int main() {
-    Vector<int> myVector;
-
-    using T = int;
+    using T = char;
+    Vector<T> myVector;
 
     srand((unsigned int) time(NULL)); // 设置随机数种子
 
