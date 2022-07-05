@@ -52,7 +52,7 @@ int main() {
 
     /* 向量操作测试 */
     enum operationType {
-        Insert, Remove, Find, Permute, Deduplicate
+        Insert, Remove, Find, Sort, Permute, Deduplicate
     };
     printf("向量操作测试：\n");
     int caseCount = 0, opType;
@@ -62,7 +62,7 @@ int main() {
         string prefixWhitespace = string(prefixIn.length(), ' ');
 
         cout << prefixIn;
-        printf("请输入将要执行的操作（01.插入 02.删除 03.按值查找 04.随机置乱 05.整体去重）：");
+        printf("请输入将要执行的操作（01.插入 02.删除 03.按值查找 04.排序 05.随机置乱 06.整体去重）：");
         if (scanf("%d", &opType) == EOF) {
             printf("\n\n");
             break;
@@ -113,6 +113,14 @@ int main() {
                 } else {
                     printf("查找失败。向量中不存在该元素。\n");
                 }
+                break;
+            }
+            case Sort: {
+                cout << prefixWhitespace << "排序操作。\n";
+                myVector.sort();
+
+                cout << prefixOut;
+                printf("排序操作完成。\n");
                 break;
             }
             case Permute: {
