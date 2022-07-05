@@ -156,7 +156,7 @@ int Vector<T>::remove(Rank lo, Rank hi) {
 }
 
 template<typename T>
-T Vector<T>::remove(Rank r) {
+T Vector<T>::remove(Rank r) { // assert: 0 <= r < size
     T e = _elem[r];   // 备份被删除元素
     remove(r, r + 1); // 调用区间删除算法，等效于对区间[r, r + 1)的删除
     return e; // 返回被删除元素
