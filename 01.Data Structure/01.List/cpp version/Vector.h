@@ -209,7 +209,7 @@ void Vector<T>::traverse(VST &visit) { // 借助函数对象机制
     for (Rank i = 0; i < _size; i++) visit(_elem[i]); // 遍历向量
 }
 
-/* 排序算法 */
+/* 起泡排序算法 */
 template<typename T>
 void Vector<T>::bubbleSort(Rank lo, Rank hi) { // assert: 0 <= lo < hi <= size
     while (!bubble(lo, hi--)); //逐趟做扫描交换，直至全序
@@ -225,6 +225,16 @@ bool Vector<T>::bubble(Rank lo, Rank hi) { // 一趟扫描交换
         }
     }
     return sorted; // 返回有序标志
+}
+
+/* 归并排序算法 */
+template<typename T>
+void Vector<T>::mergeSort(Rank lo, Rank hi) { // assert: 0 <= lo < hi <= size
+    if (hi - lo < 2) return;  // 递归基，单元素区间自然有序，否则...
+    Rank mi = (lo + hi) >> 1; // 以中点为界
+    mergeSort(lo, mi); // 对前半段排序
+    mergeSort(mi, hi); // 对后半段排序
+    merge(lo, mi, hi); // 归并
 }
 
 template<typename T>
@@ -245,13 +255,4 @@ void Vector<T>::merge(Rank lo, Rank mi, Rank hi) { // 各自有序的子向量[l
     } // 若B先耗尽，由于C原地保存，无需操作
 
     delete[] B; // 释放临时空间
-}
-
-template<typename T>
-void Vector<T>::mergeSort(Rank lo, Rank hi) { // assert: 0 <= lo < hi <= size
-    if (hi - lo < 2) return;  // 递归基，单元素区间自然有序，否则...
-    Rank mi = (lo + hi) >> 1; // 以中点为界
-    mergeSort(lo, mi); // 对前半段排序
-    mergeSort(mi, hi); // 对后半段排序
-    merge(lo, mi, hi); // 归并
 }
