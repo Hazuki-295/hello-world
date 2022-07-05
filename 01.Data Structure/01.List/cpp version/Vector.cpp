@@ -117,10 +117,28 @@ int main() {
             }
             case Sort: {
                 cout << prefixWhitespace << "排序操作。\n";
-                myVector.sort();
-
-                cout << prefixOut;
-                printf("排序操作完成。\n");
+                cout << prefixWhitespace << "请输入要使用的排序算法（01.起泡排序 02.归并排序）：";
+                cin >> opType;
+                enum sortAlgorithm {
+                    BubbleSort, MergeSort
+                };
+                switch (--opType) {
+                    case BubbleSort: {
+                        myVector.bubbleSort(0, myVector.size());
+                        cout << prefixOut;
+                        printf("排序操作完成。\n");
+                        break;
+                    }
+                    case MergeSort: {
+                        myVector.mergeSort(0, myVector.size());
+                        cout << prefixOut;
+                        printf("排序操作完成。\n");
+                        break;
+                    }
+                    default: {
+                        cout << prefixOut << "输入的操作数错误。" << endl;
+                    }
+                }
                 break;
             }
             case Permute: {
@@ -154,4 +172,3 @@ int main() {
 
     return 0;
 }
-
