@@ -15,9 +15,12 @@ protected:
     void copyFrom(T const *A, Rank lo, Rank hi); // 复制数组区间A[lo, hi)
     void expand(); // 空间不足时扩容
     void shrink(); // 装填因子过小时缩容
-    /* 排序算法 */
+public:
+    /* 排序算法（为方便测试，改为开放接口） */
     bool bubble(Rank lo, Rank hi);     // 一趟扫描交换
     void bubbleSort(Rank lo, Rank hi); // 起泡排序算法
+    void merge(Rank lo, Rank mi, Rank hi); // 二路归并算法
+    void mergeSort(Rank lo, Rank hi);      // 归并排序
 
 public:
 // 构造函数
@@ -222,4 +225,33 @@ bool Vector<T>::bubble(Rank lo, Rank hi) { // 一趟扫描交换
         }
     }
     return sorted; // 返回有序标志
+}
+
+template<typename T>
+void Vector<T>::merge(Rank lo, Rank mi, Rank hi) { // 各自有序的子向量[lo, mi)和[mi, hi)
+    T *A = _elem + lo; // 原地保存，合并后的有序向量A[0, hi - lo) = _elem[lo, hi)
+    T *C = _elem + mi; // 原地保存，后子向量C[0, lc) = _elem[mi, hi)
+
+    int lengthB = mi - lo, lengthC = hi - mi;
+    T *B = new T[lengthB]; // 辅助数组，前子向量B[0, lb) <-- _elem[lo, mi)
+    for (Rank i = 0; i < lengthB; i++) B[i] = A[i]; // 拷贝前子向量
+
+    Rank i = 0, j = 0, k = 0;
+    while ((j < lengthB) && (k < lengthC)) {       // 未有向量被耗尽
+        A[i++] = (B[j] <= C[k]) ? B[j++] : C[k++]; // B[j]和C[k]中的小者续至A末尾
+    }
+    while (j < lengthB) { // 若C先耗尽，则
+        A[i++] = B[j++];  // 将B残余的后缀归入A中
+    } // 若B先耗尽，由于C原地保存，无需操作
+
+    delete[] B; // 释放临时空间
+}
+
+template<typename T>
+void Vector<T>::mergeSort(Rank lo, Rank hi) { // assert: 0 <= lo < hi <= size
+    if (hi - lo < 2) return;  // 递归基，单元素区间自然有序，否则...
+    Rank mi = (lo + hi) >> 1; // 以中点为界
+    mergeSort(lo, mi); // 对前半段排序
+    mergeSort(mi, hi); // 对后半段排序
+    merge(lo, mi, hi); // 归并
 }
