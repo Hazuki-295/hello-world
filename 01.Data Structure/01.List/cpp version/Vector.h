@@ -15,6 +15,9 @@ protected:
     void copyFrom(T const *A, Rank lo, Rank hi); // 复制数组区间A[lo, hi)
     void expand(); // 空间不足时扩容
     void shrink(); // 装填因子过小时缩容
+    /* 排序算法 */
+    bool bubble(Rank lo, Rank hi);     // 一趟扫描交换
+    void bubbleSort(Rank lo, Rank hi); // 起泡排序算法
 
 public:
 // 构造函数
@@ -49,7 +52,9 @@ public:
     Rank insert(Rank r, T const &e); // 插入元素
     Rank insert(T const &e) { return insert(_size, e); } // 默认作为末元素插入
     /* 排序与置乱 */
-    void unsort(Rank lo, Rank hi); // 对[lo, hi)置乱
+    void sort(Rank lo, Rank hi);    // 对[lo, hi)排序
+    void sort() { sort(0, _size); } // 整体排序
+    void unsort(Rank lo, Rank hi);      // 对[lo, hi)置乱
     void unsort() { unsort(0, _size); } // 整体置乱
     /* 去重 */
     Rank deduplicate(); // 无序去重
@@ -99,6 +104,11 @@ void Vector<T>::shrink() {
         _elem[i] = oldElem[i]; // 复制原向量内容
     }
     delete[] oldElem; // 释放原空间
+}
+
+template<typename T>
+void Vector<T>::sort(Rank lo, Rank hi) {
+    bubbleSort(lo, hi); // 起泡排序
 }
 
 template<typename T>
@@ -194,4 +204,22 @@ template<typename T>
 template<typename VST>
 void Vector<T>::traverse(VST &visit) { // 借助函数对象机制
     for (Rank i = 0; i < _size; i++) visit(_elem[i]); // 遍历向量
+}
+
+/* 排序算法 */
+template<typename T>
+void Vector<T>::bubbleSort(Rank lo, Rank hi) { // assert: 0 <= lo < hi <= size
+    while (!bubble(lo, hi--)); //逐趟做扫描交换，直至全序
+}
+
+template<typename T>
+bool Vector<T>::bubble(Rank lo, Rank hi) {
+    bool sorted = true; // 整体有序标志
+    while (++lo < hi) { // 自左向右，逐一检查各对相邻元素
+        if (_elem[lo - 1] < _elem[lo]) {
+            sorted = false; // 若逆序，则意味着尚未整体有序
+            std::swap(_elem[lo - 1], _elem[lo]); // 并需要通过交换使局部有序
+        }
+    }
+    return sorted; // 返回有序标志
 }
