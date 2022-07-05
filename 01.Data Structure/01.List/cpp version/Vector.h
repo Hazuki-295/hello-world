@@ -118,7 +118,7 @@ Rank Vector<T>::find(T const &e, Rank lo, Rank hi) const { // assert: 0 <= lo < 
 
 /* 在有序向量的区间[lo, hi)内，确定不大于e的最后一个节点的秩 */
 template<typename T>
-Rank Vector<T>::search(const T &e, Rank lo, Rank hi) const { // assert: 0 <= lo < hi <= _size
+Rank Vector<T>::search(T const &e, Rank lo, Rank hi) const { // assert: 0 <= lo < hi <= _size
     return binarySearch(_elem, e, lo, hi);
 }
 
@@ -127,7 +127,7 @@ template<typename T>
 static
 Rank binarySearch(T *A, T const &e, Rank lo, Rank hi) { // assert 0 <= lo <= hi <= _size
     while (lo < hi) { // 不变性：A[0, lo) <= e < A[hi, n)
-        Rank mi = (lo + hi) >> 2; // 以中点为轴点
+        Rank mi = (lo + hi) >> 1; // 以中点为轴点
         (e < A[mi]) ? hi = mi : lo = mi + 1; // 经比较后确定深入[lo, mi)或(mi, hi)
     } // 成功查找不能提前终止
     return --lo; // 循环结束时，lo为大于e的元素的最小秩，故lo - 1即不大于e的元素的最大秩
