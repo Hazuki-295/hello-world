@@ -10,6 +10,7 @@ private:
 
 protected:
     void init(); // 列表创建时的初始化
+    void copyNodes(ListNodePosi<T> p, int n); // 复制列表中自位置p起的n项
 
 public:
 // 构造函数
@@ -51,6 +52,28 @@ void List<T>::init() {
     trailer->succ = nullptr; // 互联，尾哨兵始终无后继
 
     _size = 0; // 初始规模为0
+}
+
+template<typename T>
+void List<T>::copyNodes(ListNodePosi<T> p, int n) { // p合法，且至少有n-1个真后继节点
+    init(); // 创建头、尾哨兵节点并做初始化
+    while (n-- > 0) {
+        insertAsLast(p->data); // 将自位置p起的n项依次作为末节点插入
+        p = p->succ;
+    }
+}
+
+template<typename T>
+List<T>::List(ListNodePosi<T> p, int n) { copyNodes(p, n); }
+
+template<typename T>
+List<T>::List(List<T> const &L) { copyNodes(L.first(), L._size); }
+
+template<typename T>
+List<T>::List(List<T> const &L, Rank r, int n) {
+    ListNodePosi<T> p = L.first(); // 自首节点出发
+    while (r-- > 0) p = p->succ;   // 找到L[r]的位置
+    copyNodes(p, n);
 }
 
 /* 重载下标运算符，以通过秩直接访问列表节点（虽方便，效率低，需慎用） */
