@@ -38,6 +38,7 @@ public:
     ListNodePosi<T> insertAsLast(T const &e);  // 将e作为末节点插入
     ListNodePosi<T> insertAfter(ListNodePosi<T> p, T const &e);  // 将e作为p的直接后继插入
     ListNodePosi<T> insertBefore(ListNodePosi<T> p, T const &e); // 将e作为p的直接前驱插入
+    T remove(ListNodePosi<T> p); // 删除合法位置p处的节点，返回被删除节点的数据项
 };
 
 /* 列表初始化，在创建列表对象时统一调用。 */
@@ -115,4 +116,14 @@ template<typename T>
 ListNodePosi<T> List<T>::insertBefore(ListNodePosi<T> p, T const &e) {
     _size++;
     return p->insertAsPred(e); // 将e作为p的前驱插入
+}
+
+template<typename T>
+T List<T>::remove(ListNodePosi<T> p) {
+    T e = p->data; // 备份待删除节点的数值（假定T类型可以直接赋值）
+    p->pred->succ = p->succ;
+    p->succ->pred = p->pred; // 前驱节点与后继节点相互链接
+    delete p; // 释放节点
+    _size--;  // 更新规模
+    return e; // 返回备份的数值
 }
