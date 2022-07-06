@@ -51,9 +51,7 @@ void List<T>::init() {
 template<typename T>
 T &List<T>::operator[](Rank r) const { // assert: 0 <= r < _size
     ListNodePosi<T> p = first(); // 从首节点出发
-    while (r-- > 0) { // 顺数第r个节点即是目标节点
-        p = p->succ;
-    }
+    while (r-- > 0) p = p->succ; // 顺数第r个节点即是目标节点
     return p->data; // 返回其中所存元素
 }
 
