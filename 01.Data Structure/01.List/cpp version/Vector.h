@@ -5,8 +5,7 @@
 using Rank = int; // 秩
 #define DEFAULT_CAPACITY 3 // 默认的初始容量（实际应用中可设置为更大）
 
-template<typename T>
-class Vector {      // 向量模板类
+template<typename T> class Vector { // 向量模板类
 protected:
     Rank _size;     // 规模，当前有效元素的数量
     Rank _capacity; // 容量大小
@@ -64,8 +63,7 @@ public:
     Rank uniquify();    // 有序去重
 // 遍历
     void traverse(void(*visit)(T &));  // 遍历（使用函数指针，只读或局部性修改）
-    template<typename VST>
-    void traverse(VST &visit); // 遍历（使用函数对象，可全局性修改）
+    template<typename VST> void traverse(VST &visit); // 遍历（使用函数对象，可全局性修改）
 }; // Vector
 
 /* 以数组区间A[lo, hi)为蓝本复制向量，由Vector的基于复制的构造函数以及重载的赋值运算符调用。 */
