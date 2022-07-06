@@ -4,7 +4,7 @@
 
 template<typename T> class List { // 列表模板类
 private:
-    int _size; // 规模，当前的实际列表节点总数
+    int _size; // 规模，当前实际节点的数量（不包括头、尾哨兵）
     ListNodePosi<T> header;  // 头哨兵
     ListNodePosi<T> trailer; // 尾哨兵
 
@@ -28,9 +28,9 @@ void List<T>::init() {
     header = new ListNode<T>;  // 创建头哨兵节点
     trailer = new ListNode<T>; // 创建尾哨兵节点
 
-    header->succ = trailer; // 头哨兵后继指向尾哨兵
+    header->succ = trailer; // 互联，头哨兵始终无前驱
     header->pred = nullptr;
-    trailer->pred = header; // 尾哨兵前驱指向头哨兵
+    trailer->pred = header; // 互联，尾哨兵始终无后继
     trailer->succ = nullptr;
 
     _size = 0; // 初始规模为0
