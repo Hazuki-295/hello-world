@@ -10,6 +10,7 @@ private:
 
 protected:
     void init(); // 列表创建时的初始化
+    int clear(); // 清空所有节点，返回被删除节点的个数
     void copyNodes(ListNodePosi<T> p, int n); // 复制列表中自位置p起的n项
 
 public:
@@ -75,6 +76,20 @@ List<T>::List(List<T> const &L, Rank r, int n) {
     ListNodePosi<T> p = L.first(); // 自首节点出发
     while (r-- > 0) p = p->succ;   // 找到L[r]的位置
     copyNodes(p, n);
+}
+
+template<typename T>
+int List<T>::clear() {
+    int oldSize = _size; // 记录原规模
+    while (_size > 0) remove(header->succ); // 反复删除首节点，直至列表变空
+    return oldSize; // 返回删除的节点的个数
+}
+
+template<typename T>
+List<T>::~List<T>() {
+    clear();        // 清空列表节点
+    delete header;  // 释放头、尾哨兵节点
+    delete trailer;
 }
 
 /* 重载下标运算符，以通过秩直接访问列表节点（虽方便，效率低，需慎用） */
