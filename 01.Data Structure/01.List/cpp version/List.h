@@ -31,6 +31,12 @@ public:
     bool valid(ListNodePosi<T> p) { return p && trailer != p && header != p; } // 判断位置p是否对外合法（将头、尾节点等同与nullptr）
     ListNodePosi<T> find(T const &e) const { return find(e, _size, trailer); } // 无序列表整体查找
     ListNodePosi<T> find(T const &e, int n, ListNodePosi<T> p) const; // 无序列表区间查找
+// 可写访问接口
+    /* 插入与删除 */
+    ListNodePosi<T> insertAsFirst(T const &e); // 将e作为首节点插入
+    ListNodePosi<T> insertAsLast(T const &e);  // 将e作为末节点插入
+    ListNodePosi<T> insertAfter(ListNodePosi<T> p, T const &e);  // 将e作为p的直接后继插入
+    ListNodePosi<T> insertBefore(ListNodePosi<T> p, T const &e); // 将e作为p的直接前驱插入
 };
 
 /* 列表初始化，在创建列表对象时统一调用。 */
@@ -63,3 +69,27 @@ ListNodePosi<T> List<T>::find(T const &e, int n, ListNodePosi<T> p) const {
     }
     return nullptr; // 或p越出左边界，意味着区间内不包含e，查找失败
 } // 注：节点p可能是trailer，n个前驱指的是真前驱（哨兵节点并无数据域）
+
+template<typename T>
+ListNodePosi<T> List<T>::insertAsFirst(T const &e) {
+    _size++;
+    return header->insertAsSucc(e); // 将e作为头节点的后继插入
+}
+
+template<typename T>
+ListNodePosi<T> List<T>::insertAsLast(T const &e) {
+    _size++;
+    return trailer->insertAsPred(e); // 将e作为尾节点的前驱插入
+}
+
+template<typename T>
+ListNodePosi<T> List<T>::insertAfter(ListNodePosi<T> p, T const &e) {
+    _size++;
+    return p->insertAsSucc(e); // 将e作为p的后继插入
+}
+
+template<typename T>
+ListNodePosi<T> List<T>::insertBefore(ListNodePosi<T> p, T const &e) {
+    _size++;
+    return p->insertAsPred(e); // 将e作为p的前驱插入
+}
