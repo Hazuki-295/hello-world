@@ -40,6 +40,11 @@ public:
     ListNodePosi<T> insertAfter(ListNodePosi<T> p, T const &e);  // 将e作为p的直接后继插入
     ListNodePosi<T> insertBefore(ListNodePosi<T> p, T const &e); // 将e作为p的直接前驱插入
     T remove(ListNodePosi<T> p); // 删除合法位置p处的节点，返回被删除节点的数据项
+    /* 去重 */
+    int deduplicate(); // 无序去重
+// 遍历
+    void traverse(void(*visit)(T &)); // 遍历（使用函数指针，只读或局部性修改）
+    template<typename VST> void traverse(VST &visit); // 遍历（使用函数对象，可全局性修改）
 };
 
 /* 列表初始化，在创建列表对象时统一调用。 */
@@ -123,4 +128,30 @@ T List<T>::remove(ListNodePosi<T> p) {
     delete p; // 释放节点
     _size--;  // 更新规模
     return e; // 返回备份的数值
+}
+
+template<typename T>
+int List<T>::deduplicate() {
+    int oldSize = _size; // 记录原规模
+    ListNodePosi<T> p = first(); // 从首节点开始
+    for (Rank r = 0; p != trailer; p = p->succ) {
+        ListNodePosi<T> q = find(p->data, r, p); // 在p的r个真前驱中查找雷同者（至多一个）
+        q ? remove(q) : r++; // 注意：r为无重前缀的长度，p不断地指向下一节点
+    }
+    return oldSize - _size; // 向量规模变化量，即被删除元素总数
+}
+
+template<typename T>
+void List<T>::traverse(void (*visit)(T &)) { // 借助函数指针机制
+    for (ListNodePosi<T> p = first(); p != trailer; p = p->succ) { // 遍历列表
+        visit(p->data);
+    }
+}
+
+template<typename T>
+template<typename VST>
+void List<T>::traverse(VST &visit) { // 借助函数对象机制
+    for (ListNodePosi<T> p = first(); p != trailer; p = p->succ) { // 遍历列表
+        visit(p->data);
+    }
 }
