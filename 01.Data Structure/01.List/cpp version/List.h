@@ -10,16 +10,16 @@ private:
 
 protected:
     void init(); // 列表创建时的初始化
-    int clear(); // 清空所有节点，返回被删除节点的个数
     void copyNodes(ListNodePosi<T> p, int n); // 复制列表中自位置p起的n项
+    int clear(); // 清空所有节点，返回被删除节点的个数
 
 public:
 // 构造函数
     List() { init(); } // 默认构造函数
     /* 基于复制的构造函数 */
-    List(List<T> const &L); // 拷贝构造函数，整体复制列表L
+    List(List<T> const &L) { copyNodes(L.first(), L._size); } // 拷贝构造函数，整体复制列表L
     List(List<T> const &L, Rank r, int n); // 复制列表L中自第r项起的n项
-    List(ListNodePosi<T> p, int n); // 复制列表中自位置p起的n项
+    List(ListNodePosi<T> p, int n) { copyNodes(p, n); } // 复制列表中自位置p起的n项
 // 析构函数
     ~List(); // 释放（包括头、尾哨兵在内的）所有节点
 // 只读访问接口
@@ -35,8 +35,8 @@ public:
     ListNodePosi<T> find(T const &e, int n, ListNodePosi<T> p) const; // 无序列表区间查找
 // 可写访问接口
     /* 插入与删除 */
-    ListNodePosi<T> insertAsFirst(T const &e); // 将e作为首节点插入
-    ListNodePosi<T> insertAsLast(T const &e);  // 将e作为末节点插入
+    ListNodePosi<T> insertAsFirst(T const &e) { insertAfter(header, e); }  // 将e作为首节点插入
+    ListNodePosi<T> insertAsLast(T const &e) { insertBefore(trailer, e); } // 将e作为末节点插入
     ListNodePosi<T> insertAfter(ListNodePosi<T> p, T const &e);  // 将e作为p的直接后继插入
     ListNodePosi<T> insertBefore(ListNodePosi<T> p, T const &e); // 将e作为p的直接前驱插入
     T remove(ListNodePosi<T> p); // 删除合法位置p处的节点，返回被删除节点的数据项
@@ -48,10 +48,10 @@ void List<T>::init() {
     header = new ListNode<T>;  // 创建头哨兵节点
     trailer = new ListNode<T>; // 创建尾哨兵节点
 
-    header->succ = trailer;
-    header->pred = nullptr;  // 互联，头哨兵始终无前驱
+    header->succ = trailer;  // 初始时，头、尾节点互联
+    header->pred = nullptr;  // 头哨兵始终无前驱
     trailer->pred = header;
-    trailer->succ = nullptr; // 互联，尾哨兵始终无后继
+    trailer->succ = nullptr; // 尾哨兵始终无后继
 
     _size = 0; // 初始规模为0
 }
@@ -64,12 +64,6 @@ void List<T>::copyNodes(ListNodePosi<T> p, int n) { // p合法，且至少有n-1
         p = p->succ;
     }
 }
-
-template<typename T>
-List<T>::List(ListNodePosi<T> p, int n) { copyNodes(p, n); }
-
-template<typename T>
-List<T>::List(List<T> const &L) { copyNodes(L.first(), L._size); }
 
 template<typename T>
 List<T>::List(List<T> const &L, Rank r, int n) {
@@ -104,22 +98,10 @@ T &List<T>::operator[](Rank r) const { // assert: 0 <= r < _size
 template<typename T>
 ListNodePosi<T> List<T>::find(T const &e, int n, ListNodePosi<T> p) const {
     while (n-- > 0) { // 对于p的最近的n个前驱，自右向左
-        if ((p->pred)->data == e) return p; // 逐个比对，直至命中
+        if ((p = p->pred)->data == e) return p; // 逐个比对，直至命中
     }
     return nullptr; // 或p越出左边界，意味着区间内不包含e，查找失败
 } // 注：节点p可能是trailer，n个前驱指的是真前驱（哨兵节点并无数据域）
-
-template<typename T>
-ListNodePosi<T> List<T>::insertAsFirst(T const &e) {
-    _size++;
-    return header->insertAsSucc(e); // 将e作为头节点的后继插入
-}
-
-template<typename T>
-ListNodePosi<T> List<T>::insertAsLast(T const &e) {
-    _size++;
-    return trailer->insertAsPred(e); // 将e作为尾节点的前驱插入
-}
 
 template<typename T>
 ListNodePosi<T> List<T>::insertAfter(ListNodePosi<T> p, T const &e) {
