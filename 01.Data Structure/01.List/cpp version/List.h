@@ -35,8 +35,8 @@ public:
     ListNodePosi<T> find(T const &e, int n, ListNodePosi<T> p) const; // 无序列表区间查找
 // 可写访问接口
     /* 插入与删除 */
-    ListNodePosi<T> insertAsFirst(T const &e) { insertAfter(header, e); }  // 将e作为首节点插入
-    ListNodePosi<T> insertAsLast(T const &e) { insertBefore(trailer, e); } // 将e作为末节点插入
+    ListNodePosi<T> insertAsFirst(T const &e) { return insertAfter(header, e); }  // 将e作为首节点插入
+    ListNodePosi<T> insertAsLast(T const &e) { return insertBefore(trailer, e); } // 将e作为末节点插入
     ListNodePosi<T> insertAfter(ListNodePosi<T> p, T const &e);  // 将e作为p的直接后继插入
     ListNodePosi<T> insertBefore(ListNodePosi<T> p, T const &e); // 将e作为p的直接前驱插入
     T remove(ListNodePosi<T> p); // 删除合法位置p处的节点，返回被删除节点的数据项
