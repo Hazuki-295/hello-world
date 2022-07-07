@@ -99,14 +99,14 @@ T &List<T>::operator[](Rank r) const { // assert: 0 <= r < _size
     return p->data; // 返回其中所存元素
 }
 
-/* 无序列表区间查找：在节点p的n个前驱中，找到等于e的最后者。 */
+/* 无序列表区间查找：在节点p的n个真前驱中，找到等于e的最后者。 */
 template<typename T>
 ListNodePosi<T> List<T>::find(T const &e, int n, ListNodePosi<T> p) const {
     while (n-- > 0) { // 对于p的最近的n个前驱，自右向左
         if ((p = p->pred)->data == e) return p; // 逐个比对，直至命中
     }
     return nullptr; // 或p越出左边界，意味着区间内不包含e，查找失败
-} // 注：节点p可能是trailer，n个前驱指的是真前驱（哨兵节点并无数据域）
+} // 注：节点p可能是trailer，n个前驱指的是真前驱（亦即，不包括自己）
 
 template<typename T>
 ListNodePosi<T> List<T>::insertAfter(ListNodePosi<T> p, T const &e) {
@@ -124,8 +124,8 @@ template<typename T>
 T List<T>::remove(ListNodePosi<T> p) {
     T e = p->data; // 备份待删除节点的数值（假定T类型可以直接赋值）
     p->pred->succ = p->succ;
-    p->succ->pred = p->pred; // 前驱节点与后继节点相互链接
-    delete p; // 释放节点
+    p->succ->pred = p->pred; // 前驱节点与后继节点相互链接，跳过节点p
+    delete p; // 释放已经孤立出来的节点p
     _size--;  // 更新规模
     return e; // 返回备份的数值
 }
@@ -134,8 +134,8 @@ template<typename T>
 int List<T>::deduplicate() {
     int oldSize = _size; // 记录原规模
     ListNodePosi<T> p = first(); // 从首节点开始
-    for (Rank r = 0; p != trailer; p = p->succ) {
-        ListNodePosi<T> q = find(p->data, r, p); // 在p的r个真前驱中查找雷同者（至多一个）
+    for (Rank r = 0; p != trailer; p = p->succ) { // 自前向后逐个考查各节点
+        ListNodePosi<T> q = find(p->data, r, p);  // 在p的r个真前驱中查找雷同者（至多一个）
         q ? remove(q) : r++; // 注意：r为无重前缀的长度，p不断地指向下一节点
     }
     return oldSize - _size; // 向量规模变化量，即被删除元素总数
