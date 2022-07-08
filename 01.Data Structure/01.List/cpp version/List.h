@@ -33,6 +33,8 @@ public:
     bool valid(ListNodePosi<T> p) { return p && trailer != p && header != p; } // 判断位置p是否对外合法（将头、尾节点等同与nullptr）
     ListNodePosi<T> find(T const &e) const { return find(e, _size, trailer); } // 无序列表整体查找
     ListNodePosi<T> find(T const &e, int n, ListNodePosi<T> p) const; // 无序列表区间查找
+    ListNodePosi<T> search(T const &e) const { return search(e, _size, trailer); } // 有序列表整体查找
+    ListNodePosi<T> search(T const &e, int n, ListNodePosi<T> p) const; // 有序列表区间查找
 // 可写访问接口
     /* 插入与删除 */
     ListNodePosi<T> insertAsFirst(T const &e) { return insertAfter(header, e); }  // 将e作为首节点插入
@@ -108,6 +110,16 @@ ListNodePosi<T> List<T>::find(T const &e, int n, ListNodePosi<T> p) const {
     }
     return nullptr; // 或p越出左边界，意味着区间内不包含e，查找失败
 } // 注：节点p可能是trailer，n个前驱指的是真前驱（亦即，不包括自己）
+
+/* 有序列表区间查找：在节点p的n个真前驱中，找到不大于e的最后者。 */
+template<typename T>
+ListNodePosi<T> List<T>::search(T const &e, int n, ListNodePosi<T> p) const {
+    while (n-- >= 0) { // 对于p的最近的n个前驱，自右向左
+        if ((p = p->pred)->data <= e) break; // 逐个比对，直至命中（第一个不大于e的节点）
+    }
+    return p; // 返回查找终止的位置；或范围越界，返回区间左边界的前驱（可能是header）
+} // 注：与无序列表find()不同的一个细微之处是，while多循环了一次
+// 如此在范围越界时，最后一次关键码比较没有意义（等效于与-inf比较），但符合输出语义约定
 
 template<typename T>
 ListNodePosi<T> List<T>::insertAfter(ListNodePosi<T> p, T const &e) {
