@@ -22,7 +22,7 @@ ListNodePosi<T> nodePosi(List<T> &L, Rank r) { // 返回列表中秩为r的节�
 }
 
 int main() {
-    using T = char;
+    using T = int;
     List<T> myList;
 
     /* 初始化列表 */
@@ -42,7 +42,7 @@ int main() {
 
     /* 列表操作测试 */
     enum operationType {
-        Insert, Remove, Search, Sort, Permute, Deduplicate
+        Insert, Remove, Sort, Deduplicate
     };
     printf("列表操作测试：\n");
     int caseCount = 0, opType;
@@ -52,7 +52,7 @@ int main() {
         string prefixWhitespace = string(prefixIn.length(), ' ');
 
         cout << prefixIn;
-        printf("请输入将要执行的操作（01.插入 02.删除）：");
+        printf("请输入将要执行的操作（01.插入 02.删除 03.排序 04.去重）：");
         if (scanf("%d", &opType) == EOF) {
             printf("\n\n");
             break;
@@ -88,6 +88,60 @@ int main() {
                     cout << temp << endl;
                 } else {
                     printf("删除失败。删除的位置非法。\n");
+                }
+                break;
+            }
+            case Sort: {
+                cout << prefixWhitespace << "排序操作。\n";
+                cout << prefixWhitespace << "请输入要使用的排序算法（01.插入排序 02.选择排序）：";
+                cin >> opType;
+                enum sortAlgorithm {
+                    InsertionSort, SelectSort
+                };
+                switch (--opType) {
+                    case InsertionSort: {
+                        myList.insertionSort(myList.first(), myList.size());
+                        cout << prefixOut;
+                        printf("排序操作完成。\n");
+                        break;
+                    }
+                    case SelectSort: {
+                        myList.selectionSort(myList.first(), myList.size());
+                        cout << prefixOut;
+                        printf("排序操作完成。\n");
+                        break;
+                    }
+                    default: {
+                        cout << prefixOut << "输入的操作数错误。" << endl;
+                    }
+                }
+                break;
+            }
+            case Deduplicate:{
+                cout << prefixWhitespace << "去重操作。\n";
+                cout << prefixWhitespace << "请输入要使用的去重算法（01.无序去重 02.有序去重）：";
+                cin >> opType;
+                enum deduplicateAlgorithm {
+                    unordered, ordered
+                };
+                switch (--opType) {
+                    case unordered: {
+                        int numOfRemove = myList.deduplicate();
+                        cout << prefixOut;
+                        printf("去重操作完成。删除的重复元素个数为：");
+                        cout << numOfRemove << endl;
+                        break;
+                    }
+                    case ordered: {
+                        int numOfRemove = myList.uniquify();
+                        cout << prefixOut;
+                        printf("去重操作完成。删除的重复元素个数为：");
+                        cout << numOfRemove << endl;
+                        break;
+                    }
+                    default: {
+                        cout << prefixOut << "输入的操作数错误。" << endl;
+                    }
                 }
                 break;
             }
