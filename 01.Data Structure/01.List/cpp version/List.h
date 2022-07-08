@@ -12,6 +12,9 @@ protected:
     void init(); // 列表创建时的初始化
     void copyNodes(ListNodePosi<T> p, int n); // 复制列表中自位置p起的n项
     int clear(); // 清空所有节点，返回被删除节点的个数
+public:
+    /* 排序算法（为方便测试，改为开放接口） */
+    void insertionSort(ListNodePosi<T> p, int n); // 插入排序算法
 
 public:
 // 构造函数
@@ -177,5 +180,15 @@ template<typename VST>
 void List<T>::traverse(VST &visit) { // 借助函数对象机制
     for (ListNodePosi<T> p = first(); p != trailer; p = p->succ) { // 遍历列表
         visit(p->data);
+    }
+}
+
+/* 插入排序算法：对列表中起始于位置p、宽度为n的区间做插入排序。 */
+template<typename T>
+void List<T>::insertionSort(ListNodePosi<T> p, int n) {
+    for (int r = 0; r < n; r++) { // 逐一为各节点（r为有序前缀的长度）
+        insertAfter(search(p->data, r, p), p->data); // 查找适当的位置并插入
+        p = p->succ;        // 首先使p转向下一节点
+        remove(p->pred); // 移除已经向前插入的元素
     }
 }
