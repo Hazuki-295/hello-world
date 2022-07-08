@@ -176,9 +176,11 @@ T Vector<T>::remove(Rank r) { // assert: 0 <= r < size
 template<typename T>
 Rank Vector<T>::deduplicate() {
     Rank oldSize = _size; // 记录原规模
-    for (Rank i = 1; i < _size;) {   // 从_elem[1]开始，自前向后逐个考查各元素_elem[i]
-        (find(_elem[i], 0, i) < 0) ? // 在其前缀中寻找与之雷同者（至多一个）
-        i++ : remove(i); // 若无雷同者则继续考查其后继，否则删除雷同者
+    for (Rank i = 1; i < _size;) {    // 从_elem[1]开始，自前向后逐个考查各元素_elem[i]
+        if (find(_elem[i], 0, i) < 0) // 在其前缀中寻找与之雷同者（至多一个）
+            i++;       // 若无雷同者则继续考查其后继
+        else
+            remove(i); // 否则删除雷同者
     }
     return oldSize - _size; // 向量规模变化量，即被删除元素总数
 }
