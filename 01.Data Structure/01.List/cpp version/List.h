@@ -28,7 +28,7 @@ public:
     ListNodePosi<T> first() const { return header->succ; } // 首节点位置
     ListNodePosi<T> last() const { return trailer->pred; } // 末节点位置
     /* 运算符重载 */
-    T &operator[](Rank r) const; // 重载，支持循秩访问（效率低）
+    T operator[](Rank r) const; // 重载，支持循秩访问（效率低）
     /* 查找接口 */
     bool valid(ListNodePosi<T> p) { return p && trailer != p && header != p; } // 判断位置p是否对外合法（将头、尾节点等同与nullptr）
     ListNodePosi<T> find(T const &e) const { return find(e, _size, trailer); } // 无序列表整体查找
@@ -95,10 +95,10 @@ List<T>::~List<T>() {
 }
 
 /* 重载下标运算符，以通过秩直接访问列表节点（虽方便，效率低，需慎用） */
-template<typename T>
-T &List<T>::operator[](Rank r) const { // assert: 0 <= r < _size
+template<typename T> // assert: 0 <= r < _size
+T List<T>::operator[](Rank r) const { // O(r)效率低下，可偶尔为之，却不宜常用
     ListNodePosi<T> p = first(); // 从首节点出发
-    while (r-- > 0) p = p->succ; // 顺数第r个节点即是目标节点
+    while (r-- > 0) p = p->succ; // 顺数第r个节点即是目标节点（秩 == 前驱的总数）
     return p->data; // 返回其中所存元素
 }
 
