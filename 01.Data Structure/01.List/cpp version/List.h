@@ -15,6 +15,7 @@ protected:
 public:
     /* 排序算法（为方便测试，改为开放接口） */
     void insertionSort(ListNodePosi<T> p, int n); // 插入排序算法
+    void selectionSort(ListNodePosi<T> p, int n); // 选择排序算法
 
 public:
 // 构造函数
@@ -38,6 +39,8 @@ public:
     ListNodePosi<T> find(T const &e, int n, ListNodePosi<T> p) const; // 无序列表区间查找
     ListNodePosi<T> search(T const &e) const { return search(e, _size, trailer); } // 有序列表整体查找
     ListNodePosi<T> search(T const &e, int n, ListNodePosi<T> p) const; // 有序列表区间查找
+    ListNodePosi<T> selectMax(ListNodePosi<T> p, int n); // 在p及其n-1个后继中选出最大者
+    ListNodePosi<T> selectMax() { return selectMax(header->succ, _size); } // 整体最大者
 // 可写访问接口
     /* 插入与删除 */
     ListNodePosi<T> insertAsFirst(T const &e) { return insertAfter(header, e); }  // 将e作为首节点插入
@@ -191,4 +194,30 @@ void List<T>::insertionSort(ListNodePosi<T> p, int n) {
         p = p->succ;        // 首先使p转向下一节点
         remove(p->pred); // 移除已经向前插入的元素
     }
+}
+
+/* 选择排序算法：对列表中起始于位置p、宽度为n的区间做选择排序。 */
+template<typename T>
+void List<T>::selectionSort(ListNodePosi<T> p, int n) {
+    ListNodePosi<T> head = p->pred, tail = p; // 双指针，分别指向区间首、尾哨兵
+    for (int i = 0; i < n; i++) { // 待排序区间为(head, tail)
+        tail = tail->succ;        // 使tail到达区间尾部哨兵
+    }
+    while (n > 1) { // 至少还剩下两个节点时，在待排序区间内
+        ListNodePosi<T> max = selectMax(head->succ, n); // 找出最大者（雷同时秩大者优先）
+        insertBefore(tail, remove(max)); // 将其移至无序区间末尾（作为有序区间新的首元素）
+        tail = tail->pred; // 待排序区间缩小，有序后缀扩大
+        n--;
+    } // 剩下一个节点时，自然是最小元素
+}
+
+template<typename T>
+ListNodePosi<T> List<T>::selectMax(ListNodePosi<T> p, int n) {
+    ListNodePosi<T> max = p; // 暂定最大者为首节点p
+    for (ListNodePosi<T> cur = p; n > 1; n--) {     // 逐一考察p的n-1个真后继
+        if ((cur = cur->succ)->data >= max->data) { // 若当前元素不小于max
+            max = cur; // 更新最大元素位置记录
+        }
+    }
+    return max; // 返回最大节点位置
 }
