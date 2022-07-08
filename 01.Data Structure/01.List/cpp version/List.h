@@ -153,9 +153,10 @@ template<typename T>
 int List<T>::deduplicate() {
     int oldSize = _size; // 记录原规模
     ListNodePosi<T> p = first(); // 从首节点开始
-    for (Rank r = 0; p != trailer; p = p->succ) { // 自前向后逐个考查各节点
-        ListNodePosi<T> q = find(p->data, r, p);  // 在p的r个真前驱中查找雷同者（至多一个）
-        q ? remove(q) : r++; // 注意：r为无重前缀的长度，p不断地指向下一节点
+    for (Rank r = 0; p != trailer; p = p->succ) {      // 自前向后逐个考查各节点
+        if (ListNodePosi<T> q = find(p->data, r, p)) { // 在p的r个真前驱中查找雷同者（至多一个）
+            remove(q);
+        } else r++; // 注意：r为无重前缀的长度，p不断地指向下一节点
     }
     return oldSize - _size; // 列表规模变化量，即被删除元素总数
 }
@@ -166,8 +167,10 @@ int List<T>::uniquify() {
     int oldSize = _size;     // 记录原规模
     ListNodePosi<T> p = first(), q; // 双指针，p为各区段起点，q则为其后继
     while ((q = p->succ) != trailer) { // 反复考察相邻的节点对(p, q)
-        (p->data == q->data) ? remove(q) : p = q;
-    } // 若雷同，删除后者；否则（互异），转向下一区段
+        if (p->data == q->data) { // 若雷同，删除后者
+            remove(q);
+        } else p = q; // 否则（互异），转向下一区段
+    }
     return oldSize - _size; // 列表规模变化量，即被删除元素总数
 }
 
