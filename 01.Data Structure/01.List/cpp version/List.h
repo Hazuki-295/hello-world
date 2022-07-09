@@ -2,7 +2,7 @@
 
 #include "ListNode.h" // 引入列表节点类
 
-template<typename T> class List { // 列表模板类
+template<typename T> class List { // 列表模板类（以双向链表形式实现）
 private:
     int _size; // 规模，当前实际节点的数量（不包括头、尾哨兵）
     ListNodePosi<T> header;  // 头哨兵
@@ -11,7 +11,7 @@ private:
 protected:
     void init(); // 列表创建时的初始化
     void copyNodes(ListNodePosi<T> p, int n); // 复制列表中自位置p起的n项
-    int clear(); // 清空所有节点，返回被删除节点的个数
+    int clear(); // 清除所有节点，返回被删除节点的个数
 public:
     /* 排序算法（为方便测试，改为开放接口） */
     void insertionSort(ListNodePosi<T> p, int n); // 插入排序
@@ -50,6 +50,9 @@ public:
     ListNodePosi<T> insertAfter(ListNodePosi<T> p, T const &e);  // 将e作为p的直接后继插入
     ListNodePosi<T> insertBefore(ListNodePosi<T> p, T const &e); // 将e作为p的直接前驱插入
     T remove(ListNodePosi<T> p); // 删除合法位置p处的节点，返回被删除节点的数据项
+    /* 排序 */
+    void sort(ListNodePosi<T> p, int n);  // 列表区间排序
+    void sort() { sort(first(), _size); } // 列表整体排序
     /* 去重 */
     int deduplicate(); // 无序去重
     int uniquify();    // 有序去重
@@ -72,6 +75,7 @@ void List<T>::init() {
     _size = 0; // 初始规模为0
 }
 
+/* 列表内部方法：复制列表中自位置p起的n项。 */
 template<typename T>
 void List<T>::copyNodes(ListNodePosi<T> p, int n) { // p合法，且至少有n-1个真后继节点
     init(); // 创建头、尾哨兵节点并做初始化
@@ -152,10 +156,25 @@ T List<T>::remove(ListNodePosi<T> p) {
 }
 
 template<typename T>
+void List<T>::sort(ListNodePosi<T> p, int n) {
+    switch (rand() % 3) {
+        case 1:
+            insertionSort(p, n); // 插入排序
+            break;
+        case 2:
+            selectionSort(p, n); // 选择排序
+            break;
+        default:
+            mergeSort(p, n); // 归并排序
+            break;
+    }
+}
+
+template<typename T>
 int List<T>::deduplicate() {
     int oldSize = _size; // 记录原规模
     ListNodePosi<T> p = first(); // 从首节点开始
-    for (Rank r = 0; p != trailer; p = p->succ) {      // 自前向后逐个考查各节点
+    for (Rank r = 0; p != trailer; p = p->succ) {      // 自前向后逐个考查各节点O(n)
         if (ListNodePosi<T> q = find(p->data, r, p)) { // 在p的r个真前驱中查找雷同者（至多一个）
             remove(q);
         } else r++; // 注意：r为无重前缀的长度，p不断地指向下一节点
