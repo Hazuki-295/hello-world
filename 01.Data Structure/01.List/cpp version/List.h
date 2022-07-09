@@ -14,8 +14,10 @@ protected:
     int clear(); // 清空所有节点，返回被删除节点的个数
 public:
     /* 排序算法（为方便测试，改为开放接口） */
-    void insertionSort(ListNodePosi<T> p, int n); // 插入排序算法
-    void selectionSort(ListNodePosi<T> p, int n); // 选择排序算法
+    void insertionSort(ListNodePosi<T> p, int n); // 插入排序
+    void selectionSort(ListNodePosi<T> p, int n); // 选择排序
+    ListNodePosi<T> merge(ListNodePosi<T> p, int n, List<T> &L, ListNodePosi<T> q, int m); // 二路归并算法
+    void mergeSort(ListNodePosi<T> &p, int n); // 归并排序（p将指向归并后区间的新起点）
 
 public:
 // 构造函数
@@ -223,4 +225,34 @@ ListNodePosi<T> List<T>::selectMax(ListNodePosi<T> p, int n) {
         }
     }
     return max; // 返回最大节点位置
+}
+
+/* 归并排序算法：对起始于位置p的n个元素排序。 */
+template<typename T>
+void List<T>::mergeSort(ListNodePosi<T> &p, int n) {
+    if (n < 2) return; // 递归基，单元素区间自然有序，否则...
+    int m = n >> 1; // 以中点为界
+    ListNodePosi<T> q = p;
+    for (int i = 0; i < m; i++) { //找到后子列表起点
+        q = q->succ;
+    }
+    mergeSort(p, m);
+    mergeSort(q, n - m); //前、后子列表各分别排序
+    p = merge(p, m, *this, q, n - m); // 归并
+} // 注意：排序后，p依然指向归并后区间的（新）起点
+
+/* 有序列表的归并：当前列表中自p起的n个元素，与列表L中自q起的m个元素归并。 */
+template<typename T>
+ListNodePosi<T> List<T>::merge(ListNodePosi<T> p, int n, List<T> &L, ListNodePosi<T> q, int m) {
+    ListNodePosi<T> head = p->pred; // 归并之后p可能不再指向首节点，故需先记忆，以便在返回前更新
+    while ((m > 0) && (p != q)) {   // q尚未出界之前；或是在mergeSort()中，p越至q的位置，可提前退出
+        if ((n > 0) && (p->data <= q->data)) { // 若p尚未出界且v(p) <= v(q)，则
+            p = p->succ; // p直接后移，即完成归入
+            n--;
+        } else { // 否则，将q转移至p之前，以完成归入
+            insertBefore(L.remove((q = q->succ)->pred), p);
+            m--;
+        }
+    }
+    return head->succ; // 返回更新的首节点
 }
