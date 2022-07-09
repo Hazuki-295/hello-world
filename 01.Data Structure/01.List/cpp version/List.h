@@ -269,7 +269,7 @@ ListNodePosi<T> List<T>::merge(ListNodePosi<T> p, int n, List<T> &L, ListNodePos
             p = p->succ; // p直接后移，即完成归入
             n--;
         } else { // 否则，将q转移至p之前，以完成归入
-            insertBefore(L.remove((q = q->succ)->pred), p);
+            insertBefore(p, L.remove((q = q->succ)->pred));
             m--;
         }
     } // while条件不成立时，p == q仅可能发生在p一直后移直到 n == 0，即原本就两区间整体有序，此时可直接跳过
