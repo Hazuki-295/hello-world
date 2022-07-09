@@ -204,9 +204,9 @@ void List<T>::insertionSort(ListNodePosi<T> p, int n) {
 /* 选择排序算法：对列表中起始于位置p、宽度为n的区间做选择排序。 */
 template<typename T>
 void List<T>::selectionSort(ListNodePosi<T> p, int n) {
-    ListNodePosi<T> head = p->pred, tail = p; // 双指针，分别指向区间首、尾哨兵
+    ListNodePosi<T> head = p->pred, tail = p; // 双指针，分别指向待排序区间首、尾哨兵
     for (int i = 0; i < n; i++) { // 待排序区间为(head, tail)
-        tail = tail->succ;        // 使tail到达区间尾部哨兵
+        tail = tail->succ;        // 使tail到达区间尾部哨兵L[n]
     }
     while (n > 1) { // 至少还剩下两个节点时，在待排序区间内
         ListNodePosi<T> max = selectMax(head->succ, n); // 找出最大者（雷同时秩大者优先）
@@ -217,7 +217,7 @@ void List<T>::selectionSort(ListNodePosi<T> p, int n) {
 }
 
 template<typename T>
-ListNodePosi<T> List<T>::selectMax(ListNodePosi<T> p, int n) {
+ListNodePosi<T> List<T>::selectMax(ListNodePosi<T> p, int n) { // 从起始于位置p的n个元素中选出最大者
     ListNodePosi<T> max = p; // 暂定最大者为首节点p
     for (ListNodePosi<T> cur = p; n > 1; n--) {     // 逐一考察p的n-1个真后继
         if ((cur = cur->succ)->data >= max->data) { // 若当前元素不小于max
