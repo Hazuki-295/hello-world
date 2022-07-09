@@ -229,17 +229,17 @@ ListNodePosi<T> List<T>::selectMax(ListNodePosi<T> p, int n) {
 
 /* 归并排序算法：对起始于位置p的n个元素排序。 */
 template<typename T>
-void List<T>::mergeSort(ListNodePosi<T> &p, int n) {
+void List<T>::mergeSort(ListNodePosi<T> &p, int n) { // valid(p) && rank(p) + n <= size
     if (n < 2) return; // 递归基，单元素区间自然有序，否则...
-    int m = n >> 1; // 以中点为界
+    int m = n >> 1;    // 以中点为界
     ListNodePosi<T> q = p;
-    for (int i = 0; i < m; i++) { //找到后子列表起点
+    for (int i = 0; i < m; i++) { // 均分列表，找到后子列表起点L[m]
         q = q->succ;
     }
-    mergeSort(p, m);
-    mergeSort(q, n - m); //前、后子列表各分别排序
+    mergeSort(p, m);        // 对前子列表排序[0, m)
+    mergeSort(q, n - m); // 对后子列表排序[m, n)
     p = merge(p, m, *this, q, n - m); // 归并
-} // 注意：排序后，p依然指向归并后区间的（新）起点
+} // 注意：排序后，由于mergeSort()传入的是引用参数，merge()返回更新的首节点，p依然指向归并后区间的（新）起点
 
 /* 有序列表的归并：当前列表中自p起的n个元素，与列表L中自q起的m个元素归并。 */
 template<typename T>
@@ -253,6 +253,6 @@ ListNodePosi<T> List<T>::merge(ListNodePosi<T> p, int n, List<T> &L, ListNodePos
             insertBefore(L.remove((q = q->succ)->pred), p);
             m--;
         }
-    }
+    } // while条件不成立时，p == q仅可能发生在p一直后移直到 n == 0，即原本就两区间整体有序，此时可直接跳过
     return head->succ; // 返回更新的首节点
 }
