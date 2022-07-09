@@ -93,10 +93,10 @@ int main() {
             }
             case Sort: {
                 cout << prefixWhitespace << "排序操作。\n";
-                cout << prefixWhitespace << "请输入要使用的排序算法（01.插入排序 02.选择排序）：";
+                cout << prefixWhitespace << "请输入要使用的排序算法（01.插入排序 02.选择排序 03.归并排序）：";
                 cin >> opType;
                 enum sortAlgorithm {
-                    InsertionSort, SelectSort
+                    InsertionSort, SelectSort, MergeSort
                 };
                 switch (--opType) {
                     case InsertionSort: {
@@ -107,6 +107,13 @@ int main() {
                     }
                     case SelectSort: {
                         myList.selectionSort(myList.first(), myList.size());
+                        cout << prefixOut;
+                        printf("排序操作完成。\n");
+                        break;
+                    }
+                    case MergeSort: {
+                        ListNodePosi<T> p = myList.first();
+                        myList.mergeSort(p, myList.size());
                         cout << prefixOut;
                         printf("排序操作完成。\n");
                         break;
@@ -128,14 +135,14 @@ int main() {
                     case unordered: {
                         int numOfRemove = myList.deduplicate();
                         cout << prefixOut;
-                        printf("去重操作完成。删除的重复元素个数为：");
+                        printf("无序去重操作完成。删除的重复元素个数为：");
                         cout << numOfRemove << endl;
                         break;
                     }
                     case ordered: {
                         int numOfRemove = myList.uniquify();
                         cout << prefixOut;
-                        printf("去重操作完成。删除的重复元素个数为：");
+                        printf("有序去重操作完成。删除的重复元素个数为：");
                         cout << numOfRemove << endl;
                         break;
                     }
