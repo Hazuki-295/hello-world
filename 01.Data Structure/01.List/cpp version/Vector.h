@@ -67,14 +67,14 @@ public:
 }; // Vector
 
 /* 以数组区间A[lo, hi)为蓝本复制向量，由Vector的基于复制的构造函数以及重载的赋值运算符调用。 */
-template<typename T>
+template<typename T> // T为基本类型，或已重载赋值操作符'='
 void Vector<T>::copyFrom(T const *A, Rank lo, Rank hi) {
     _elem = new T[_capacity = 2 * (hi - lo)]; // 分配空间，以初始规模的双倍容量申请
     _size = 0; // 规模清零
-    while (lo < hi) { // A[lo, hi)内的元素逐一复制至_elem[0, hi - lo)
-        _elem[_size++] = A[lo++];
+    while (lo < hi) { // A[lo, hi)内的元素
+        _elem[_size++] = A[lo++]; // 逐一复制至_elem[0, hi - lo)
     }
-} // T为基本类型，或已重载赋值操作符'='。用const修饰，保证A中的元素不致被篡改。运行时间 = O(hi - lo)
+} // 用const修饰，保证A中的元素不致被篡改
 
 template<typename T>
 Vector<T> &Vector<T>::operator=(Vector<T> const &V) { // 深复制
@@ -109,7 +109,16 @@ void Vector<T>::shrink() {
 
 template<typename T>
 void Vector<T>::sort(Rank lo, Rank hi) {
-    bubbleSort(lo, hi); // 起泡排序
+    switch (rand() % 2) {
+        case 1: {
+            bubbleSort(lo, hi); // 起泡排序
+            break;
+        }
+        default: {
+            mergeSort(lo, hi); // 归并排序
+            break;
+        }
+    }
 }
 
 template<typename T>
@@ -134,8 +143,7 @@ Rank Vector<T>::search(T const &e, Rank lo, Rank hi) const { // assert: 0 <= lo 
 }
 
 /* 二分查找算法：在有序向量的区间[lo, hi)内查找元素e */
-template<typename T>
-static
+template<typename T> static
 Rank binarySearch(T *A, T const &e, Rank lo, Rank hi) { // assert 0 <= lo <= hi <= _size
     while (lo < hi) { // 不变性：A[0, lo) <= e < A[hi, n)
         Rank mi = (lo + hi) >> 1; // 以中点为轴点
@@ -176,8 +184,8 @@ T Vector<T>::remove(Rank r) { // assert: 0 <= r < size
 template<typename T>
 Rank Vector<T>::deduplicate() {
     Rank oldSize = _size; // 记录原规模
-    for (Rank i = 1; i < _size;) {    // 从_elem[1]开始，自前向后逐个考查各元素_elem[i]
-        if (find(_elem[i], 0, i) < 0) { // 在其前缀中寻找与之雷同者（至多一个）
+    for (Rank i = 1; i < _size;) { // 从_elem[1]开始，自前向后逐个考查各元素_elem[i]
+        if (find(_elem[i], 0, i) < 0) { // 在其前缀[0, i)中寻找与之雷同者（至多一个）
             i++;          // 若无雷同者则继续考查其后继
         } else remove(i); // 否则删除雷同者
     }
