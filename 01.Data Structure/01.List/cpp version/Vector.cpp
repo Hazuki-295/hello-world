@@ -21,18 +21,23 @@ void increase(Vector<T> &V) {  // 统一递增向量的各元素
 }
 
 template<typename T>
-void print(Vector<T> &V) { // 打印向量
-    cout << '[';
+ostream &operator<<(ostream &os, Vector<T> const &V) {
+    os << '[';
     for (int i = 0; i < V.size() - 1; i++) {
-        cout << V[i] << ", ";
+        os << V[i] << ", ";
     }
-    cout << V[V.size() - 1] << ']';
+    os << V[V.size() - 1] << ']';
+    return os;
+}
+
+template<typename T>
+void print(Vector<T> &V) { // 打印向量
+    cout << V;
 }
 
 int main() {
-    using T = char;
+    using T = string;
     Vector<T> myVector;
-
     srand((unsigned int) time(NULL)); // 设置随机数种子
 
     /* 初始化向量 */
