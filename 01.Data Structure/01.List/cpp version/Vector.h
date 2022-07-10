@@ -23,16 +23,16 @@ public:
 
 public:
 // 构造函数
-    /* 默认构造函数，容量为c、规模为s、所有元素初始化为v。 */
-    Vector(int c = DEFAULT_CAPACITY, Rank s = 0, T v = 0) {
-        _elem = new T[_capacity = c];
+    Vector(int s = 0, T v = T{}) { // 默认构造函数，规模为s、所有元素初始化为v
+        _capacity = (s == 0) ? DEFAULT_CAPACITY : s;
+        _elem = new T[_capacity];
         for (_size = 0; _size < s; _elem[_size++] = v); // s<=c
     }
 
     /* 基于复制的构造函数 */
-    Vector(T const *A, Rank n) { copyFrom(A, 0, n); }       // 数组整体复制
+    Vector(T const *A, Rank n) { copyFrom(A, 0, n); } // 数组整体复制
     Vector(T const *A, Rank lo, Rank hi) { copyFrom(A, lo, hi); } // 数组区间复制
-    Vector(Vector<T> const &V) { copyFrom(V._elem, 0, V._size); }         // 向量整体复制
+    Vector(Vector<T> const &V) { copyFrom(V._elem, 0, V._size); } // 拷贝构造函数，向量整体复制
     Vector(Vector<T> const &V, Rank lo, Rank hi) { copyFrom(V._elem, lo, hi); } // 向量区间复制
 // 析构函数
     ~Vector() { delete[] _elem; } // 释放内部空间
