@@ -5,7 +5,7 @@
 /* 栈模板类：利用C++的继承机制，将栈作为向量的派生类，实现栈结构。 */
 template<typename T> class Stack : private Vector<T> { // 将向量的首端作为栈底，末端作为栈顶
 public: // size()、empty()以及其他开放接口，均可直接沿用
-    using Vector<T>::size, Vector<T>::empty;
+    using Vector<T>::size, Vector<T>::empty, Vector<T>::operator[];
 private:
     using Vector<T>::insert, Vector<T>::remove;
 public:
