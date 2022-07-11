@@ -140,7 +140,7 @@ void TestStack<T>::conversion() {
         int base;
         if (cin >> n >> base) {
             string result = convert(n, base);
-            cout << prefixOut << "转换完成，新进制表示为：";
+            cout << prefixOut << "进制转换完成，新进制表示为：";
             cout << result + '(' + to_string(base) + ')';
             printf("\n\n");
         } else {
@@ -158,16 +158,15 @@ int main() {
     cout << "请输入要执行的操作（01.栈测试 02.进制转换）：";
     int opType;
     cin >> opType;
-    cout << endl;
     switch (--opType) {
-        case Test: {
+        case Test:
             obj->testStack();
             break;
-        }
-        case Conversion: {
+        case Conversion:
             obj->conversion();
             break;
-        }
+        default:
+            cout << "输入的操作数错误。" << endl;
     }
 
     return 0;
