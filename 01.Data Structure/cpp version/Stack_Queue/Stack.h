@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../01.List/cpp version/Vector.h"
+#include "../Sequence/Vector.h"
 
 /* 栈模板类：利用C++的继承机制，将栈作为向量的派生类，实现栈结构。 */
 template<typename T> class Stack : private Vector<T> { // 将向量的首端作为栈底，末端作为栈顶
