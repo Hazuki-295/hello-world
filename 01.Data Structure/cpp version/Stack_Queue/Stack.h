@@ -9,7 +9,7 @@ public: // size()、empty()以及其他开放接口，均可直接沿用
 private:
     using Vector<T>::insert, Vector<T>::remove;
 public:
-    void push(T const &e) { insert(e); }     // 入栈：将e插至栈顶，等效于将新元素作为向量的末元素插入
-    T pop() { return remove(size() - 1); }   // 出栈：删除栈顶对象，等效于删除向量的末元素
-    T &top() { return (*this)[size() - 1]; } // 取顶：引用栈顶对象，直接返回向量的末元素
+    void push(T const &e) { insert(size(), e); } // 入栈：将e插至栈顶，等效于将新元素作为向量的末元素插入
+    T pop() { return remove(size() - 1); }       // 出栈：删除栈顶对象，等效于删除向量的末元素
+    T &top() { return (*this)[size() - 1]; }     // 取顶：引用栈顶对象，直接返回向量的末元素
 };
