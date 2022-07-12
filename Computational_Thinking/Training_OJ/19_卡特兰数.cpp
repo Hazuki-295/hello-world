@@ -1,17 +1,18 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <algorithm>
-#include <unordered_set>
+
 
 using namespace std;
 
 class Solution {
 private:
-    unordered_set<string> result;
+    vector<string> result;
 public:
     void backtrack(string &A, string &B, string &C) {
         if (A.size() == 0 && B.size() == 0) { // 递归基，所有字符都已放入C
-            result.insert(C); // 得到一个等价串
+            result.push_back(C); // 得到一个等价串
             return;
         }
 
