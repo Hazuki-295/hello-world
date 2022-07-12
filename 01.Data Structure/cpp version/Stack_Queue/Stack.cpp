@@ -22,7 +22,7 @@ void print(Stack<T> &S) { // 打印栈中元素
 /* 进制转换：将十进制数n，转换为base进制。 */
 string convert(size_t n, int base) {
     string digit = "0123456789ABCDEF"; // 数位符号，如有必要可相应扩充
-    Stack<char> S;  // 辅助栈，逆序计算输出
+    Stack<char> S;  // 辅助栈，存放逆序计算出的输出
     while (n > 0) { // 在尚有余数之前，由低到高，逐一计算出新进制下的各数位
         S.push(digit[n % base]); // 余数（当前的最低位）入栈
         n /= base; // n更新为其对base的除商
