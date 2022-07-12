@@ -31,21 +31,21 @@ public:
         }
     }
 
-    bool exist(string &s) {
-        return find(result.begin(), result.end(), s) != result.end();
+    bool exist(string testValidOutput) {
+        return find(result.begin(), result.end(), testValidOutput) != result.end();
     }
 };
 
 int main() {
     int cases = 0;
-    string str, s;
-    while (cin >> str >> s) {
+    string inputStr, testValidOutput;
+    while (cin >> inputStr >> testValidOutput) {
         Solution *obj = new Solution();
         string B, C;
-        obj->backtrack(str, B, C);
+        obj->backtrack(inputStr, B, C);
 
         cout << "Case " << ++cases << ": ";
-        cout << (obj->exist(s) ? "Yes" : "No") << endl;
+        cout << (obj->exist(testValidOutput) ? "Yes" : "No") << endl;
     }
     return 0;
 }
