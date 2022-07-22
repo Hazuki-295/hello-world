@@ -22,17 +22,13 @@ void increase(Vector<T> &V) {  // 统一递增向量的各元素
 
 template<typename T>
 ostream &operator<<(ostream &os, Vector<T> const &V) {
+    if (V.empty()) return os << "[]";
     os << '[';
     for (int i = 0; i < V.size() - 1; i++) {
         os << V[i] << ", ";
     }
     os << V[V.size() - 1] << ']';
     return os;
-}
-
-template<typename T>
-void print(Vector<T> &V) { // 打印向量
-    cout << V;
 }
 
 int main() {
@@ -52,8 +48,7 @@ int main() {
         myVector.insert(temp);
     }
     printf("[3] 向量初始化完成。当前向量长度为：%d，向量中的元素为：", myVector.size());
-    print(myVector);
-    printf("\n\n");
+    cout << myVector << '\n' << endl;
 
     /* 向量操作测试 */
     enum operationType {
@@ -66,10 +61,9 @@ int main() {
         string prefixOut = "Out[" + to_string(caseCount) + "]: ";
         string prefixWhitespace = string(prefixIn.length(), ' ');
 
-        cout << prefixIn;
-        printf("请输入将要执行的操作（01.插入 02.删除 03.按值查找 04.排序 05.随机置乱 06.整体去重）：");
-        if (scanf("%d", &opType) == EOF) {
-            printf("\n\n");
+        cout << prefixIn << "请输入将要执行的操作（01.插入 02.删除 03.按值查找 04.排序 05.随机置乱 06.整体去重）：";
+        if (!(cin >> opType)) {
+            cout << '\n' << endl;
             break;
         }
         switch (--opType) {
@@ -171,8 +165,7 @@ int main() {
         /* 当次操作后输出向量 */
         cout << prefixWhitespace;
         printf("当前向量长度为：%d，向量中的元素为：", myVector.size());
-        print(myVector);
-        printf("\n\n");
+        cout << myVector << '\n' << endl;
     }
 
     return 0;
