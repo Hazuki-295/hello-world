@@ -72,6 +72,7 @@ private:
 public:
     void testStack();  // 栈操作测试
     void conversion(); // 进制转换
+    void parenthesesMatching(); // 括号匹配
 };
 
 template<typename T>
@@ -168,7 +169,7 @@ void TestStack<T>::conversion() {
         string prefixWhitespace = string(prefixIn.length(), ' ');
 
         cout << prefixIn << "十进制正整数 n，新进制 base：";
-        size_t n;
+        unsigned long n;
         int base;
         if (cin >> n >> base) {
             string result = convert(n, base);
@@ -182,12 +183,40 @@ void TestStack<T>::conversion() {
     }
 }
 
+template<typename T>
+void TestStack<T>::parenthesesMatching() {
+    string empty;
+    getline(cin, empty); // 空行
+
+    cout << "括号匹配：\n";
+    int caseCount = 0;
+    while (true) {
+        string prefixIn = "In [" + to_string(++caseCount) + "]: ";
+        string prefixOut = "Out[" + to_string(caseCount) + "]: ";
+        string prefixWhitespace = string(prefixIn.length(), ' ');
+
+        cout << prefixIn << "请输入表达式：";
+        string exp;
+        if (getline(cin, exp)) {
+            if (parentheses(exp)) {
+                cout << prefixOut << "匹配成功。";
+            } else {
+                cout << prefixOut << "匹配失败。";
+            }
+            printf("\n\n");
+        } else {
+            printf("\n\n");
+            break;
+        }
+    }
+}
+
 int main() {
     auto obj = new TestStack<int>;
     enum operationType {
-        Test, Conversion
+        Test, Conversion, ParenthesesMatching
     };
-    cout << "请输入要执行的操作（01.栈测试 02.进制转换）：";
+    cout << "请输入要执行的操作（01.栈测试 02.进制转换 03.括号匹配）：";
     int opType;
     cin >> opType;
     switch (--opType) {
@@ -196,6 +225,9 @@ int main() {
             break;
         case Conversion:
             obj->conversion();
+            break;
+        case ParenthesesMatching:
+            obj->parenthesesMatching();
             break;
         default:
             cout << "输入的操作数错误。" << endl;
