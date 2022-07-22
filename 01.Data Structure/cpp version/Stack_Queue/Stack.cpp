@@ -9,17 +9,13 @@ using namespace std;
 
 template<typename T>
 ostream &operator<<(ostream &os, Stack<T> const &S) {
+    if (S.empty()) return os << "[]";
     os << '[';
     for (int i = 0; i < S.size() - 1; i++) {
         os << S[i] << ", ";
     }
     os << S[S.size() - 1] << ']';
     return os;
-}
-
-template<typename T>
-void print(Stack<T> &S) { // 打印栈中元素
-    cout << S;
 }
 
 /* 进制转换：将十进制正整数n，转换为base进制。 */
@@ -219,8 +215,7 @@ void TestStack<T>::testStack() {
         myStack.push(temp);
     }
     printf("[3] 栈初始化完成。当前栈中元素个数为：%d，栈中的元素为：", myStack.size());
-    print(myStack);
-    printf("\n\n");
+    cout << myStack << '\n' << endl;
 
     /* 栈操作测试 */
     enum operationType {
@@ -233,10 +228,9 @@ void TestStack<T>::testStack() {
         string prefixOut = "Out[" + to_string(caseCount) + "]: ";
         string prefixWhitespace = string(prefixIn.length(), ' ');
 
-        cout << prefixIn;
-        printf("请输入将要执行的操作（01.入栈 02.出栈 03.取顶）：");
-        if (scanf("%d", &opType) == EOF) {
-            printf("\n\n");
+        cout << prefixIn << "请输入将要执行的操作（01.入栈 02.出栈 03.取顶）：";
+        if (!(cin >> opType)) {
+            cout << '\n' << endl;
             break;
         }
         switch (--opType) {
@@ -284,8 +278,7 @@ void TestStack<T>::testStack() {
         /* 当次操作后输出栈 */
         cout << prefixWhitespace;
         printf("当前栈中元素个数为：%d，栈中的元素为：", myStack.size());
-        print(myStack);
-        printf("\n\n");
+        cout << myStack << '\n' << endl;
     }
 }
 
