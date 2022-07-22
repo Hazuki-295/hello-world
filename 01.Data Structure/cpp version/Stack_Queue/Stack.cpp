@@ -326,9 +326,9 @@ void TestStack<T>::parenthesesMatching() {
         string exp;
         if (getline(cin, exp)) {
             if (parentheses(exp)) {
-                cout << prefixOut << "匹配成功。";
+                cout << prefixOut << "括号匹配成功。";
             } else {
-                cout << prefixOut << "匹配失败。";
+                cout << prefixOut << "括号匹配失败，此表达式不合法。";
             }
             printf("\n\n");
         } else {
@@ -425,7 +425,7 @@ int main() {
             obj->stackPermutation();
             break;
         case Calculator:
-            obj->calculator();
+            obj->calculator(); // (( 0 + (1 + 23) / 4 * 5 * 67 - 8 + 9 ))
             break;
         default:
             cout << "输入的操作数错误。" << endl;
