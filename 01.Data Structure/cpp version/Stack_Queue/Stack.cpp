@@ -19,7 +19,7 @@ void print(Stack<T> &S) { // 打印栈中元素
     cout << S;
 }
 
-/* 进制转换：将十进制数n，转换为base进制。 */
+/* 进制转换：将十进制正整数n，转换为base进制。 */
 string convert(unsigned long n, int base) {
     string digit = "0123456789ABCDEF"; // 数位符号，如有必要可相应扩充
     Stack<char> S;  // 辅助栈，存放逆序计算出的输出
@@ -66,6 +66,25 @@ bool parentheses(string exp) {
     return S.empty(); // 整个表达式扫描过后，栈中若仍残留左括号，则不匹配；否则（栈空）匹配
 }
 
+/* 栈混洗：给定入栈序列pushed，判断出栈序列popped能否在执行合法的栈操作序列后得出。 */
+template<typename T>
+bool validateStackSequences(Vector<T> &pushed, Vector<T> &popped) {
+    if (pushed.size() != popped.size()) {
+        return false;
+    }
+
+    Stack<T> stack; // 辅助中转栈S
+    int index = 0;  // 出栈序列下标
+    for (int i = 0; i < pushed.size(); i++) { // 模拟进出栈
+        stack.push(pushed[i]); // 每入栈一个元素，就随即判断其是否为
+        while (!stack.empty() && stack.top() == popped[index]) { // 待出栈元素
+            stack.pop();
+            index++;
+        }
+    }
+    return stack.empty(); // 若为合法的栈操作序列，则压入中转栈S的pushed序列元素应全部出栈
+}
+
 template<typename T> class TestStack {
 private:
     Stack<T> myStack;
@@ -73,6 +92,7 @@ public:
     void testStack();  // 栈操作测试
     void conversion(); // 进制转换
     void parenthesesMatching(); // 括号匹配
+    void stackPermutation(); // 栈混洗
 };
 
 template<typename T>
@@ -211,12 +231,51 @@ void TestStack<T>::parenthesesMatching() {
     }
 }
 
+template<typename T>
+void TestStack<T>::stackPermutation() {
+    cout << "栈混洗：\n";
+    int caseCount = 0;
+    while (true) {
+        string prefixIn = "In [" + to_string(++caseCount) + "]: ";
+        string prefixOut = "Out[" + to_string(caseCount) + "]: ";
+        string prefixWhitespace = string(prefixIn.length(), ' ');
+
+        Vector<T> pushed, popped;
+        cout << prefixIn << "栈中元素个数：";
+        int n;
+        if (!(cin >> n)) {
+            printf("\n\n");
+            break;
+        }
+
+        T temp;
+        cout << prefixWhitespace << "入栈序列 pushed：";
+        for (int i = 0; i < n; i++) {
+            cin >> temp;
+            pushed.insert(temp);
+        }
+
+        cout << prefixWhitespace << "出栈序列 popped：";
+        for (int i = 0; i < n; i++) {
+            cin >> temp;
+            popped.insert(temp);
+        }
+
+        if (validateStackSequences(pushed, popped)) {
+            cout << prefixOut << "合法的出栈序列，此出栈序列为入栈序列的栈混洗。";
+        } else {
+            cout << prefixOut << "非法的出栈序列，此出栈序列并非入栈序列的栈混洗。";
+        }
+        printf("\n\n");
+    }
+}
+
 int main() {
     auto obj = new TestStack<int>;
     enum operationType {
-        Test, Conversion, ParenthesesMatching
+        Test, Conversion, ParenthesesMatching, StackPermutation
     };
-    cout << "请输入要执行的操作（01.栈测试 02.进制转换 03.括号匹配）：";
+    cout << "请输入要执行的操作（01.栈测试 02.进制转换 03.括号匹配 04.栈混洗）：";
     int opType;
     cin >> opType;
     switch (--opType) {
@@ -228,6 +287,9 @@ int main() {
             break;
         case ParenthesesMatching:
             obj->parenthesesMatching();
+            break;
+        case StackPermutation:
+            obj->stackPermutation();
             break;
         default:
             cout << "输入的操作数错误。" << endl;
