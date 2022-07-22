@@ -20,7 +20,7 @@ void print(Stack<T> &S) { // 打印栈中元素
 }
 
 /* 进制转换：将十进制数n，转换为base进制。 */
-string convert(size_t n, int base) {
+string convert(unsigned long n, int base) {
     string digit = "0123456789ABCDEF"; // 数位符号，如有必要可相应扩充
     Stack<char> S;  // 辅助栈，存放逆序计算出的输出
     while (n > 0) { // 在尚有余数之前，由低到高，逐一计算出新进制下的各数位
@@ -32,6 +32,38 @@ string convert(size_t n, int base) {
         result.push_back(S.pop()); // 由高位到低位，输出栈中元素
     }
     return result; // 返回转换后的base进制表示
+}
+
+/* 括号匹配：表达式括号匹配检查，可兼顾三种括号。 */
+bool parentheses(string exp) {
+    Stack<char> S; // 辅助栈，记录已发现但尚未匹配的左括号
+    for (int i = 0; i < exp.length(); i++) { // 逐一检查当前字符
+        switch (exp[i]) {
+            case '(':
+            case '[':
+            case '{':
+                S.push(exp[i]); // 左括号直接入栈
+                break;
+            case ')':
+                if (S.empty() || S.pop() != '(') { // 右括号若与栈顶失配，则表达式必不匹配
+                    return false;
+                }
+                break;
+            case ']':
+                if (S.empty() || S.pop() != '[') {
+                    return false;
+                }
+                break;
+            case '}':
+                if (S.empty() || S.pop() != '{') {
+                    return false;
+                }
+                break;
+            default:
+                break; // 非括号字符一律忽略
+        }
+    }
+    return S.empty(); // 整个表达式扫描过后，栈中若仍残留左括号，则不匹配；否则（栈空）匹配
 }
 
 template<typename T> class TestStack {
