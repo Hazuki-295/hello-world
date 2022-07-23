@@ -9,12 +9,12 @@ using namespace std;
 
 template<typename T>
 ostream &operator<<(ostream &os, Stack<T> const &S) {
-    if (S.empty()) return os << "[]";
-    os << '[';
+    if (S.empty()) return os << "[ >";
+    os << "[ ";
     for (int i = 0; i < S.size() - 1; i++) {
         os << S[i] << ", ";
     }
-    os << S[S.size() - 1] << ']';
+    os << S[S.size() - 1] << " >";
     return os;
 }
 
