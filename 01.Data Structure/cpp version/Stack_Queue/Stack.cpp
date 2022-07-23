@@ -113,7 +113,7 @@ private:
 public:
     int evaluate(string exp); // 表达式求值
     char orderBetween(char stackTop, char op); // 优先级判断
-    string postExpression(); // 逆波兰表达式
+    string postfixExpression(); // 逆波兰表达式
 };
 
 int Evaluate::evaluate(string exp) {
@@ -181,7 +181,7 @@ char Evaluate::orderBetween(char stackTop, char op) {
     return priority[Operators[stackTop]][Operators[op]];
 }
 
-string Evaluate::postExpression() {
+string Evaluate::postfixExpression() {
     stringstream buffer;
     for (int i = 0; i < RPN.size() - 1; i++) {
         buffer << RPN[i] << ' ';
@@ -385,7 +385,7 @@ void TestStack<T>::calculator() {
             auto obj = new Evaluate;
             int result = obj->evaluate(exp);
             cout << prefixOut << "计算完成，表达式计算结果：" << result << endl;
-            cout << prefixWhitespace << "后缀表达式：" << obj->postExpression();
+            cout << prefixWhitespace << "后缀表达式：" << obj->postfixExpression();
             printf("\n\n");
         } else {
             printf("\n\n");
