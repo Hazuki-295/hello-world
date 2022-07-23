@@ -44,7 +44,7 @@ bool parentheses(string exp) {
                 S.push(exp[i]); // 左括号直接入栈
                 break;
             case ')':
-                if (S.empty() || S.pop() != '(') { // 右括号若与栈顶失配，则表达式必不匹配
+                if (S.empty() || S.pop() != '(') { // 若栈S提前变空，或右括号与栈顶失配，则表达式必不匹配
                     return false;
                 }
                 break;
@@ -166,9 +166,9 @@ int Evaluate::evaluate(string exp) {
                             break;
                         default:
                             exit(1);
-                    }
+                    } // switch
                     break;
-                }
+                } // case '>'
                 default:
                     exit(1); // 逢语法错误，不做处理直接退出
             } // switch
