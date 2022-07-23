@@ -5,9 +5,12 @@
 /* 栈模板类：利用C++的继承机制，将栈作为向量的派生类，实现栈结构。 */
 template<typename T> class Stack : private Vector<T> { // 将向量的首端作为栈底，末端作为栈顶
 public: // size()、empty()以及其他开放接口，均可直接沿用
-    using Vector<T>::size, Vector<T>::empty, Vector<T>::operator[];
+    using Vector<T>::size;
+    using Vector<T>::empty;
+    using Vector<T>::operator[];
 private:
-    using Vector<T>::insert, Vector<T>::remove;
+    using Vector<T>::insert;
+    using Vector<T>::remove;
 public:
     void push(T const &e) { insert(size(), e); } // 入栈：将e插至栈顶，等效于将新元素作为向量的末元素插入
     T pop() { return remove(size() - 1); }       // 出栈：删除栈顶对象，等效于删除向量的末元素
