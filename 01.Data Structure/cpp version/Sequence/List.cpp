@@ -4,14 +4,16 @@
 using namespace std;
 
 template<typename T>
-void print(List<T> &L) { // 打印列表
-    cout << '[';
+ostream &operator<<(ostream &os, List<T> const &L) {
+    if (L.empty()) return os << "[]";
+    os << '[';
     ListNodePosi<T> p = L.first();
     for (int i = 0; i < L.size() - 1; i++) {
-        cout << p->data << ", ";
+        os << p->data << ", ";
         p = p->succ;
     }
-    cout << p->data << ']';
+    os << p->data << ']';
+    return os;
 }
 
 template<typename T>
@@ -37,8 +39,7 @@ int main() {
         myList.insertAsLast(temp);
     }
     printf("[3] 列表初始化完成。当前列表长度为：%d，列表中的元素为：", myList.size());
-    print(myList);
-    printf("\n\n");
+    cout << myList << '\n' << endl;
 
     /* 列表操作测试 */
     enum operationType {
@@ -53,8 +54,8 @@ int main() {
 
         cout << prefixIn;
         printf("请输入将要执行的操作（01.插入 02.删除 03.排序 04.去重）：");
-        if (scanf("%d", &opType) == EOF) {
-            printf("\n\n");
+        if (!(cin >> opType)) {
+            cout << '\n' << endl;
             break;
         }
         switch (--opType) {
@@ -160,8 +161,7 @@ int main() {
         /* 当次操作后输出列表 */
         cout << prefixWhitespace;
         printf("当前列表长度为：%d，列表中的元素为：", myList.size());
-        print(myList);
-        printf("\n\n");
+        cout << myList << '\n' << endl;
     }
 
     return 0;
