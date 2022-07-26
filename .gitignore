@@ -11,4 +11,6 @@
 /cmake-build-debug
 /01.Data Structure/dsacpp-src/src/.vs
 /01.Data Structure/dsacpp-src/_executable
+/03.Computer Network/Flask/venv
+/03.Computer Network/Flask/__pycache__/hello.cpython-38.pyc
 *.user
