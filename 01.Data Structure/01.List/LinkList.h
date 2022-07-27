@@ -65,6 +65,6 @@ bool InsertBefore(ListNode *p, ElemType e) {
 
 /* 插入操作。在表L中的第i个位置上插入指定元素e。 */
 bool ListInsert(LinkList &L, int i, ElemType e) {
-    ListNode *p = GetElem(L, i - 1);
-    return InsertAfter(p, e);
+    ListNode *p = GetElem(L, i - 1); // 找到插入位置的前驱结点，并
+    return InsertAfter(p, e); // 将新结点作为其直接后继插入
 } // O(n)
