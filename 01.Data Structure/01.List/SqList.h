@@ -10,6 +10,27 @@ typedef struct {
     int length;     // 当前元素个数，线性表表长
 } SqList;           // 顺序表的类型定义
 
+/* 初始化表。构造一个空的线性表。 */
+void InitList(SqList &L) {
+    L.data = new ElemType[L.MaxSize = InitSize];
+    L.length = 0;
+}
+
+/* 销毁操作。销毁线性表，并释放线性表L所占用的内存空间。 */
+void DestroyList(SqList &L) {
+    delete[] L.data;
+}
+
+/* 求表长。返回线性表L的长度，即L中数据元素的个数。 */
+int Length(SqList L) {
+    return L.length;
+}
+
+/* 判空操作。若L为空表，则返回true，否则返回false。 */
+bool Empty(SqList L) {
+    return L.length == 0;
+}
+
 /* 插入操作。在表L中的第i个位置上插入指定元素e。 */
 bool ListInsert(SqList &L, int i, ElemType e) {
     if (i < 1 || i > L.length + 1) { // 插入的位置非法
@@ -24,13 +45,11 @@ bool ListInsert(SqList &L, int i, ElemType e) {
         delete[] p;
     }
 
-    ElemType *p, *q;      // p和q为辅助指针
-    q = &(L.data[i - 1]); // q为插入位置
-    for (p = &(L.data[L.length - 1]); p >= q; p--) { // 自后向前，插入位置及之后的元素右移
-        *(p + 1) = *p;
+    for (int j = L.length - 1; j >= i - 1; j--) { // 自后向前，插入位置及之后的元素后移
+        L.data[j + 1] = L.data[j];
     }
-    *q = e;     // 插入位置置入新元素
-    L.length++; // 线性表表长加1
+    L.data[i - 1] = e; // 插入位置置入新元素
+    L.length++;        // 线性表表长加1
     return true;
 }
 
@@ -40,12 +59,9 @@ bool ListDelete(SqList &L, int i, ElemType &e) {
         return false;
     }
 
-    ElemType *p, *q;             // p和q为辅助指针
-    p = &(L.data[i - 1]);        // p为被删除元素的位置
-    e = *p;                      // 被删除元素的值赋给e
-    q = &(L.data[L.length - 1]); // 表尾元素的位置
-    for (p++; p <= q; p++) {     // 自前向后，被删除元素之后的元素左移，覆盖
-        *(p - 1) = *p;
+    e = L.data[i - 1]; // 被删除元素的值赋给e
+    for (int j = i; j < L.length; j++) { // 自前向后，被删除元素之后的元素前移，覆盖
+        L.data[j - 1] = L.data[j];
     }
     L.length--; // 线性表表长减1
     return true;
@@ -59,18 +75,6 @@ int LocateElem(SqList L, ElemType e) {
         }
     }
     return 0; // 退出循环，说明查找失败（0并非有效位序）
-}
-
-/* 初始化表。构造一个空的线性表。 */
-void InitList(SqList &L) {
-    L.data = new ElemType[InitSize];
-    L.length = 0;
-    L.MaxSize = InitSize;
-}
-
-/* 求表长。返回线性表L的长度，即L中数据元素的个数。 */
-int Length(SqList L) {
-    return L.length;
 }
 
 /* 按位查找操作。找到表L中第i个位置的元素，并用e返回其值。 */
@@ -89,14 +93,4 @@ void PrintList(SqList L) {
         std::cout << L.data[i] << ", ";
     }
     std::cout << L.data[L.length - 1] << ']';
-}
-
-/* 判空操作。若L为空表，则返回true，否则返回false。 */
-bool Empty(SqList L) {
-    return L.length == 0;
-}
-
-/* 销毁操作。销毁线性表，并释放线性表L所占用的内存空间。 */
-void DestroyList(SqList &L) {
-    delete[] L.data;
 }
