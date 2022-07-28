@@ -9,8 +9,8 @@ typedef int ElemType;
 /* 线性表的链式表示（单链表） */
 typedef struct ListNode {
 // 成员
-    ElemType data;     // 数据域
-    ListNode *next;    // 指针域
+    ElemType data;  // 数据域
+    ListNode *next; // 指针域
 // 构造函数
     ListNode() {} // （默认构造函数）针对头结点的构造
     ListNode(ElemType e, ListNode *p = nullptr)
@@ -138,10 +138,8 @@ void PrintList(LinkList L) {
     cout << '[';
     ListNode *p = L;
     while ((p = p->next) != nullptr) {
-        if (p->next != nullptr) {
-            cout << p->data << ", ";
-        } else {
-            cout << p->data << ']';
-        }
+        cout << p->data;
+        if (p->next != nullptr) cout << ", ";
     }
+    cout << ']';
 }
