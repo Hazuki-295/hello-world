@@ -13,8 +13,7 @@ typedef struct ListNode {
     ListNode *next; // 指针域
 // 构造函数
     ListNode() {} // （默认构造函数）针对头结点的构造
-    ListNode(ElemType e, ListNode *p = nullptr)
-            : data(e), next(p) {} // 一般节点的默认构造器
+    ListNode(ElemType e, ListNode *p = nullptr) : data(e), next(p) {} // 一般节点的默认构造器
 } ListNode, *LinkList; // 链表结点、链表（头指针）的类型定义
 
 /* 初始化表。构造一个空的线性表。 */
