@@ -94,7 +94,8 @@ int main() {
 
                 cout << prefixOut;
                 if (GetElem(L, pos, temp)) {
-                    printf("查找成功。该元素的值为：%d\n", temp);
+                    printf("查找成功。该元素的值为：\n");
+                    cout << temp << endl;
                 } else {
                     printf("查找失败。该位序不合法。\n");
                 }
