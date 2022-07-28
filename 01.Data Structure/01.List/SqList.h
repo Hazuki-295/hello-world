@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 
 typedef int ElemType;
