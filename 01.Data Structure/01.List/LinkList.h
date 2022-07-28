@@ -49,7 +49,7 @@ ListNode *GetElem(LinkList L, int i) {
 /* 指定结点的后插操作：将e作为p的直接后继插入。 */
 bool InsertAfter(ListNode *p, ElemType e) {
     if (p == nullptr) return false;
-    ListNode *x = new ListNode(e, p->next); // 创建新结点，以当前结点p的后继为新结点的后继
+    ListNode *x = new ListNode(e, p->next); // 创建新结点，以当前结点p的后继作为新结点的后继
     p->next = x; // 使new成为当前节点的后继
     return true;
 } // O(1)
@@ -67,4 +67,17 @@ bool InsertBefore(ListNode *p, ElemType e) {
 bool ListInsert(LinkList &L, int i, ElemType e) {
     ListNode *p = GetElem(L, i - 1); // 找到插入位置的前驱结点，并
     return InsertAfter(p, e); // 将新结点作为其直接后继插入
+} // O(n)
+
+/* 删除操作。删除表L中第i个位置上的元素，并用e返回删除元素的值。 */
+bool ListDelete(LinkList &L, int i, ElemType &e) {
+    ListNode *p = GetElem(L, i - 1);        // 找到删除位置的前驱结点
+    if (p == nullptr || p->next == nullptr) { // 删除位置非法，或被删除结点不存在(试图删除尾哨兵)
+        return false;
+    }
+    ListNode *q = p->next;   // 备份待删除结点q
+    p->next = p->next->next; // 将q结点从链中断开
+    e = q->data; // 用e返回元素的值
+    delete q;    // 释放结点
+    return true;
 } // O(n)
