@@ -29,9 +29,26 @@ void DestroyList(LinkList &L) {
     delete L; // 删除头结点
 }
 
+/* 求表长。返回线性表L的长度，即L中数据元素的个数。 */
+int Length(LinkList L) {
+    ListNode *p = L; // 从头结点出发
+    int length = 0;  // 顺着指针链计数
+    while ((p = p->next) != nullptr) {
+        length++;
+    }
+    return length;
+}
+
 /* 判空操作。若L为空表，则返回true，否则返回false。 */
 bool Empty(LinkList L) {
     return L->next == nullptr;
+}
+
+/* 按值查找操作。在表L中查找具有给定关键字值的结点，并返回指向该结点的指针。 */
+ListNode *LocateElem(LinkList L, ElemType e) {
+    ListNode *p = L; // 从头结点出发
+    while ((p = p->next) != nullptr && p->data != e); // 找到具有给定关键字值的结点
+    return p; // 查找成功返回指向该结点的指针，失败返回nullptr
 }
 
 /* 按位查找：找到表L中第i个位置的结点，并返回指向该结点的指针。 */
