@@ -1,4 +1,8 @@
+#pragma once
+
 #include <iostream>
+
+using namespace std;
 
 typedef int ElemType;
 
@@ -98,3 +102,33 @@ bool ListDelete(LinkList &L, int i, ElemType &e) {
     delete q;    // 释放结点
     return true;
 } // O(n)
+
+/* 头插法：从空表开始，每次将新结点作为首元素插入，逆向建立单链表。 */
+void List_HeadInsert(LinkList &L, int n) {
+    if (L != nullptr && L->next != nullptr) { // 释放原有数据
+        DestroyList(L);
+        InitList(L);
+    }
+    ElemType temp;
+    while (n-- > 0) { // 依次在表头插入n个新结点
+        cin >> temp;
+        ListNode *s = new ListNode(temp, L->next); // 创建新结点s
+        L->next = s; // s成为新的表头结点
+    }
+}
+
+/* 尾插法：从空表开始，每次将新结点作为末元素插入，正向建立单链表。 */
+void List_TailInsert(LinkList &L, int n) {
+    if (L != nullptr && L->next != nullptr) { // 释放原有数据
+        DestroyList(L);
+        InitList(L);
+    }
+    ElemType temp;
+    ListNode *rail = L; // 表尾指针，初始指向头节点
+    while (n-- > 0) {   // 依次在表尾插入n个新结点
+        cin >> temp;
+        ListNode *s = new ListNode(temp, nullptr); // 创建新结点s
+        rail->next = s; // s成为新的表尾结点
+        rail = s;       // 更新表尾指针
+    }
+}
