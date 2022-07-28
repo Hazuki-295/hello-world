@@ -29,7 +29,7 @@ int main() {
             List_TailInsert(L, length);
             break;
         default:
-            cout << "    输入的操作数错误。" << endl;
+            cout << "输入的操作数错误。" << endl;
             exit(1);
     }
     printf("[4] 链表初始化完成。当前链表长度为：%d，链表中的元素为：", Length(L));
