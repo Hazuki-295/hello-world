@@ -60,7 +60,6 @@ bool ListDelete(SqList &L, int i, ElemType &e) {
     if (i < 1 || i > L.length) { // 删除的位置非法
         return false;
     }
-
     e = L.data[i - 1]; // 被删除元素的值赋给e
     for (int j = i; j < L.length; j++) { // 自前向后，被删除元素之后的元素前移，覆盖
         L.data[j - 1] = L.data[j];
@@ -90,6 +89,10 @@ bool GetElem(SqList L, int i, ElemType &e) {
 
 /* 输出操作。按前后顺序输出线性表L的所有元素的值。 */
 void PrintList(SqList L) {
+    if (L.length == 0) {
+        std::cout << "[]";
+        return;
+    }
     std::cout << '[';
     for (int i = 0; i < L.length - 1; i++) {
         std::cout << L.data[i] << ", ";
