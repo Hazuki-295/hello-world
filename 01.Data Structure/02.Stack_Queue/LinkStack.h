@@ -5,7 +5,7 @@
 /* 栈的链式表示（以单链表形式实现，仅在头部进行插入和删除） */
 typedef struct {
     ListNode *head; // 头结点指针
-} LinkStack;
+} LinkStack; // 链栈的类型定义
 
 /* 初始化栈。构造一个空栈。 */
 void InitStack(LinkStack &S) {
@@ -26,7 +26,7 @@ bool StackEmpty(LinkStack S) {
 /* 入栈：若栈S未满，则将e插至栈顶，成为新的栈顶。 */
 void Push(LinkStack &S, ElemType e) {
     ListNode *x = new ListNode(e, S.head->next); // 创建新结点，指针域指向当前栈顶结点
-    S.head->next = x; // 在链表的头部插入
+    S.head->next = x; // 在链表的头部插入，成为新的栈顶
 }
 
 /* 出栈：若栈S非空，则弹出栈顶元素，并返回其值。 */
