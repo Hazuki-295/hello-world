@@ -34,8 +34,8 @@ void Enqueue(LinkQueue &Q, ElemType e) {
 
 /* 出队：若队列Q非空，删除队头元素，并返回其值。 */
 ElemType Dequeue(LinkQueue &Q) {
-    ListNode *p = Q.front->next; // 队头结点
-    ElemType e = p->data;        // 备份队头元素
+    ListNode *p = Q.front->next; // 出队结点
+    ElemType e = p->data;        // 备份出队元素的值
     Q.front = p->next; // 将出队结点从链中断开
     if (p == Q.rear) { // 若被删除的是尾结点（亦即，队列中只有一个结点）
         Q.rear = Q.front;; // 更新队尾指针
