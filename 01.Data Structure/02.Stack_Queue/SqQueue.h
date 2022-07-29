@@ -45,7 +45,7 @@ void Enqueue(SqQueue &Q, ElemType e) {
 /* 出队：若队列Q非空，删除队头元素，并返回其值。 */
 ElemType Dequeue(SqQueue &Q) {
     ElemType e = Q.data[Q.front];        // 队头元素
-    Q.front = (Q.front + 1) % Q.MaxSize; // 更新队尾指针
+    Q.front = (Q.front + 1) % Q.MaxSize; // 更新队头指针
     return e;
 }
 
