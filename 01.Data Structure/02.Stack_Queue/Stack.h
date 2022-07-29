@@ -39,7 +39,7 @@ void Push(SqStack &S, ElemType e) {
     S.data[++S.top] = e; // 栈顶指针先加1，再送值到栈顶元素
 }
 
-/* 出栈：若栈S非空，则弹出栈顶元素，并用返回其值。 */
+/* 出栈：若栈S非空，则弹出栈顶元素，并返回其值。 */
 ElemType Pop(SqStack &S) {
     return S.data[S.top--]; // 先取栈顶元素的值，再将栈顶指针减1
 }
