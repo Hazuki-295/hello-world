@@ -25,3 +25,26 @@ void DestroyStack(SqStack &S) {
 bool StackEmpty(SqStack S) {
     return S.top == -1;
 }
+
+/* 入栈：若栈S未满，则将e插至栈顶，成为新的栈顶。 */
+void Push(SqStack &S, ElemType e) {
+    if (S.top == S.MaxSize - 1) { // 当前存储空间已满，扩容
+        ElemType *p = S.data;
+        S.data = new ElemType[S.MaxSize <<= 1]; // 容量加倍
+        for (int i = 0; i < S.top + 1; i++) {   // 将数据复制到新区域
+            S.data[i] = p[i];
+        }
+        delete[] p;
+    }
+    S.data[++S.top] = e; // 栈顶指针先加1，再送值到栈顶元素
+}
+
+/* 出栈：若栈S非空，则弹出栈顶元素，并用返回其值。 */
+ElemType Pop(SqStack &S) {
+    return S.data[S.top--]; // 先取栈顶元素的值，再将栈顶指针减1
+}
+
+/* 读栈顶元素：若栈S非空，则返回栈顶元素的引用。 */
+ElemType &GetTop(SqStack S) {
+    return S.data[S.top]; // 返回栈顶元素的引用
+}
