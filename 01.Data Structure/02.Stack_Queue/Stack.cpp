@@ -18,12 +18,12 @@ ostream &operator<<(ostream &os, SqStack const &S) {
 ostream &operator<<(ostream &os, LinkStack const &S) {
     if (StackEmpty(S)) return os << "head -> [ ]";
     os << "head -> [ ";
-    ListNode *p = S.head;
-    while ((p = p->next) != nullptr) {
-        os << p->data;
-        if (p->next != nullptr) os << " -> ";
+    ListNode *p;
+    for (p = S.head->next; p->next != nullptr; p = p->next) {
+        os << p->data << " -> ";
     }
-    return os << " ]";
+    os << p->data << " ]";
+    return os;
 }
 
 int StackLength(SqStack S) {
