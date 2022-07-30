@@ -5,14 +5,14 @@ using namespace std;
 
 template<typename T>
 ostream &operator<<(ostream &os, List<T> const &L) {
-    if (L.empty()) return os << "[]";
-    os << '[';
+    if (L.empty()) return os << "[ ]";
+    os << "[ ";
     ListNodePosi<T> p = L.first();
     for (int i = 0; i < L.size() - 1; i++) {
         os << p->data << ", ";
         p = p->succ;
     }
-    os << p->data << ']';
+    os << p->data << " ]";
     return os;
 }
 
