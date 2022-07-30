@@ -4,7 +4,7 @@
 using namespace std;
 
 ostream &operator<<(ostream &os, SqList const &L) {
-    if (L.length == 0) return os << "data -> [ ]";
+    if (ListEmpty(L)) return os << "data -> [ ]";
     os << "data -> [ ";
     for (int i = 0; i < L.length - 1; i++) {
         os << L.data[i] << ", ";
@@ -28,7 +28,7 @@ int main() {
         cin >> temp;
         ListInsert(myList, i + 1, temp);
     }
-    printf("[3] 线性表初始化完成。当前线性表长度为：%d，线性表中的元素为：", Length(myList));
+    printf("[3] 线性表初始化完成。当前线性表长度为：%d，线性表中的元素为：", ListLength(myList));
     cout << myList << '\n' << endl;
 
     /* 线性表操作测试 */
@@ -116,7 +116,7 @@ int main() {
 
         /* 当次操作后输出线性表 */
         cout << prefixWhitespace;
-        printf("当前线性表长度为：%d，线性表中的元素为：", Length(myList));
+        printf("当前线性表长度为：%d，线性表中的元素为：", ListLength(myList));
         cout << myList << '\n' << endl;
     }
 
