@@ -1,12 +1,22 @@
 #include <iostream>
-#include <string>
 #include "LinkList.h"
 
 using namespace std;
 
+ostream &operator<<(ostream &os, LinkList const &L) {
+    if (ListEmpty(L)) return os << "head -> [ ]";
+    os << "head -> [ ";
+    ListNode *p = L;
+    while ((p = p->next) != nullptr) {
+        os << p->data;
+        if (p->next != nullptr) os << " -> ";
+    }
+    return os << " ]";
+}
+
 int main() {
-    LinkList L;
-    InitList(L);
+    LinkList myList;
+    InitList(myList);
 
     /* 初始化链表 */
     printf("初始化链表：\n");
@@ -23,18 +33,17 @@ int main() {
     ElemType temp;
     switch (--opType) {
         case ListHeadInsert:
-            List_HeadInsert(L, length);
+            List_HeadInsert(myList, length);
             break;
         case ListTailInsert:
-            List_TailInsert(L, length);
+            List_TailInsert(myList, length);
             break;
         default:
             cout << "输入的操作数错误。" << endl;
             exit(1);
     }
-    printf("[4] 链表初始化完成。当前链表长度为：%d，链表中的元素为：", Length(L));
-    PrintList(L);
-    cout << '\n' << endl;
+    printf("[4] 链表初始化完成。当前链表长度为：%d，链表中的元素为：", Length(myList));
+    cout << myList << '\n' << endl;
 
     /* 链表操作测试 */
     enum operationType {
@@ -63,7 +72,7 @@ int main() {
                 cin >> temp;
 
                 cout << prefixOut;
-                if (ListInsert(L, insertPos, temp)) {
+                if (ListInsert(myList, insertPos, temp)) {
                     printf("插入成功。\n");
                 } else {
                     printf("插入失败。插入的位置非法。\n");
@@ -77,7 +86,7 @@ int main() {
                 cin >> deletePos;
 
                 cout << prefixOut;
-                if (ListDelete(L, deletePos, temp)) {
+                if (ListDelete(myList, deletePos, temp)) {
                     printf("删除成功。删除的元素的值为：");
                     cout << temp << endl;
                 } else {
@@ -91,7 +100,7 @@ int main() {
                 cin >> temp;
 
                 cout << prefixOut;
-                ListNode *p = LocateElem(L, temp);
+                ListNode *p = LocateElem(myList, temp);
                 if (p != nullptr) {
                     printf("查找成功。链表中存在该元素。\n");
                 } else {
@@ -106,8 +115,8 @@ int main() {
                 cin >> pos;
 
                 cout << prefixOut;
-                ListNode *p = GetElem(L, pos);
-                if (p != nullptr && p != L) {
+                ListNode *p = GetElem(myList, pos);
+                if (p != nullptr && p != myList) {
                     temp = p->data;
                     printf("查找成功。该元素的值为：");
                     cout << temp << endl;
@@ -121,7 +130,7 @@ int main() {
                 cout << prefixWhitespace << "请输入链表中初始元素的个数：";
                 cin >> length;
                 cout << prefixWhitespace << "请输入" << length << "个初始元素：";
-                List_HeadInsert(L, length);
+                List_HeadInsert(myList, length);
 
                 cout << prefixOut << "头插法重构链表完成。" << endl;
                 break;
@@ -131,7 +140,7 @@ int main() {
                 cout << prefixWhitespace << "请输入链表中初始元素的个数：";
                 cin >> length;
                 cout << prefixWhitespace << "请输入" << length << "个初始元素：";
-                List_TailInsert(L, length);
+                List_TailInsert(myList, length);
 
                 cout << prefixOut << "尾插法重构链表完成。" << endl;
                 break;
@@ -143,14 +152,13 @@ int main() {
 
         /* 当次操作后输出链表 */
         cout << prefixWhitespace;
-        printf("当前链表长度为：%d，链表中的元素为：", Length(L));
-        PrintList(L);
-        cout << '\n' << endl;
+        printf("当前链表长度为：%d，链表中的元素为：", Length(myList));
+        cout << myList << '\n' << endl;
     }
 
     /* 测试完成，销毁链表 */
     printf("测试完成，销毁链表。\n");
-    DestroyList(L);
+    DestroyList(myList);
 
     return 0;
 }
