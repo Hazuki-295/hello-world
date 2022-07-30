@@ -22,8 +22,8 @@ void increase(Vector<T> &V) {  // 统一递增向量的各元素
 
 template<typename T>
 ostream &operator<<(ostream &os, Vector<T> const &V) {
-    if (V.empty()) return os << "_elem -> [ ]";
-    os << "_elem -> [ ";
+    if (V.empty()) return os << "[ ]";
+    os << "[ ";
     for (int i = 0; i < V.size() - 1; i++) {
         os << V[i] << ", ";
     }
