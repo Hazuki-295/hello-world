@@ -33,7 +33,7 @@ void DestroyList(LinkList &L) {
 }
 
 /* 求表长。返回线性表L的长度，即L中数据元素的个数。 */
-int Length(LinkList L) {
+int ListLength(LinkList L) {
     ListNode *p = L; // 从头结点出发
     int length = 0;  // 顺着指针链计数
     while ((p = p->next) != nullptr) {
@@ -43,7 +43,7 @@ int Length(LinkList L) {
 }
 
 /* 判空操作。若L为空表，则返回true，否则返回false。 */
-bool Empty(LinkList L) {
+bool ListEmpty(LinkList L) {
     return L->next == nullptr;
 }
 
