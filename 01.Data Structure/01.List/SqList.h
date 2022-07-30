@@ -22,12 +22,12 @@ void DestroyList(SqList &L) {
 }
 
 /* 求表长。返回线性表L的长度，即L中数据元素的个数。 */
-int Length(SqList L) {
+int ListLength(SqList L) {
     return L.length;
 }
 
 /* 判空操作。若L为空表，则返回true，否则返回false。 */
-bool Empty(SqList L) {
+bool ListEmpty(SqList L) {
     return L.length == 0;
 }
 
