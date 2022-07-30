@@ -42,7 +42,7 @@ int main() {
             cout << "输入的操作数错误。" << endl;
             exit(1);
     }
-    printf("[4] 链表初始化完成。当前链表长度为：%d，链表中的元素为：", Length(myList));
+    printf("[4] 链表初始化完成。当前链表长度为：%d，链表中的元素为：", ListLength(myList));
     cout << myList << '\n' << endl;
 
     /* 链表操作测试 */
@@ -152,7 +152,7 @@ int main() {
 
         /* 当次操作后输出链表 */
         cout << prefixWhitespace;
-        printf("当前链表长度为：%d，链表中的元素为：", Length(myList));
+        printf("当前链表长度为：%d，链表中的元素为：", ListLength(myList));
         cout << myList << '\n' << endl;
     }
 
