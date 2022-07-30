@@ -6,7 +6,7 @@ using namespace std;
 ostream &operator<<(ostream &os, LinkList const &L) {
     if (ListEmpty(L)) return os << "head -> [ ]";
     os << "head -> [ ";
-    ListNode *p = L;
+    ListNode *p;
     for (p = L->next; p->next != nullptr; p = p->next) {
         os << p->data << " -> ";
     }
