@@ -22,8 +22,8 @@ ListNodePosi<T> nodePosition(List<T> &L, Rank r) { // 返回列表中秩为r的�
     return p;
 }
 
-int main() {
-    using T = int;
+template<typename T>
+void testList() {
     List<T> myList;
 
     /* 初始化列表 */
@@ -124,7 +124,7 @@ int main() {
                 }
                 break;
             }
-            case Deduplicate:{
+            case Deduplicate: {
                 cout << prefixWhitespace << "去重操作。\n";
                 cout << prefixWhitespace << "请输入要使用的去重算法（01.无序去重 02.有序去重）：";
                 cin >> opType;
@@ -162,6 +162,10 @@ int main() {
         printf("当前列表长度为：%d，列表中的元素为：", myList.size());
         cout << myList << '\n' << endl;
     }
+}
 
+int main() {
+    srand((unsigned int) time(NULL)); // 设置随机数种子
+    testList<int>();
     return 0;
 }
