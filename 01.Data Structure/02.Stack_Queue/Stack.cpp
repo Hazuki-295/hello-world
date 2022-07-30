@@ -5,9 +5,9 @@
 using namespace std;
 
 ostream &operator<<(ostream &os, SqStack const &S) {
-    if (StackEmpty(S)) return os << "[ >";
+    if (StackEmpty(S)) return os << "data -> [ >";
     int length = S.top + 1;
-    os << "[ ";
+    os << "data -> [ ";
     for (int i = 0; i < length - 1; i++) {
         os << S.data[i] << ", ";
     }
@@ -16,12 +16,12 @@ ostream &operator<<(ostream &os, SqStack const &S) {
 }
 
 ostream &operator<<(ostream &os, LinkStack const &S) {
-    if (StackEmpty(S)) return os << "< ]";
-    os << "< ";
+    if (StackEmpty(S)) return os << "head -> [ ]";
+    os << "head -> [ ";
     ListNode *p = S.head;
     while ((p = p->next) != nullptr) {
         os << p->data;
-        if (p->next != nullptr) os << ", ";
+        if (p->next != nullptr) os << " -> ";
     }
     return os << " ]";
 }
