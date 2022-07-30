@@ -7,11 +7,11 @@ ostream &operator<<(ostream &os, LinkList const &L) {
     if (ListEmpty(L)) return os << "head -> [ ]";
     os << "head -> [ ";
     ListNode *p = L;
-    while ((p = p->next) != nullptr) {
-        os << p->data;
-        if (p->next != nullptr) os << " -> ";
+    for (p = L->next; p->next != nullptr; p = p->next) {
+        os << p->data << " -> ";
     }
-    return os << " ]";
+    os << p->data << " ]";
+    return os;
 }
 
 int main() {
