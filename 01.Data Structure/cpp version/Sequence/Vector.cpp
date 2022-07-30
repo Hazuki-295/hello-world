@@ -22,19 +22,18 @@ void increase(Vector<T> &V) {  // 统一递增向量的各元素
 
 template<typename T>
 ostream &operator<<(ostream &os, Vector<T> const &V) {
-    if (V.empty()) return os << "[]";
-    os << '[';
+    if (V.empty()) return os << "_elem -> [ ]";
+    os << "_elem -> [ ";
     for (int i = 0; i < V.size() - 1; i++) {
         os << V[i] << ", ";
     }
-    os << V[V.size() - 1] << ']';
+    os << V[V.size() - 1] << " ]";
     return os;
 }
 
-int main() {
-    using T = string;
+template<typename T>
+void testVector() {
     Vector<T> myVector;
-    srand((unsigned int) time(NULL)); // 设置随机数种子
 
     /* 初始化向量 */
     printf("初始化向量：\n");
@@ -167,6 +166,10 @@ int main() {
         printf("当前向量长度为：%d，向量中的元素为：", myVector.size());
         cout << myVector << '\n' << endl;
     }
+}
 
+int main() {
+    srand((unsigned int) time(NULL)); // 设置随机数种子
+    testVector<int>();
     return 0;
 }
