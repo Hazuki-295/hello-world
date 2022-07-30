@@ -36,7 +36,7 @@ void Push(SqStack &S, ElemType e) {
         }
         delete[] p;
     }
-    S.data[++S.top] = e; // 栈顶指针先加1，再送值到栈顶元素
+    S.data[++S.top] = e; // 栈顶指针先加1，再送值到栈顶
 }
 
 /* 出栈：若栈S非空，则弹出栈顶元素，并返回其值。 */
