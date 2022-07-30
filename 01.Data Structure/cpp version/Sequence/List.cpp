@@ -7,17 +7,16 @@ template<typename T>
 ostream &operator<<(ostream &os, List<T> const &L) {
     if (L.empty()) return os << "[ ]";
     os << "[ ";
-    ListNodePosi<T> p = L.first();
-    for (int i = 0; i < L.size() - 1; i++) {
+    ListNodePosi<T> p;
+    for (p = L.first(); p != L.last(); p = p->succ) {
         os << p->data << ", ";
-        p = p->succ;
     }
     os << p->data << " ]";
     return os;
 }
 
 template<typename T>
-ListNodePosi<T> nodePosi(List<T> &L, Rank r) { // 返回列表中秩为r的节点的位置
+ListNodePosi<T> nodePosition(List<T> &L, Rank r) { // 返回列表中秩为r的节点的位置
     ListNodePosi<T> p = L.first();
     while (r-- > 0) p = p->succ;
     return p;
@@ -69,7 +68,7 @@ int main() {
 
                 cout << prefixOut;
                 if (insertPos >= 1 && insertPos <= myList.size() + 1) {
-                    myList.insertBefore(nodePosi(myList, insertPos - 1), temp);
+                    myList.insertBefore(nodePosition(myList, insertPos - 1), temp);
                     printf("插入操作完成。\n");
                 } else {
                     printf("插入失败。插入的位置非法。\n");
@@ -84,7 +83,7 @@ int main() {
 
                 cout << prefixOut;
                 if (removePos >= 1 && removePos <= myList.size()) {
-                    temp = myList.remove(nodePosi(myList, removePos - 1));
+                    temp = myList.remove(nodePosition(myList, removePos - 1));
                     printf("删除操作完成。删除的元素的值为：");
                     cout << temp << endl;
                 } else {
