@@ -1,12 +1,21 @@
 #include <iostream>
-#include <string>
 #include "SqList.h"
 
 using namespace std;
 
+ostream &operator<<(ostream &os, SqList const &L) {
+    if (L.length == 0) return os << "data -> [ ]";
+    os << "data -> [ ";
+    for (int i = 0; i < L.length - 1; i++) {
+        os << L.data[i] << ", ";
+    }
+    os << L.data[L.length - 1] << " ]";
+    return os;
+}
+
 int main() {
-    SqList L;
-    InitList(L);
+    SqList myList;
+    InitList(myList);
 
     /* 初始化线性表 */
     printf("初始化线性表：\n");
@@ -17,11 +26,10 @@ int main() {
     ElemType temp;
     for (int i = 0; i < length; i++) {
         cin >> temp;
-        ListInsert(L, i + 1, temp);
+        ListInsert(myList, i + 1, temp);
     }
-    printf("[3] 线性表初始化完成。当前线性表长度为：%d，线性表中的元素为：", Length(L));
-    PrintList(L);
-    cout << '\n' << endl;
+    printf("[3] 线性表初始化完成。当前线性表长度为：%d，线性表中的元素为：", Length(myList));
+    cout << myList << '\n' << endl;
 
     /* 线性表操作测试 */
     enum operationType {
@@ -50,7 +58,7 @@ int main() {
                 cin >> temp;
 
                 cout << prefixOut;
-                if (ListInsert(L, insertPos, temp)) {
+                if (ListInsert(myList, insertPos, temp)) {
                     printf("插入成功。\n");
                 } else {
                     printf("插入失败。插入的位置非法。\n");
@@ -64,7 +72,7 @@ int main() {
                 cin >> deletePos;
 
                 cout << prefixOut;
-                if (ListDelete(L, deletePos, temp)) {
+                if (ListDelete(myList, deletePos, temp)) {
                     printf("删除成功。删除的元素的值为：");
                     cout << temp << endl;
                 } else {
@@ -78,7 +86,7 @@ int main() {
                 cin >> temp;
 
                 cout << prefixOut;
-                int pos = LocateElem(L, temp);
+                int pos = LocateElem(myList, temp);
                 if (pos != 0) {
                     printf("查找成功。第一个值等于给定值的元素的位序为：%d\n", pos);
                 } else {
@@ -93,7 +101,7 @@ int main() {
                 cin >> pos;
 
                 cout << prefixOut;
-                if (GetElem(L, pos, temp)) {
+                if (GetElem(myList, pos, temp)) {
                     printf("查找成功。该元素的值为：\n");
                     cout << temp << endl;
                 } else {
@@ -108,14 +116,13 @@ int main() {
 
         /* 当次操作后输出线性表 */
         cout << prefixWhitespace;
-        printf("当前线性表长度为：%d，线性表中的元素为：", Length(L));
-        PrintList(L);
-        cout << '\n' << endl;
+        printf("当前线性表长度为：%d，线性表中的元素为：", Length(myList));
+        cout << myList << '\n' << endl;
     }
 
     /* 测试完成，销毁线性表 */
     printf("测试完成，销毁线性表。\n");
-    DestroyList(L);
+    DestroyList(myList);
 
     return 0;
 }
