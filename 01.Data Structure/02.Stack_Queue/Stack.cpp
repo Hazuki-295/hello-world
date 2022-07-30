@@ -31,7 +31,7 @@ int StackLength(SqStack S) {
 }
 
 int StackLength(LinkStack S) {
-    return Length(S.head); // 单链表表长
+    return ListLength(S.head); // 单链表表长
 }
 
 template<typename Stack> void testStack() {
