@@ -131,14 +131,3 @@ void List_TailInsert(LinkList &L, int n) {
         rail = s;       // 更新表尾指针
     }
 }
-
-/* 输出操作。按前后顺序输出线性表L的所有元素的值。 */
-void PrintList(LinkList L) {
-    cout << '[';
-    ListNode *p = L;
-    while ((p = p->next) != nullptr) {
-        cout << p->data;
-        if (p->next != nullptr) cout << ", ";
-    }
-    cout << ']';
-}
