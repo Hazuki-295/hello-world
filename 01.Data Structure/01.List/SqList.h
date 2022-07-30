@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 typedef int ElemType;
 
 /* 线性表的顺序表示（顺序表） */
@@ -85,17 +83,4 @@ bool GetElem(SqList L, int i, ElemType &e) {
     }
     e = L.data[i - 1]; // 位序为i的元素，其下标为i-1
     return true;
-}
-
-/* 输出操作。按前后顺序输出线性表L的所有元素的值。 */
-void PrintList(SqList L) {
-    if (L.length == 0) {
-        std::cout << "[]";
-        return;
-    }
-    std::cout << '[';
-    for (int i = 0; i < L.length - 1; i++) {
-        std::cout << L.data[i] << ", ";
-    }
-    std::cout << L.data[L.length - 1] << ']';
 }
