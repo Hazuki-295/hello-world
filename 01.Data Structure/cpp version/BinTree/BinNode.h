@@ -1,5 +1,7 @@
 #pragma once
 
+#define stature(p) ((p) ? (p)->height : -1) // 节点高度，与“空树高度为-1”的约定相统一
+
 template<typename T> struct BinNode;
 template<typename T> using BinNodePosi = BinNode<T> *; // 二叉树节点位置
 
