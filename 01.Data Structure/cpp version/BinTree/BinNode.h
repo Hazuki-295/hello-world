@@ -28,10 +28,10 @@ template<typename T> int BinNode<T>::size() {
     return s;
 } // O(n = |size|)
 
-template<typename T> BinNodePosi<T> BinNode<T>::insertAsLC(T const &e) {
+template<typename T> BinNodePosi<T> BinNode<T>::insertAsLC(T const &e) { // assert: 插入之前，当前节点尚无左孩子
     return lc = new BinNode(e, this); // 将e作为当前节点的左孩子插入二叉树
 }
 
-template<typename T> BinNodePosi<T> BinNode<T>::insertAsRC(T const &e) {
+template<typename T> BinNodePosi<T> BinNode<T>::insertAsRC(T const &e) { // assert: 插入之前，当前节点尚无右孩子
     return rc = new BinNode(e, this); // 将e作为当前节点的右孩子插入二叉树
 }
