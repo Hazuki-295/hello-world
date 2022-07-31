@@ -32,10 +32,10 @@ int BinTree<T>::updateHeight(BinNodePosi<T> x) { // 更新节点x的高度
 
 template<typename T>
 void BinTree<T>::updateHeightAbove(BinNodePosi<T> x) { // 更新节点x及其祖先的高度
-    while (x) {
-        updateHeight(x); // 从x出发，向上更新历代祖先
+    while (x) { // 从x出发，向上更新历代祖先
+        updateHeight(x);
         x = x->parent;
-    }
+    } // 可优化，一旦高度未变即可终止
 } // O( n = depth(x) )
 
 template<typename T>
