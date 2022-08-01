@@ -30,6 +30,7 @@ public:
     BinTree<T> *secede(BinNodePosi<T> x); // 子树分离
 }; // BinTree
 
+/* 二叉树节点的高度更新：一旦有节点加入或离开二叉树，则更新其所有祖先的高度。 */
 template<typename T>
 int BinTree<T>::updateHeight(BinNodePosi<T> x) { // 更新节点x的高度
     return x->height = 1 + max(stature(x->lc), stature(x->rc)); // 具体规则因树不同而异
@@ -43,17 +44,18 @@ void BinTree<T>::updateHeightAbove(BinNodePosi<T> x) { // 更新节点x及其祖
     } // 可优化，一旦高度未变即可终止
 } // O( n = depth(x) )
 
+/* 二叉树节点的插入：将e创建为新节点，作为根节点或孩子节点插入树中。 */
 template<typename T>
 BinNodePosi<T> BinTree<T>::insertAsRoot(T const &e) { // 将e当作根节点插入空的二叉树
     _size = 1;
     return _root = new BinNode<T>(e);
 }
 
-template<typename T>
+template<typename T> // x祖先的高度可能增加，其余节点必然不变
 BinNodePosi<T> BinTree<T>::insertAsLC(BinNodePosi<T> x, T const &e) { // assert: 插入之前，节点x尚无左孩子
     _size++;
     x->insertAsLC(e);
-    updateHeightAbove(x); // x祖先的高度可能增加，其余节点必然不变
+    updateHeightAbove(x);
     return x->lc;
 }
 
@@ -94,7 +96,7 @@ BinNodePosi<T> BinTree<T>::attachAsRC(BinNodePosi<T> x, BinTree<T> *&subTree) { 
     return x;
 }
 
-/* 删除二叉树中以位置x处节点为根的子树，返回该树原先的规模。 */
+/* 二叉树子树删除：删除二叉树中以位置x处节点为根的子树，返回该树原先的规模。 */
 template<typename T>
 int BinTree<T>::remove(BinNodePosi<T> x) { // assert: x为二叉树中的合法位置
     if (x != _root) {
