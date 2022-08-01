@@ -5,9 +5,9 @@
 using namespace std;
 
 ostream &operator<<(ostream &os, SqStack const &S) {
-    if (StackEmpty(S)) return os << "data -> [ >";
+    if (StackEmpty(S)) return os << "[ >";
     int length = S.top + 1;
-    os << "data -> [ ";
+    os << "[ ";
     for (int i = 0; i < length - 1; i++) {
         os << S.data[i] << ", ";
     }
