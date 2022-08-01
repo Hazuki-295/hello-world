@@ -5,8 +5,8 @@
 using namespace std;
 
 ostream &operator<<(ostream &os, SqQueue const &Q) {
-    if (QueueEmpty(Q)) return os << "front [ ] rear";
-    os << "front [ ";
+    if (QueueEmpty(Q)) return os << "front < ] rear";
+    os << "front < ";
     for (int i = Q.front; i != Q.rear; i = (i + 1) % Q.MaxSize) {
         if ((i + 1) % Q.MaxSize != Q.rear) {
             os << Q.data[i] << ", ";
@@ -18,13 +18,13 @@ ostream &operator<<(ostream &os, SqQueue const &Q) {
 }
 
 ostream &operator<<(ostream &os, LinkQueue const &Q) {
-    if (QueueEmpty(Q)) return os << "front [ ] rear";
-    os << "front [ ";
+    if (QueueEmpty(Q)) return os << "front -> [ ] <- rear";
+    os << "front -> [ ";
     ListNode *p;
     for (p = Q.front->next; p->next != nullptr; p = p->next) {
         os << p->data << " -> ";
     }
-    os << p->data << " ] rear";
+    os << p->data << " ] <- rear";
     return os;
 }
 
