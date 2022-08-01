@@ -73,13 +73,14 @@ BinNodePosi<T> BinTree<T>::attachAsLC(BinNodePosi<T> x, BinTree<T> *&subTree) { 
     if ((x->lc = subTree->_root)) { // 接入的不是空树
         x->lc->parent = x; // 更新子树根节点的父节点指针，完成接入
 
-        _size += subTree->_size; // 更新全树规模及x所有祖先的高度
+        _size += subTree->_size; // 更新全树规模与x所有祖先的高度
         updateHeightAbove(x);
 
         subTree->_root = nullptr;
+        subTree->_size = 0;
     }
-    delete subTree;    // 释放原树
-    subTree = nullptr; // 并将传入的指针置空，防止引用野指针
+    delete subTree;    // 释放原树，并将
+    subTree = nullptr; // 传入的指针置空，防止引用野指针
     return x; // 返回接入位置
 }
 
@@ -90,6 +91,7 @@ BinNodePosi<T> BinTree<T>::attachAsRC(BinNodePosi<T> x, BinTree<T> *&subTree) { 
         _size += subTree->_size;
         updateHeightAbove(x);
         subTree->_root = nullptr;
+        subTree->_size = 0;
     }
     delete subTree;
     subTree = nullptr;
