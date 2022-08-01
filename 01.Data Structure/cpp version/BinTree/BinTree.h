@@ -103,9 +103,9 @@ template<typename T>
 int BinTree<T>::remove(BinNodePosi<T> x) { // assert: x为二叉树中的合法位置
     if (x != _root) {
         FromParentTo(*x) = nullptr; // 切断来自父节点的指针
-        updateHeightAbove(x->parent); // 更新祖先高度
+        updateHeightAbove(x->parent); // 更新祖先高度（其余节点亦不变）
     }
-    int n = removeAt(x); // 删除子树x
+    int n = removeAt(x); // 删除子树（递归地删除子树中的所有节点）
     _size -= n; // 更新规模
     return n; // 返回删除节点总数
 }
@@ -125,11 +125,12 @@ BinTree<T> *BinTree<T>::secede(BinNodePosi<T> x) { // assert: x为二叉树中�
         FromParentTo(*x) = nullptr; // 切断来自父节点的指针
         updateHeightAbove(x->parent); // 更新原树中所有祖先的高度
     }
-    BinTree<T> *subTree = new BinTree<T>; // 封装子树
+    /* 以上与 BinTree<T>::remove() 一致；以下还需对分离出来的子树重新封装。 */
+    BinTree<T> *subTree = new BinTree<T>; // 创建空树
     subTree->_root = x;  // 新树以x为树根，并
     x->parent = nullptr; // 从原树中断开
     subTree->_size = x->size(); // 计算子树规模并更新
 
     _size -= subTree->_size; // 更新原树规模
-    return subTree; // 返回分离出来的子树
+    return subTree; // 返回封装后的子树
 }
