@@ -23,6 +23,10 @@ public:
     BinNodePosi<T> insertAsRoot(T const &e); // 插入根节点
     BinNodePosi<T> insertAsLC(BinNodePosi<T> x, T const &e); // 将e作为x的左孩子（原无）插入
     BinNodePosi<T> insertAsRC(BinNodePosi<T> x, T const &e); // 将e作为x的右孩子（原无）插入
+    BinNodePosi<T> attachAsLC(BinNodePosi<T> x, BinTree<T> *&subTree); // 将子树S作为x的左子树接入
+    BinNodePosi<T> attachAsRC(BinNodePosi<T> x, BinTree<T> *&subTree); // 将子树S作为x的右子树接入
+    int remove(BinNodePosi<T> x); // 子树删除
+    BinNodePosi<T> *secede(BinNodePosi<T> x); // 子树分离
 }; // BinTree
 
 template<typename T>
