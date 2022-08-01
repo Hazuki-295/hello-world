@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BinNode_macro.h" // 二叉树节点的状态与性质
+
 #define stature(p) ((p) ? (p)->height : -1) // 节点高度，与“空树高度为-1”的约定相统一
 
 template<typename T> struct BinNode;
