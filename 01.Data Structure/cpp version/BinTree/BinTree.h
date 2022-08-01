@@ -27,7 +27,7 @@ public:
     BinNodePosi<T> attachAsLC(BinNodePosi<T> x, BinTree<T> *&subTree); // 将子树S作为x的左子树（原无）接入
     BinNodePosi<T> attachAsRC(BinNodePosi<T> x, BinTree<T> *&subTree); // 将子树S作为x的右子树（原无）接入
     int remove(BinNodePosi<T> x); // 子树删除
-    BinNodePosi<T> *secede(BinNodePosi<T> x); // 子树分离
+    BinTree<T> *secede(BinNodePosi<T> x); // 子树分离
 }; // BinTree
 
 template<typename T>
@@ -96,7 +96,7 @@ BinNodePosi<T> BinTree<T>::attachAsRC(BinNodePosi<T> x, BinTree<T> *&subTree) { 
 
 /* 删除二叉树中以位置x处节点为根的子树，返回该树原先的规模。 */
 template<typename T>
-int BinTree<T>::remove(BinNodePosi<T> x) {
+int BinTree<T>::remove(BinNodePosi<T> x) { // assert: x为二叉树中的合法位置
     if (x != _root) {
         FromParentTo(*x) = nullptr; // 切断来自父节点的指针
         updateHeightAbove(x->parent); // 更新祖先高度
@@ -112,4 +112,20 @@ static int removeAt(BinNodePosi<T> x) {
     int n = 1 + removeAt(x->lc) + removeAt(x->rc); // 递归释放左、右子树
     delete x; // 释放被摘除节点
     return n; // 返回删除节点总数
+}
+
+/* 二叉树子树分离：将子树x从当前树中摘除，将其封装为一颗独立子树返回。 */
+template<typename T>
+BinTree<T> *BinTree<T>::secede(BinNodePosi<T> x) { // assert: x为二叉树中的合法位置
+    if (x != _root) {
+        FromParentTo(*x) = nullptr; // 切断来自父节点的指针
+        updateHeightAbove(x->parent); // 更新原树中所有祖先的高度
+    }
+    BinTree<T> *subTree = new BinTree<T>; // 封装子树
+    subTree->_root = x;  // 新树以x为树根，并
+    x->parent = nullptr; // 从原树中断开
+    subTree->_size = x->size(); // 计算子树规模并更新
+
+    _size -= subTree->_size; // 更新原树规模
+    return subTree; // 返回分离出来的子树
 }
