@@ -4,8 +4,8 @@
 using namespace std;
 
 ostream &operator<<(ostream &os, SqList const &L) {
-    if (ListEmpty(L)) return os << "data -> [ ]";
-    os << "data -> [ ";
+    if (ListEmpty(L)) return os << "[ ]";
+    os << "[ ";
     for (int i = 0; i < L.length - 1; i++) {
         os << L.data[i] << ", ";
     }
