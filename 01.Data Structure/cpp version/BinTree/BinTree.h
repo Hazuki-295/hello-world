@@ -15,6 +15,7 @@ protected:
 
 public:
     BinTree() : _size(0), _root(nullptr) {} // 默认构造函数，构造一颗空树
+    ~BinTree() { if (_size > 0) remove(_root); } // 析构函数
     /* 访问内部成员接口 */
     int size() const { return _size; } // 规模
     bool empty() const { return !_root; } // 判空
@@ -91,4 +92,24 @@ BinNodePosi<T> BinTree<T>::attachAsRC(BinNodePosi<T> x, BinTree<T> *&subTree) { 
     delete subTree;
     subTree = nullptr;
     return x;
+}
+
+/* 删除二叉树中以位置x处节点为根的子树，返回该树原先的规模。 */
+template<typename T>
+int BinTree<T>::remove(BinNodePosi<T> x) {
+    if (x != _root) {
+        FromParentTo(*x) = nullptr; // 切断来自父节点的指针
+        updateHeightAbove(x->parent); // 更新祖先高度
+    }
+    int n = removeAt(x); // 删除子树x
+    _size -= n; // 更新规模
+    return n; // 返回删除节点总数
+}
+
+template<typename T>
+static int removeAt(BinNodePosi<T> x) {
+    if (!x) return 0; // 递归基，空树
+    int n = 1 + removeAt(x->lc) + removeAt(x->rc); // 递归释放左、右子树
+    delete x; // 释放被摘除节点
+    return n; // 返回删除节点总数
 }
