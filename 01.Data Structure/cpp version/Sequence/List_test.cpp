@@ -4,26 +4,13 @@
 using namespace std;
 
 template<typename T>
-ostream &operator<<(ostream &os, List<T> const &L) {
-    if (L.empty()) return os << "[ ]";
-    os << "[ ";
-    ListNodePosi<T> p;
-    for (p = L.first(); p != L.last(); p = p->succ) {
-        os << p->data << ", ";
-    }
-    os << p->data << " ]";
-    return os;
-}
-
-template<typename T>
 ListNodePosi<T> nodePosition(List<T> &L, Rank r) { // 返回列表中秩为r的节点的位置
     ListNodePosi<T> p = L.first();
     while (r-- > 0) p = p->succ;
     return p;
 }
 
-template<typename T>
-void testList() {
+template<typename T> void testList() {
     List<T> myList;
 
     /* 初始化列表 */
