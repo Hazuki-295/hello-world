@@ -3,19 +3,6 @@
 
 using namespace std;
 
-template<typename T>
-ostream &operator<<(ostream &os, Queue<T> const &Q) {
-    if (Q.empty()) return os << "< ]";
-    os << "< ";
-    ListNodePosi<T> p = Q.first();
-    for (int i = 0; i < Q.size() - 1; i++) {
-        os << p->data << ", ";
-        p = p->succ;
-    }
-    os << p->data << " ]";
-    return os;
-}
-
 struct Customer {      // 顾客类
     int window;        // 所属窗口（队列）
     unsigned int time; // 服务时长
@@ -62,8 +49,7 @@ void simulate(int numOfWin, int servTime) {
     delete[] windows; // 释放所有队列
 }
 
-template<typename T>
-void testQueue(Queue<T> myQueue) {
+template<typename T> void testQueue(Queue<T> myQueue) {
     /* 初始化队列 */
     printf("初始化队列：\n");
     printf("[1] 请输入队列中初始元素的个数：");
