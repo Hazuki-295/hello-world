@@ -22,6 +22,11 @@ template<typename T> struct BinNode { // 二叉树节点模板类
 // 操作接口
     BinNodePosi<T> insertAsLC(T const &e); // 作为当前节点的左孩子插入新节点
     BinNodePosi<T> insertAsRC(T const &e); // 作为当前节点的右孩子插入新节点
+// 遍历
+    /* 递归式遍历 */
+    template<typename VST> void travPre(VST &visit) { travPre_R(this, visit); }   // 子树先序遍历
+    template<typename VST> void travIn(VST &visit) { travIn_R(this, visit); }     // 子树中序遍历
+    template<typename VST> void travPost(VST &visit) { travPost_R(this, visit); } // 子树后序遍历
 };
 
 /* 子树规模：后代总数，亦即以其为根的子树的规模。 */
@@ -32,10 +37,36 @@ template<typename T> int BinNode<T>::size() {
     return s;
 } // O(n = |size|)
 
+/* 二叉树节点的插入：将e作为当前节点的孩子节点插入。 */
 template<typename T> BinNodePosi<T> BinNode<T>::insertAsLC(T const &e) { // assert: 插入之前，当前节点尚无左孩子
     return lc = new BinNode(e, this); // 将e作为当前节点的左孩子插入二叉树
 }
 
 template<typename T> BinNodePosi<T> BinNode<T>::insertAsRC(T const &e) { // assert: 插入之前，当前节点尚无右孩子
     return rc = new BinNode(e, this); // 将e作为当前节点的右孩子插入二叉树
+}
+
+/* 二叉树的遍历：按照某种约定的次序，对子树中的节点各访问一次且仅一次。 */
+template<typename T, typename VST>
+void travPre_R(BinNodePosi<T> x, VST &visit) { // 二叉树节点先序遍历算法（递归版）
+    if (!x) return; // 递归基，空树直接返回
+    visit(x->data); // 访问根节点
+    travPre_R(x->lc, visit); // 递归，先序遍历左子树
+    travPre_R(x->rc, visit); // 递归，先序遍历右子树
+}
+
+template<typename T, typename VST>
+void travIn_R(BinNodePosi<T> x, VST &visit) { // 二叉树节点中序遍历算法（递归版）
+    if (!x) return;
+    travIn_R(x->lc, visit);
+    visit(x->data);
+    travIn_R(x->rc, visit);
+}
+
+template<typename T, typename VST>
+void travPost_R(BinNodePosi<T> x, VST &visit) { // 二叉树节点后序遍历算法（递归版）
+    if (!x) return;
+    travPost_R(x->lc, visit);
+    travPost_R(x->rc, visit);
+    visit(x->data);
 }
