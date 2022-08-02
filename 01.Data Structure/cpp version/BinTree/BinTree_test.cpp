@@ -1,38 +1,43 @@
 #include <iostream>
-#include <vector>
 #include <sstream>
 #include "BinTree.h"
+
 #include "../Sequence/Vector.h"
 
 using namespace std;
 
-Queue<string> readTreeNodes(string sequence) {
-    Queue<string> treeNodes;
+template<typename T>
+Queue<T> *readTreeNodes(string sequence) {
+    Queue<T> *treeNodes = new Queue<T>;
     int begin = sequence.find('['), end = sequence.rfind(']');
     sequence = sequence.substr(begin + 1, end - begin - 1);
     stringstream buffer(sequence);
     string token;
     while (getline(buffer, token, ',')) {
-        treeNodes.enqueue(token.substr(token.find_first_not_of(' ')));
+        stringstream os(token.substr(token.find_first_not_of(' ')));
+        T elem;
+        os >> elem;
+        treeNodes->enqueue(elem);
     }
     return treeNodes;
 }
 
-BinTree<string> *createTree(Queue<string> &treeNodes) {
-    BinTree<string> *binTree = new BinTree<string>; // 创建空树
-    Queue<BinNodePosi<string>> Q; // 辅助队列
+template<typename T>
+BinTree<T> *createTree(Queue<T> &treeNodes) {
+    BinTree<T> *binTree = new BinTree<T>; // 创建空树
+    Queue<BinNodePosi<T>> Q; // 辅助队列
 
-    BinNodePosi<string> root = binTree->insertAsRoot(treeNodes.dequeue()); // 首元素作为树根
+    BinNodePosi<T> root = binTree->insertAsRoot(treeNodes.dequeue()); // 首元素作为树根
     Q.enqueue(root); // 等待插入孩子节点
 
     while (!Q.empty()) {
-        BinNodePosi<string> x = Q.dequeue();
+        BinNodePosi<T> x = Q.dequeue();
         if (!treeNodes.empty()) {
-            string lc = treeNodes.dequeue();
+            T lc = treeNodes.dequeue();
             if (lc != "null") Q.enqueue(binTree->insertAsLC(x, lc));
         }
         if (!treeNodes.empty()) {
-            string rc = treeNodes.dequeue();
+            T rc = treeNodes.dequeue();
             if (rc != "null") Q.enqueue(binTree->insertAsRC(x, rc));
         }
     }
@@ -40,7 +45,7 @@ BinTree<string> *createTree(Queue<string> &treeNodes) {
 }
 
 template<typename T>
-struct PrintVector {
+struct StoreInVector {
     Vector<T> elems; // 元素
     virtual void operator()(T &e) { elems.insert(e); } // 存放元素
 };
@@ -57,45 +62,30 @@ ostream &operator<<(ostream &os, Vector<T> const &V) {
 }
 
 template<typename T> void testBinTree() {
-    BinTree<T> myBinTree;
-
     /* 初始化树 */
     printf("初始化树：\n");
     printf("[1] 请输入二叉树的层次扩展序列：");
     string sequence;
     getline(cin, sequence);
-    Queue<string> treeNodes = readTreeNodes(sequence);
-    myBinTree = *createTree(treeNodes);
+    Queue<T> treeNodes = *readTreeNodes<T>(sequence);
+    BinTree<T> myBinTree = *createTree<T>(treeNodes);
     printf("[2] 二叉树创建完成。");
     cout << '\n' << endl;
 
     printf("遍历二叉树：\n");
-    PrintVector<T> pre, in, post, level;
+    StoreInVector<T> pre, in, post, level;
     myBinTree.travPre(pre);
-    printf("[1] 先序遍历序列：");
-    cout << pre.elems << endl;
+    cout << "[1] 先序遍历序列：" << pre.elems << endl;
     myBinTree.travIn(in);
-    printf("[2] 中序遍历序列：");
-    cout << in.elems << endl;
+    cout << "[2] 中序遍历序列：" << in.elems << endl;
     myBinTree.travPost(post);
-    printf("[3] 后序遍历序列：");
-    cout << post.elems << endl;
+    cout << "[3] 后序遍历序列：" << post.elems << endl;
     myBinTree.travLevel(level);
-    printf("[4] 层次遍历序列：");
-    cout << level.elems << endl;
-
-    return;
+    cout << "[4] 层次遍历序列：" << level.elems << endl;
 }
 
 int main() {
     testBinTree<string>();
-    // root = [i, d, l, c, h, k, n, a, null, f, null, j, null, m, p, null, b, e, g, null, null, null, null, o, null]
-    // root = [
-    // i,
-    // d, l,
-    // c, h, k, n,
-    // a, null, f, null, j, null, m, p,
-    // null, b, e, g, null, null, null, null, o, null,
-    // ]
     return 0;
+    // root = [i, d, l, c, h, k, n, a, null, f, null, j, null, m, p, null, b, e, g, null, null, null, null, o, null]
 }
