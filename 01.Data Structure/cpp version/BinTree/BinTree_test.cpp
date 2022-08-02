@@ -7,38 +7,39 @@
 using namespace std;
 
 Queue<string> *readTreeNodes(string const &sequence) {
-    Queue<string> *treeNodes = new Queue<string>;
-    int begin = sequence.find('['), end = sequence.rfind(']');
+    Queue<string> *tokens = new Queue<string>;
+    int begin = sequence.find('['), end = sequence.rfind(']'); // [ elem1, elem2, ... ]
     stringstream buffer(sequence.substr(begin + 1, end - begin - 1));
     string token;
     while (getline(buffer, token, ',')) {
-        treeNodes->enqueue(token.substr(token.find_first_not_of(' ')));
+        begin = token.find_first_not_of(' '), end = token.find_last_not_of(' ');
+        tokens->enqueue(token.substr(begin, end - begin + 1)); // token.trim()
     }
-    return treeNodes;
+    return tokens;
 }
 
 template<typename T>
-BinTree<T> *createTree(Queue<string> &treeNodes) {
+BinTree<T> *createTree(Queue<string> &tokens) {
     BinTree<T> *binTree = new BinTree<T>; // 创建空树
     Queue<BinNodePosi<T>> Q; // 辅助队列
 
-    stringstream buffer(treeNodes.dequeue()); // 首元素作为树根
+    stringstream buffer(tokens.dequeue()); // 首元素作为树根
     T elem;
     buffer >> elem;
     Q.enqueue(binTree->insertAsRoot(elem)); // 等待插入孩子节点
 
     while (!Q.empty()) {
         BinNodePosi<T> x = Q.dequeue();
-        if (!treeNodes.empty()) {
-            string token = treeNodes.dequeue(); // 左孩子
+        if (!tokens.empty()) {
+            string token = tokens.dequeue(); // 左孩子
             if (token != "null") {
                 buffer = stringstream(token);
                 buffer >> elem;
                 Q.enqueue(binTree->insertAsLC(x, elem));
             }
         }
-        if (!treeNodes.empty()) {
-            string token = treeNodes.dequeue(); // 右孩子
+        if (!tokens.empty()) {
+            string token = tokens.dequeue(); // 右孩子
             if (token != "null") {
                 buffer = stringstream(token);
                 buffer >> elem;
