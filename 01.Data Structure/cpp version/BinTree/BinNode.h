@@ -104,7 +104,7 @@ template<typename T, typename VST>
 void travPre_Iteration(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历算法（迭代版）
     Stack<BinNodePosi<T>> S; // 辅助栈
     while (true) { // 以右子树（及全树根节点）为单位，逐批访问节点
-        visitAlongVine(x, visit, S); // 访问子树x的藤蔓，沿途各右子树（根）入栈缓冲
+        visitAlongVine(x, visit, S); // 访问子树x的藤蔓，沿途各节点的右子树（根）入栈缓冲
         if (S.empty()) break; // 栈空则遍历结束，退出
         x = S.pop(); // 弹出下一右子树（根）
     }
