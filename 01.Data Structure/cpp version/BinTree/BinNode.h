@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Stack_Queue/Queue.h" // 引入队列（层次遍历算法）
+
 #include "BinNode_macro.h" // 二叉树节点的状态与性质
 
 #define stature(p) ((p) ? (p)->height : -1) // 节点高度，与“空树高度为-1”的约定相统一
@@ -27,6 +29,8 @@ template<typename T> struct BinNode { // 二叉树节点模板类
     template<typename VST> void travPre(VST &visit) { travPre_R(this, visit); }   // 子树先序遍历
     template<typename VST> void travIn(VST &visit) { travIn_R(this, visit); }     // 子树中序遍历
     template<typename VST> void travPost(VST &visit) { travPost_R(this, visit); } // 子树后序遍历
+    /* 迭代式遍历 */
+    template<typename VST> void travLevel(VST &visit); // 子树层次遍历
 };
 
 /* 子树规模：后代总数，亦即以其为根的子树的规模。 */
@@ -48,7 +52,7 @@ template<typename T> BinNodePosi<T> BinNode<T>::insertAsRC(T const &e) { // asse
 
 /* 二叉树的遍历：按照某种约定的次序，对子树中的节点各访问一次且仅一次。 */
 template<typename T, typename VST>
-void travPre_R(BinNodePosi<T> x, VST &visit) { // 二叉树节点先序遍历算法（递归版）
+void travPre_R(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历算法（递归版）
     if (!x) return; // 递归基，空树直接返回
     visit(x->data); // 访问根节点
     travPre_R(x->lc, visit); // 递归，先序遍历左子树
@@ -56,7 +60,7 @@ void travPre_R(BinNodePosi<T> x, VST &visit) { // 二叉树节点先序遍历算
 }
 
 template<typename T, typename VST>
-void travIn_R(BinNodePosi<T> x, VST &visit) { // 二叉树节点中序遍历算法（递归版）
+void travIn_R(BinNodePosi<T> x, VST &visit) { // 二叉树中序遍历算法（递归版）
     if (!x) return;
     travIn_R(x->lc, visit);
     visit(x->data);
@@ -64,9 +68,22 @@ void travIn_R(BinNodePosi<T> x, VST &visit) { // 二叉树节点中序遍历算�
 }
 
 template<typename T, typename VST>
-void travPost_R(BinNodePosi<T> x, VST &visit) { // 二叉树节点后序遍历算法（递归版）
+void travPost_R(BinNodePosi<T> x, VST &visit) { // 二叉树后序遍历算法（递归版）
     if (!x) return;
     travPost_R(x->lc, visit);
     travPost_R(x->rc, visit);
     visit(x->data);
+}
+
+// 迭代式遍历
+template<typename T> template<typename VST>
+void BinNode<T>::travLevel(VST &visit) { // 二叉树层次遍历算法
+    Queue<BinNodePosi<T>> Q; // 辅助队列
+    Q.enqueue(this); // 根节点入队
+    while (!Q.empty()) { // 在队列再次变空之前，反复迭代
+        BinNodePosi<T> x = Q.dequeue(); // 取出队首节点，并
+        visit(x->data); // 访问之
+        if (HasLChild(*x)) Q.enqueue(x->lc); // 左孩子入队
+        if (HasRChild(*x)) Q.enqueue(x->rc); // 右孩子入队
+    }
 }
