@@ -67,7 +67,7 @@ BinNodePosi<T> BinTree<T>::insertAsRC(BinNodePosi<T> x, T const &e) { // 与 ins
     return x->rc;
 }
 
-/* 二叉树子树接入算法：将S当作节点x的子树接入，S本身置空。 */
+/* 二叉树子树接入：将S当作节点x的子树接入，S本身置空。 */
 template<typename T>
 BinNodePosi<T> BinTree<T>::attachAsLC(BinNodePosi<T> x, BinTree<T> *&subTree) { // assert: 接入之前，节点x尚无左子树
     if ((x->lc = subTree->_root)) { // 接入的不是空树
@@ -76,7 +76,7 @@ BinNodePosi<T> BinTree<T>::attachAsLC(BinNodePosi<T> x, BinTree<T> *&subTree) { 
         _size += subTree->_size; // 更新全树规模与x所有祖先的高度
         updateHeightAbove(x);
 
-        subTree->_root = nullptr;
+        subTree->_root = nullptr; // 置空原子树
         subTree->_size = 0;
     }
     delete subTree;    // 释放原树，并将
