@@ -17,29 +17,29 @@ Queue<string> readTreeNodes(string sequence) {
     return treeNodes;
 }
 
-BinTree<string> *createTree(Queue<string> &treeNodes) {
-    BinTree<string> *binTree = new BinTree<string>; // 创建空树
+BinTree<string> createTree(Queue<string> &treeNodes) {
+    BinTree<string> binTree; // 创建空树
     Queue<BinNodePosi<string>> Q; // 辅助队列
 
-    BinNodePosi<string> root = binTree->insertAsRoot(treeNodes.dequeue()); // 首元素作为树根
+    BinNodePosi<string> root = binTree.insertAsRoot(treeNodes.dequeue()); // 首元素作为树根
     Q.enqueue(root); // 等待插入孩子节点
 
     while (!Q.empty()) {
         BinNodePosi<string> x = Q.dequeue();
         if (!treeNodes.empty()) {
             string lc = treeNodes.dequeue();
-            if (lc != "null") Q.enqueue(x->insertAsLC(lc));
+            if (lc != "null") Q.enqueue(binTree.insertAsLC(x, lc));
         }
         if (!treeNodes.empty()) {
             string rc = treeNodes.dequeue();
-            if (rc != "null") Q.enqueue(x->insertAsRC(rc));
+            if (rc != "null") Q.enqueue(binTree.insertAsRC(x, rc));
         }
     }
     return binTree;
 }
 
 template<typename T> void testBinTree() {
-    BinTree<T> *myBinTree;
+    BinTree<T> myBinTree;
 
     /* 初始化树 */
     printf("初始化树：\n");
