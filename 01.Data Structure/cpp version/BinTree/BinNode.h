@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../Stack_Queue/Queue.h" // 引入队列（层次遍历算法）
+#include "../Stack_Queue/Queue.h" // 引入队列和栈
+#include "../Stack_Queue/Stack.h"
 
 #include "BinNode_macro.h" // 二叉树节点的状态与性质
 
@@ -31,6 +32,7 @@ template<typename T> struct BinNode { // 二叉树节点模板类
     template<typename VST> void travPost(VST &visit) { travPost_R(this, visit); } // 子树后序遍历
     /* 迭代式遍历 */
     template<typename VST> void travLevel(VST &visit); // 子树层次遍历
+    template<typename VST> void travPre_Iteration(VST &visit) { travPre_I(this, visit); } // 子树先序遍历
 };
 
 /* 子树规模：后代总数，亦即以其为根的子树的规模。 */
@@ -75,7 +77,7 @@ void travPost_R(BinNodePosi<T> x, VST &visit) { // 二叉树后序遍历算法�
     visit(x->data);
 }
 
-// 迭代式遍历
+// 迭代式遍历算法：层次遍历，以及将二叉树的递归式遍历算法，改写为对应的迭代版本。
 template<typename T> template<typename VST>
 void BinNode<T>::travLevel(VST &visit) { // 二叉树层次遍历算法
     Queue<BinNodePosi<T>> Q; // 辅助队列
@@ -85,5 +87,25 @@ void BinNode<T>::travLevel(VST &visit) { // 二叉树层次遍历算法
         visit(x->data); // 访问之
         if (HasLChild(*x)) Q.enqueue(x->lc); // 左孩子入队
         if (HasRChild(*x)) Q.enqueue(x->rc); // 右孩子入队
+    }
+}
+
+/* 藤缠树：从当前节点出发，沿左侧藤不断深入，自顶向下访问藤上节点，直至遇到没有左分支的节点。 */
+template<typename T, typename VST>
+static void visitAlongVine(BinNodePosi<T> x, VST &visit, Stack<BinNodePosi<T>> &S) {
+    while (x) { // 反复地
+        visit(x->data); // 访问当前节点
+        if (x->rc) S.push(x->rc); // 右子树（根）入栈暂存（将来逆序出栈）
+        x = x->lc; // 沿藤下行
+    }
+}
+
+template<typename T, typename VST>
+void travPre_I(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历算法（迭代版）
+    Stack<BinNodePosi<T>> S; // 辅助栈
+    while (true) { // 以右子树（及全树根节点）为单位，逐批访问节点
+        visitAlongVine(x, visit, S); // 访问子树x的藤蔓，沿途各右子树（根）入栈缓冲
+        if (S.empty()) break; // 栈空则遍历结束，退出
+        x = S.pop(); // 弹出下一右子树（根）
     }
 }
