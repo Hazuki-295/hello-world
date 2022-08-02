@@ -16,3 +16,15 @@ public:
     T pop() { return remove(size() - 1); }       // 出栈：删除栈顶对象，等效于删除向量的末元素
     T &top() { return (*this)[size() - 1]; }     // 取顶：引用栈顶对象，直接返回向量的末元素
 };
+
+/* 重载输出运算符：打印栈中的元素（测试时使用）。 */
+template<typename T>
+std::ostream &operator<<(std::ostream &os, Stack<T> const &S) {
+    if (S.empty()) return os << "[ >";
+    os << "[ ";
+    for (int i = 0; i < S.size() - 1; i++) {
+        os << S[i] << ", ";
+    }
+    os << S[S.size() - 1] << " >";
+    return os;
+}
