@@ -6,39 +6,45 @@
 
 using namespace std;
 
-template<typename T>
-Queue<T> *readTreeNodes(string sequence) {
-    Queue<T> *treeNodes = new Queue<T>;
+Queue<string> *readTreeNodes(string sequence) {
+    Queue<string> *treeNodes = new Queue<string>;
     int begin = sequence.find('['), end = sequence.rfind(']');
     sequence = sequence.substr(begin + 1, end - begin - 1);
     stringstream buffer(sequence);
     string token;
     while (getline(buffer, token, ',')) {
-        stringstream os(token.substr(token.find_first_not_of(' ')));
-        T elem;
-        os >> elem;
-        treeNodes->enqueue(elem);
+        treeNodes->enqueue(token.substr(token.find_first_not_of(' ')));
     }
     return treeNodes;
 }
 
 template<typename T>
-BinTree<T> *createTree(Queue<T> &treeNodes) {
+BinTree<T> *createTree(Queue<string> &treeNodes) {
     BinTree<T> *binTree = new BinTree<T>; // 创建空树
     Queue<BinNodePosi<T>> Q; // 辅助队列
 
-    BinNodePosi<T> root = binTree->insertAsRoot(treeNodes.dequeue()); // 首元素作为树根
-    Q.enqueue(root); // 等待插入孩子节点
+    stringstream buffer(treeNodes.dequeue()); // 首元素作为树根
+    T elem;
+    buffer >> elem;
+    Q.enqueue(binTree->insertAsRoot(elem)); // 等待插入孩子节点
 
     while (!Q.empty()) {
         BinNodePosi<T> x = Q.dequeue();
         if (!treeNodes.empty()) {
-            T lc = treeNodes.dequeue();
-            if (lc != "null") Q.enqueue(binTree->insertAsLC(x, lc));
+            string token = treeNodes.dequeue();
+            if (token != "null") {
+                buffer = stringstream(token);
+                buffer >> elem;
+                Q.enqueue(binTree->insertAsLC(x, elem));
+            }
         }
         if (!treeNodes.empty()) {
-            T rc = treeNodes.dequeue();
-            if (rc != "null") Q.enqueue(binTree->insertAsRC(x, rc));
+            string token = treeNodes.dequeue();
+            if (token != "null") {
+                buffer = stringstream(token);
+                buffer >> elem;
+                Q.enqueue(binTree->insertAsRC(x, elem));
+            }
         }
     }
     return binTree;
@@ -67,7 +73,7 @@ template<typename T> void testBinTree() {
     printf("[1] 请输入二叉树的层次扩展序列：");
     string sequence;
     getline(cin, sequence);
-    Queue<T> treeNodes = *readTreeNodes<T>(sequence);
+    Queue<string> treeNodes = *readTreeNodes(sequence);
     BinTree<T> myBinTree = *createTree<T>(treeNodes);
     printf("[2] 二叉树创建完成。");
     cout << '\n' << endl;
@@ -85,7 +91,7 @@ template<typename T> void testBinTree() {
 }
 
 int main() {
-    testBinTree<string>();
+    testBinTree<char>();
     return 0;
     // root = [i, d, l, c, h, k, n, a, null, f, null, j, null, m, p, null, b, e, g, null, null, null, null, o, null]
 }
