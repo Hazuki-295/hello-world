@@ -32,7 +32,7 @@ template<typename T> struct BinNode { // 二叉树节点模板类
     template<typename VST> void travPost(VST &visit) { travPost_R(this, visit); } // 子树后序遍历
     /* 迭代式遍历 */
     template<typename VST> void travLevel(VST &visit); // 子树层次遍历
-    template<typename VST> void travPre_Iteration(VST &visit) { travPre_I(this, visit); } // 子树先序遍历
+    template<typename VST> void travPre_I(VST &visit) { travPre_Iteration(this, visit); } // 子树先序遍历
 };
 
 /* 子树规模：后代总数，亦即以其为根的子树的规模。 */
@@ -101,7 +101,7 @@ static void visitAlongVine(BinNodePosi<T> x, VST &visit, Stack<BinNodePosi<T>> &
 }
 
 template<typename T, typename VST>
-void travPre_I(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历算法（迭代版）
+void travPre_Iteration(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历算法（迭代版）
     Stack<BinNodePosi<T>> S; // 辅助栈
     while (true) { // 以右子树（及全树根节点）为单位，逐批访问节点
         visitAlongVine(x, visit, S); // 访问子树x的藤蔓，沿途各右子树（根）入栈缓冲
