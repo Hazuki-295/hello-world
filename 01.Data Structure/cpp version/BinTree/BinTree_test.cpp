@@ -31,7 +31,7 @@ BinTree<T> *createTree(Queue<string> &treeNodes) {
     while (!Q.empty()) {
         BinNodePosi<T> x = Q.dequeue();
         if (!treeNodes.empty()) {
-            string token = treeNodes.dequeue();
+            string token = treeNodes.dequeue(); // 左孩子
             if (token != "null") {
                 buffer = stringstream(token);
                 buffer >> elem;
@@ -39,7 +39,7 @@ BinTree<T> *createTree(Queue<string> &treeNodes) {
             }
         }
         if (!treeNodes.empty()) {
-            string token = treeNodes.dequeue();
+            string token = treeNodes.dequeue(); // 右孩子
             if (token != "null") {
                 buffer = stringstream(token);
                 buffer >> elem;
@@ -53,7 +53,7 @@ BinTree<T> *createTree(Queue<string> &treeNodes) {
 template<typename T>
 struct StoreInVector {
     Vector<T> elems; // 元素
-    virtual void operator()(T &e) { elems.insert(e); } // 存放元素
+    void operator()(T &e) { elems.insert(e); } // 存放元素
 };
 
 template<typename T>
