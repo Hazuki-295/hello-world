@@ -263,3 +263,15 @@ void Vector<T>::merge(Rank lo, Rank mi, Rank hi) { // 各自有序的子向量[l
 
     delete[] B; // 释放临时空间
 }
+
+/* 重载输出运算符：打印向量中的元素。 */
+template<typename T>
+std::ostream &operator<<(std::ostream &os, Vector<T> const &V) {
+    if (V.empty()) return os << "[ ]";
+    os << "[ ";
+    for (int i = 0; i < V.size() - 1; i++) {
+        os << V[i] << ", ";
+    }
+    os << V[V.size() - 1] << " ]";
+    return os;
+}
