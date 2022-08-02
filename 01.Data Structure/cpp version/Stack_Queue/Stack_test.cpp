@@ -7,17 +7,6 @@
 
 using namespace std;
 
-template<typename T>
-ostream &operator<<(ostream &os, Stack<T> const &S) {
-    if (S.empty()) return os << "[ >";
-    os << "[ ";
-    for (int i = 0; i < S.size() - 1; i++) {
-        os << S[i] << ", ";
-    }
-    os << S[S.size() - 1] << " >";
-    return os;
-}
-
 /* 进制转换：将十进制正整数n，转换为base进制。 */
 string convert(unsigned long n, int base) {
     string digit = "0123456789ABCDEF"; // 数位符号，如有必要可相应扩充
