@@ -2,8 +2,6 @@
 #include <sstream>
 #include "BinTree.h"
 
-#include "../Sequence/Vector.h"
-
 using namespace std;
 
 Queue<string> *readTreeNodes(string const &sequence) {
