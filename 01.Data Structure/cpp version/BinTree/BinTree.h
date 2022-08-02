@@ -105,7 +105,7 @@ int BinTree<T>::remove(BinNodePosi<T> x) { // assert: x为二叉树中的合法�
         FromParentTo(*x) = nullptr; // 切断来自父节点的指针
         updateHeightAbove(x->parent); // 更新祖先高度（其余节点亦不变）
     }
-    int n = removeAt(x); // 删除子树（递归地删除子树中的所有节点）
+    int n = removeAt(x); // 删除子树（递归地删除以x为根的子树的所有节点）
     _size -= n; // 更新规模
     return n; // 返回删除节点总数
 }
