@@ -4,13 +4,6 @@
 using namespace std;
 
 template<typename T>
-void permute(Vector<T> &V) { // 随机置乱向量，使各元素等概率出现于各位置
-    for (int i = V.size(); i > 0; i--) {    // 自后向前
-        std::swap(V[i - 1], V[rand() % i]); // 将V[i - 1]与V[0, i)中某一元素随机交换
-    }
-}
-
-template<typename T>
 struct Increase { // 函数对象：递增一个T类对象
     virtual void operator()(T &e) { e++; } // 假设T可直接递增，或已重载++
 };
@@ -21,14 +14,10 @@ void increase(Vector<T> &V) {  // 统一递增向量的各元素
 }
 
 template<typename T>
-ostream &operator<<(ostream &os, Vector<T> const &V) {
-    if (V.empty()) return os << "[ ]";
-    os << "[ ";
-    for (int i = 0; i < V.size() - 1; i++) {
-        os << V[i] << ", ";
+void permute(Vector<T> &V) { // 随机置乱向量，使各元素等概率出现于各位置
+    for (int i = V.size(); i > 0; i--) {    // 自后向前
+        std::swap(V[i - 1], V[rand() % i]); // 将V[i - 1]与V[0, i)中某一元素随机交换
     }
-    os << V[V.size() - 1] << " ]";
-    return os;
 }
 
 template<typename T>
