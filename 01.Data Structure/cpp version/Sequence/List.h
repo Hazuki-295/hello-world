@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "ListNode.h" // 引入列表节点类
 
 template<typename T> class List { // 列表模板类（以双向链表形式实现）
@@ -274,4 +276,17 @@ ListNodePosi<T> List<T>::merge(ListNodePosi<T> p, int n, List<T> &L, ListNodePos
         }
     } // while条件不成立时，p == q仅可能发生在p一直后移直到 n == 0，即原本就两区间整体有序，此时可直接跳过
     return head->succ; // 返回更新的首节点
+}
+
+/* 重载输出运算符：打印列表中的元素。 */
+template<typename T>
+std::ostream &operator<<(std::ostream &os, List<T> const &L) {
+    if (L.empty()) return os << "[ ]";
+    os << "[ ";
+    ListNodePosi<T> p;
+    for (p = L.first(); p != L.last(); p = p->succ) {
+        os << p->data << ", ";
+    }
+    os << p->data << " ]";
+    return os;
 }
