@@ -6,11 +6,10 @@
 
 using namespace std;
 
-Queue<string> *readTreeNodes(string sequence) {
+Queue<string> *readTreeNodes(string const &sequence) {
     Queue<string> *treeNodes = new Queue<string>;
     int begin = sequence.find('['), end = sequence.rfind(']');
-    sequence = sequence.substr(begin + 1, end - begin - 1);
-    stringstream buffer(sequence);
+    stringstream buffer(sequence.substr(begin + 1, end - begin - 1));
     string token;
     while (getline(buffer, token, ',')) {
         treeNodes->enqueue(token.substr(token.find_first_not_of(' ')));
@@ -55,17 +54,6 @@ struct StoreInVector {
     Vector<T> elems; // 元素
     void operator()(T &e) { elems.insert(e); } // 存放元素
 };
-
-template<typename T>
-ostream &operator<<(ostream &os, Vector<T> const &V) {
-    if (V.empty()) return os << "[ ]";
-    os << "[ ";
-    for (int i = 0; i < V.size() - 1; i++) {
-        os << V[i] << ", ";
-    }
-    os << V[V.size() - 1] << " ]";
-    return os;
-}
 
 template<typename T> void testBinTree() {
     /* 初始化树 */
