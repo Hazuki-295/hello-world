@@ -28,6 +28,11 @@ public:
     BinNodePosi<T> attachAsRC(BinNodePosi<T> x, BinTree<T> *&subTree); // 将子树S作为x的右子树（原无）接入
     int remove(BinNodePosi<T> x); // 子树删除
     BinTree<T> *secede(BinNodePosi<T> x); // 子树分离
+    /* 二叉树遍历算法 */
+    template<typename VST> void travPre(VST &visit) { if (_root) _root->travPre(visit); } // 先序遍历
+    template<typename VST> void travIn(VST &visit) { if (_root) _root->travIn(visit); } // 中序遍历
+    template<typename VST> void travPost(VST &visit) { if (_root) _root->travPost(visit); } // 后序遍历
+    template<typename VST> void travLevel(VST &visit) { if (_root) _root->travLevel(visit); } // 层次遍历
 }; // BinTree
 
 /* 二叉树节点的高度更新：一旦有节点加入或离开二叉树，则更新其所有祖先的高度。 */
