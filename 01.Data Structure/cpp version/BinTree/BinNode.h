@@ -26,7 +26,6 @@ template<typename T> struct BinNode { // 二叉树节点模板类
     BinNodePosi<T> insertAsLC(T const &e); // 作为当前节点的左孩子插入新节点
     BinNodePosi<T> insertAsRC(T const &e); // 作为当前节点的右孩子插入新节点
     BinNodePosi<T> succ(); // （中序遍历意义下）当前节点的直接后继
-// 遍历
     /* 递归式遍历 */
     template<typename VST> void travPre(VST &visit) { travPre_R(this, visit); }   // 子树先序遍历
     template<typename VST> void travIn(VST &visit) { travIn_R(this, visit); }     // 子树中序遍历
