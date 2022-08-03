@@ -95,7 +95,7 @@ template<typename T, typename VST>
 static void visitAlongVine(BinNodePosi<T> x, VST &visit, Stack<BinNodePosi<T>> &S) {
     while (x) { // 反复地
         visit(x->data); // 访问当前节点
-        if (x->rc) S.push(x->rc); // 右子树（根）入栈暂存（将来逆序出栈）
+        if (HasRChild(*x)) S.push(x->rc); // 右子树（根）入栈暂存（将来逆序出栈）
         x = x->lc; // 沿藤下行
     }
 }
@@ -103,8 +103,8 @@ static void visitAlongVine(BinNodePosi<T> x, VST &visit, Stack<BinNodePosi<T>> &
 template<typename T, typename VST>
 void travPre_Iteration(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历算法（迭代版）
     Stack<BinNodePosi<T>> S; // 辅助栈
-    while (true) { // 以右子树（及全树根节点）为单位，逐批访问节点
-        visitAlongVine(x, visit, S); // 访问子树x的藤蔓，沿途各节点的右子树（根）入栈缓冲
+    while (true) { // 以右子树（及全树根）为单位，逐批访问节点
+        visitAlongVine(x, visit, S); // 访问子树x的左侧藤，沿途各节点的右子树（根）入栈缓冲
         if (S.empty()) break; // 栈空则遍历结束，退出
         x = S.pop(); // 弹出下一右子树（根）
     }
