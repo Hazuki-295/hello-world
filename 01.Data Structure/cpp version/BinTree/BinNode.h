@@ -145,7 +145,7 @@ BinNodePosi<T> BinNode<T>::succ() { // 在中序遍历意义下的直接后继
         while (IsRChild(*s)) { // 不断朝左上移动
             s = s->parent;
         }
-        s = s->parent; // 当不能继续前进时，再朝右上移动一步（可能为null，即抵达根节点，直接后继不存在）
+        s = s->parent; // 当不能继续前进时，再朝右上移动一步（可能为null，即抵达树根节点，直接后继不存在）
     }
     return s;
 } // 两种情况下，运行时间分别为当前节点的高度与深度，不过 O(h)
