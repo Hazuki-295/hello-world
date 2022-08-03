@@ -51,7 +51,7 @@ BinTree<T> *createTree(Queue<string> &tokens) {
 template<typename T>
 struct StoreInVector {
     Vector<T> elems; // 元素
-    void operator()(T &e) { elems.insert(e); } // 存放元素
+    void operator()(T const &e) { elems.insert(e); } // 存放元素
 };
 
 template<typename T> void testBinTree() {
