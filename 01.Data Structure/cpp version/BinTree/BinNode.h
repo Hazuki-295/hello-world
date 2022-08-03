@@ -25,6 +25,7 @@ template<typename T> struct BinNode { // 二叉树节点模板类
 // 操作接口
     BinNodePosi<T> insertAsLC(T const &e); // 作为当前节点的左孩子插入新节点
     BinNodePosi<T> insertAsRC(T const &e); // 作为当前节点的右孩子插入新节点
+    BinNodePosi<T> succ(); // （中序遍历意义下）当前节点的直接后继
 // 遍历
     /* 递归式遍历 */
     template<typename VST> void travPre(VST &visit) { travPre_R(this, visit); }   // 子树先序遍历
@@ -131,3 +132,20 @@ void travIn_Iteration(BinNodePosi<T> x, VST &visit) { // 二叉树中序遍历�
         x = x->rc;      // 转向其右子树（可能为空）
     } // 每个节点出栈时，其左子树或不存在，或已完成遍历，而右子树尚未入栈。于是，每当有节点出栈，只需访问它，然后从其右孩子出发...
 }
+
+template<typename T>
+BinNodePosi<T> BinNode<T>::succ() { // 在中序遍历意义下的直接后继
+    BinNodePosi<T> s = this;
+    if (HasRChild(*this)) { // 若有右孩子，则直接后继必是右孩子中的
+        s = rc;
+        while (HasLChild(*s)) { // 最小节点（不断朝左下移动）
+            s = s->lc;
+        }
+    } else { // 否则，后继应是“以当前节点为直接前驱者”
+        while (IsRChild(*s)) {
+            s = s->parent; // 不断朝左上移动
+        }
+        s = s->parent; // 最后，再朝右上移动一步（可能是null）
+    }
+    return s;
+} // 两种情况下，运行时间分别为当前节点的高度与深度，不过 O(h)
