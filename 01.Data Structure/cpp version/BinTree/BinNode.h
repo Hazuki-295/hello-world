@@ -33,8 +33,9 @@ template<typename T> struct BinNode { // 二叉树节点模板类
     template<typename VST> void travPost(VST &visit) { travPost_R(this, visit); } // 子树后序遍历
     /* 迭代式遍历 */
     template<typename VST> void travLevel(VST &visit); // 子树层次遍历
-    template<typename VST> void travPre_I(VST &visit) { travPre_Iteration(this, visit); } // 子树先序遍历
-    template<typename VST> void travIn_I(VST &visit) { travIn_Iteration(this, visit); }   // 子树中序遍历
+    template<typename VST> void travPre_I(VST &visit) { travPre_Iteration(this, visit); }   // 子树先序遍历
+    template<typename VST> void travIn_I(VST &visit) { travIn_Iteration(this, visit); }     // 子树中序遍历
+    template<typename VST> void travPost_I(VST &visit) { travPost_Iteration(this, visit); } // 子树后序遍历
 };
 
 /* 子树规模：后代总数，亦即以其为根的子树的规模。 */
@@ -56,7 +57,7 @@ template<typename T> BinNodePosi<T> BinNode<T>::insertAsRC(T const &e) { // asse
 
 /* 二叉树的遍历：按照某种约定的次序，对子树中的节点各访问一次且仅一次。 */
 template<typename T, typename VST>
-void travPre_R(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历算法（递归版）
+void travPre_R(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历（递归版）
     if (!x) return; // 递归基，空树直接返回
     visit(x->data); // 访问根节点
     travPre_R(x->lc, visit); // 递归，先序遍历左子树
@@ -64,7 +65,7 @@ void travPre_R(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历算法（
 }
 
 template<typename T, typename VST>
-void travIn_R(BinNodePosi<T> x, VST &visit) { // 二叉树中序遍历算法（递归版）
+void travIn_R(BinNodePosi<T> x, VST &visit) { // 二叉树中序遍历（递归版）
     if (!x) return;
     travIn_R(x->lc, visit);
     visit(x->data);
@@ -72,7 +73,7 @@ void travIn_R(BinNodePosi<T> x, VST &visit) { // 二叉树中序遍历算法（�
 }
 
 template<typename T, typename VST>
-void travPost_R(BinNodePosi<T> x, VST &visit) { // 二叉树后序遍历算法（递归版）
+void travPost_R(BinNodePosi<T> x, VST &visit) { // 二叉树后序遍历（递归版）
     if (!x) return;
     travPost_R(x->lc, visit);
     travPost_R(x->rc, visit);
@@ -92,7 +93,7 @@ void BinNode<T>::travLevel(VST &visit) { // 二叉树层次遍历算法
     }
 }
 
-/* 藤缠树：从当前节点出发，沿左侧藤不断深入，自顶向下访问藤上节点，直至遇到没有左分支的节点。 */
+/* 藤缠树：沿着左侧藤，整个遍历过程可分解为，自上而下（遇到就立即）访问藤上节点，再自下而上遍历各右子树。 */
 template<typename T, typename VST>
 static void visitAlongVine(BinNodePosi<T> x, VST &visit, Stack<BinNodePosi<T>> &S) {
     while (x) { // 反复地
@@ -103,7 +104,7 @@ static void visitAlongVine(BinNodePosi<T> x, VST &visit, Stack<BinNodePosi<T>> &
 }
 
 template<typename T, typename VST>
-void travPre_Iteration(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历算法（迭代版）
+void travPre_Iteration(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历（迭代版）
     Stack<BinNodePosi<T>> S; // 辅助栈
     while (true) { // 以右子树（及全树根）为单位，逐批访问节点
         visitAlongVine(x, visit, S); // 访问子树x的左侧藤，沿途各节点的右子树（根）入栈缓冲
@@ -112,7 +113,7 @@ void travPre_Iteration(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历�
     }
 }
 
-/* 藤缠树：从当前节点出发，沿左侧藤不断深入，将沿途各节点入栈，逆序保存，直至没有左孩子的末端节点。 */
+/* 藤缠树：沿着左侧藤，遍历可自底而上（宏观地）分解为若干步迭代，每步迭代访问（栈顶的）藤上节点，再遍历其右子树。 */
 template<typename T>
 static void goAlongVine(BinNodePosi<T> x, Stack<BinNodePosi<T>> &S) {
     while (x) {
@@ -122,7 +123,7 @@ static void goAlongVine(BinNodePosi<T> x, Stack<BinNodePosi<T>> &S) {
 }
 
 template<typename T, typename VST>
-void travIn_Iteration(BinNodePosi<T> x, VST &visit) { // 二叉树中序遍历算法（迭代版）
+void travIn_Iteration(BinNodePosi<T> x, VST &visit) { // 二叉树中序遍历（迭代版）
     Stack<BinNodePosi<T>> S; // 辅助栈
     while (true) {
         goAlongVine(x, S); // 从当前节点出发，左侧藤上节点逐批入栈
@@ -149,3 +150,33 @@ BinNodePosi<T> BinNode<T>::succ() { // 在中序遍历意义下的直接后继
     }
     return s;
 } // 两种情况下，运行时间分别为当前节点的高度与深度，不过 O(h)
+
+/* 藤缠树：从根出发下行，尽可能沿左分支，实不得已，才沿右分支。最后一个节点必是叶子，且是按中序遍历次序最靠左者，该叶子节点将首先接受访问。 */
+template<typename T>
+static void gotoLeftmostLeaf(Stack<BinNodePosi<T>> &S) {
+    while (BinNodePosi<T> x = S.top()) { // 自顶而下，反复检查栈顶节点
+        if (HasLChild(*x)) { // 尽可能向左。在次之前
+            if (HasRChild(*x)) { // 若有右孩子，则优先入栈（相对于左兄弟，先进后出）
+                S.push(x->rc);
+            }
+            S.push(x->lc); // 然后转向左孩子
+        } else {
+            S.push(x->rc); // 实不得已，才转向右孩子
+        }
+    }
+    S.pop(); // 返回之前，弹出栈顶的空节点（叶子节点的空孩子）
+}
+
+// 自底而上，对于通路上的每一个节点：访问当前节点，遍历以其右兄弟（若存在）为根的子树，向上回溯至其父节点（若存在）并转向下一片段。
+template<typename T, typename VST>
+void travPost_Iteration(BinNodePosi<T> x, VST &visit) { // 二叉树后序遍历（迭代版）
+    Stack<BinNodePosi<T>> S; // 辅助栈
+    if (x) S.push(x); // 根节点首先入栈
+    while (!S.empty()) { // x始终为当前节点
+        if (S.top() != x->parent) { // 若栈顶并非x之父，则必为其右兄弟（沿藤下行时相继进栈）
+            gotoLeftmostLeaf(S); // 此时，遍历以其右兄弟为根的子树（相当于递归深入），找到其中的最左侧叶子节点
+        }
+        x = S.pop(); // 弹出栈顶并访问之，同时更新x
+        visit(x->data);
+    }
+}
