@@ -29,13 +29,14 @@ public:
     int remove(BinNodePosi<T> x); // 子树删除
     BinTree<T> *secede(BinNodePosi<T> x); // 子树分离
     /* 二叉树遍历算法 */
-    template<typename VST> void travPre(VST &visit) { if (_root) _root->travPre(visit); } // 先序遍历
-    template<typename VST> void travIn(VST &visit) { if (_root) _root->travIn(visit); } // 中序遍历
-    template<typename VST> void travPost(VST &visit) { if (_root) _root->travPost(visit); } // 后序遍历
+    template<typename VST> void travPre(VST &visit) { if (_root) _root->travPre(visit); }     // 先序遍历
+    template<typename VST> void travIn(VST &visit) { if (_root) _root->travIn(visit); }       // 中序遍历
+    template<typename VST> void travPost(VST &visit) { if (_root) _root->travPost(visit); }   // 后序遍历
     template<typename VST> void travLevel(VST &visit) { if (_root) _root->travLevel(visit); } // 层次遍历
     // 迭代式遍历算法
-    template<typename VST> void travPre_I(VST &visit) { if (_root) _root->travPre_I(visit); } // 先序遍历
-    template<typename VST> void travIn_I(VST &visit) { if (_root) _root->travIn_I(visit); } // 先序遍历
+    template<typename VST> void travPre_I(VST &visit) { if (_root) _root->travPre_I(visit); }   // 先序遍历
+    template<typename VST> void travIn_I(VST &visit) { if (_root) _root->travIn_I(visit); }     // 中序遍历
+    template<typename VST> void travPost_I(VST &visit) { if (_root) _root->travPost_I(visit); } // 后序遍历
 }; // BinTree
 
 /* 二叉树节点的高度更新：一旦有节点加入或离开二叉树，则更新其所有祖先的高度。 */
