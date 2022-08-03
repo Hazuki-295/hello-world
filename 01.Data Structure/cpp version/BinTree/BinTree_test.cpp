@@ -77,9 +77,11 @@ template<typename T> void testBinTree() {
     cout << "[4] 层次遍历序列：" << level.elems << '\n' << endl;
 
     printf("迭代式遍历算法：\n");
-    StoreInVector<T> pre_I;
+    StoreInVector<T> pre_I, in_I;
     myBinTree.travPre_I(pre_I);
-    cout << "[1] 先序遍历序列：" << pre_I.elems << '\n' << endl;
+    cout << "[1] 先序遍历序列：" << pre_I.elems << '\n';
+    myBinTree.travIn_I(in_I);
+    cout << "[2] 中序遍历序列：" << in_I.elems << '\n';
 }
 
 int main() {
