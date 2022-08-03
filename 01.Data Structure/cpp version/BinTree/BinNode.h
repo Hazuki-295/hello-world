@@ -33,6 +33,7 @@ template<typename T> struct BinNode { // 二叉树节点模板类
     /* 迭代式遍历 */
     template<typename VST> void travLevel(VST &visit); // 子树层次遍历
     template<typename VST> void travPre_I(VST &visit) { travPre_Iteration(this, visit); } // 子树先序遍历
+    template<typename VST> void travIn_I(VST &visit) { travIn_Iteration(this, visit); }   // 子树中序遍历
 };
 
 /* 子树规模：后代总数，亦即以其为根的子树的规模。 */
@@ -107,5 +108,26 @@ void travPre_Iteration(BinNodePosi<T> x, VST &visit) { // 二叉树先序遍历�
         visitAlongVine(x, visit, S); // 访问子树x的左侧藤，沿途各节点的右子树（根）入栈缓冲
         if (S.empty()) break; // 栈空则遍历结束，退出
         x = S.pop(); // 弹出下一右子树（根）
+    }
+}
+
+/* 藤缠树：从当前节点出发，沿左侧藤不断深入，将沿途各节点入栈，逆序保存，直至没有左孩子的末端节点。 */
+template<typename T>
+static void goAlongVine(BinNodePosi<T> x, Stack<BinNodePosi<T>> &S) {
+    while (x) {
+        S.push(x); // 逐层深入，沿藤蔓各节点依次入栈（将来逆序出栈，宏观上的拼接次序）
+        x = x->lc;
+    }
+}
+
+template<typename T, typename VST>
+void travIn_Iteration(BinNodePosi<T> x, VST &visit) { // 二叉树中序遍历算法（迭代版）
+    Stack<BinNodePosi<T>> S; // 辅助栈
+    while (true) {
+        goAlongVine(x, S); // 从当前节点出发，左侧藤上节点逐批入栈
+        if (S.empty()) break; // 直至所有节点处理完毕
+        x = S.pop(); // 栈顶节点x的左子树或为空，或已遍历（等效与空），故可以
+        visit(x->data); // 立即访问之
+        x = x->rc; // 再转向其右子树（可能为空）
     }
 }
