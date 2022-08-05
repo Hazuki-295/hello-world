@@ -1,6 +1,3 @@
-*.iml
-*.user
-
 # python
 03.Computer Network/Flask/venv
 03.Computer Network/Flask/__pycache__/hello.cpython-38.pyc
@@ -8,6 +5,7 @@
 # JetBrains
 .idea
 out
+hello-world.iml
 CMakeLists.txt
 cmake-build-debug
 
