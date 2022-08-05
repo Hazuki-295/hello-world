@@ -12,12 +12,12 @@ void print_rec(struct rec *r) {
 }
 
 int main() {
-    struct rec obj = {0, 1, {2, 3}, &obj.i};
+    struct rec obj = {0, 1, {2, 3}, &obj.a[1]};
     struct rec *r = &obj;
     int *p;
     print_rec(r);
 
-    //r->j = r->i;    // example1
+    r->j = r->i;    // example1
     p = &(r->a[1]); // example2
     r->p = &(r->a[r->i + r->j]); // example3
 
@@ -26,4 +26,3 @@ int main() {
 
     return 0;
 }
-
