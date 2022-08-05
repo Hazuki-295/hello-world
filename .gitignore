@@ -1,16 +1,21 @@
-﻿################################################################################
-# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
-################################################################################
-
-/.vs
-/.vscode
-/.idea
-/*.iml
-/out
-/CMakeLists.txt
-/cmake-build-debug
-/01.Data Structure/dsacpp-src/src/.vs
-/01.Data Structure/dsacpp-src/_executable
-/03.Computer Network/Flask/venv
-/03.Computer Network/Flask/__pycache__/hello.cpython-38.pyc
+﻿*.iml
+01.Data Structure/dsacpp-src/src/.vs
+01.Data Structure/dsacpp-src/_executable
+03.Computer Network/Flask/venv
+03.Computer Network/Flask/__pycache__/hello.cpython-38.pyc
 *.user
+
+# JetBrains
+.idea
+out
+CMakeLists.txt
+cmake-build-debug
+
+# Visual Studio
+.vscode
+.vs
+x64
+Debug
+hello-world.sln
+hello-world.vcxproj
+hello-world.vcxproj.filters
