@@ -16,5 +16,6 @@ x64
 Debug
 hello-world.sln
 hello-world.vcxproj
+hello-world.vcxproj.user
 hello-world.vcxproj.filters
 01.Data Structure/dsacpp-src/_executable
