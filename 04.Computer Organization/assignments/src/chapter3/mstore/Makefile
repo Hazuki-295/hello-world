@@ -21,8 +21,8 @@ mstore: mstore.c main.c
 
 highlight: mstore
 	mv mstore.s mstore.asm
-	mv mstore.64d mstore_disasm.asm
-	mv prog.64d prog.asm
+	mv mstore.64d mstore_d.asm
+	mv prog.64d prog_d.asm
 
 clean:
 	rm -f prog *.s *.o *.64d *.asm
