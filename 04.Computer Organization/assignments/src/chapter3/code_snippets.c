@@ -26,3 +26,20 @@ long arith(long x, long y, long z) {
     long t4 = t2 - t3;
     return t4;
 }
+
+/* csapp 3rd edition - P234 Special Arithmetic Operations */
+#include <inttypes.h>
+
+typedef unsigned __int128 uint128_t;
+
+void store_uprod(uint128_t *dest, uint64_t x, uint64_t y) {
+    *dest = x * (uint128_t) y;
+}
+
+/* csapp 3rd edition - P235 Special Arithmetic Operations */
+void remdiv(long x, long y, long *qp, long *rp) {
+    long q = x / y;
+    long r = x % y;
+    *qp = q;
+    *rp = r;
+}
