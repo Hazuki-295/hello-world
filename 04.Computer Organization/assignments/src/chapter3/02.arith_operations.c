@@ -1,10 +1,3 @@
-/* csapp 3rd edition - P223 Data Movement Example */
-long exchange(long *xp, long y) {
-    long x = *xp;
-    *xp = y;
-    return x;
-}
-
 /* csapp 3rd edition - P229 Load Effective Address, the leaq instruction */
 long scale(long x, long y, long z) {
     long t = x + 4 * y + 12 * z;
