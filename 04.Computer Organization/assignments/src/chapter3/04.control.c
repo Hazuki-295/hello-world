@@ -1,11 +1,18 @@
-/* csapp 3rd edition - P243 Jump Instruction Encodings, branch.c */
-long loop(long x) {
-    while (x > 0) {
-        x = x >> 1;
+/* csapp 3rd edition - P248 Practice Problem 3.16 */
+void cond(long a, long *p) {
+    if (p && a < *p) {
+        *p = a;
     }
-    return x;
 }
 
-int main() {
-    return loop(-2);
+void goto_cond(long a, long *p) { // goto version of cond
+    if (p == 0) {
+        goto done;
+    }
+    if (a >= *p) {
+        goto done;
+    }
+    *p = a;
+    done:
+    return;
 }
