@@ -19,4 +19,4 @@ highlight: branch
 	mv branch_linked.64d branch_linked.asm
 
 clean:
-	rm -f prog *.s *.o *.64d *.asm
+	rm -f branch *.o *.64d *.asm
