@@ -17,17 +17,13 @@ long absdiff_se(long x, long y) {
 long gotodiff_se(long x, long y) {
     long result;
     if (x >= y) goto x_ge_y;
-    {
-        lt_cnt++;
-        result = y - x;
-        return result;
-    }
-    x_ge_y:
-    {
-        ge_cnt++;
-        result = x - y;
-        return result;
-    }
+    lt_cnt++;
+    result = y - x;
+    return result;
+x_ge_y:
+    ge_cnt++;
+    result = x - y;
+    return result;
 }
 
 /* csapp 3rd edition - P248 Practice Problem 3.16 */
@@ -43,7 +39,7 @@ void goto_cond(long a, long *p) {
     if (a >= *p)
         goto done;
     *p = a;
-    done:
+done:
     return;
 }
 
