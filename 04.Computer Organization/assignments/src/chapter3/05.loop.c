@@ -1,4 +1,4 @@
-/* csapp 3rd edition - P257 do-while version of factorial program  */
+/* csapp 3rd edition - P257 do-while version of factorial program */
 long fact_do(long n) {
     long result = 1;
     do {
@@ -10,15 +10,15 @@ long fact_do(long n) {
 
 long fact_do_goto(long n) {
     long result = 1;
-    loop:
+loop:
     result *= n;
     n = n - 1;
     if (n > 1) goto loop;
     return result;
 }
 
-/* csapp 3rd edition - P260 while version of factorial program  */
-long fact_while(long n) {
+/* csapp 3rd edition - P260 while version of factorial program */
+long fact_while(long n) { // actually neither "jump middle" nor "guarded do" version with gcc -Og
     long result = 1;
     while (n > 1) {
         result *= n;
@@ -27,6 +27,29 @@ long fact_while(long n) {
     return result;
 }
 
+long fact_while_jm_goto(long n) { // P260 jump middle version
+    long result = 1;
+    goto test;
+loop:
+    result *= n;
+    n = n - 1;
+test:
+    if (n > 1) goto loop;
+    return result;
+}
+
+long fact_while_gd_goto(long n) { // P263 guarded do version
+    long result = 1;
+    if (n <= 1) goto done;
+loop:
+    result *= n;
+    n = n - 1;
+    if (n != 1) goto loop;
+done:
+    return result;
+}
+
+/* csapp 3rd edition - P265 for version of factorial program */
 long fact_for(long n) {
     long i;
     long result = 1;
@@ -45,39 +68,14 @@ long fact_for_while(long n) {
     return result;
 }
 
-long fact_while_jm_goto(long n) {
-    long result = 1;
-    goto test;
-    loop:
-    result *= n;
-    n = n - 1;
-    test:
-    if (n > 1)
-        goto loop;
-    return result;
-}
-
-long fact_while_gd_goto(long n) {
-    long result = 1;
-    if (n <= 1)
-        goto done;
-    loop:
-    result *= n;
-    n = n - 1;
-    if (n != 1)
-        goto loop;
-    done:
-    return result;
-}
-
 long fact_for_jm_goto(long n) {
     long i = 2;
     long result = 1;
     goto test;
-    loop:
+loop:
     result *= i;
     i++;
-    test:
+test:
     if (i <= n)
         goto loop;
     return result;
@@ -88,12 +86,12 @@ long fact_for_gd_goto(long n) {
     long result = 1;
     if (n <= 1)
         goto done;
-    loop:
+loop:
     result *= i;
     i++;
     if (i <= n)
         goto loop;
-    done:
+done:
     return result;
 }
 
