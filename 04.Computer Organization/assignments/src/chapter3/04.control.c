@@ -64,3 +64,12 @@ long cmovdiff(long x, long y) {
     if (ntest) rval = eval; // This statement requires single instruction
     return rval;
 }
+
+/* csapp 3rd edition - P254 Implementing Conditional Operations With Conditional Moves */
+long foo(long x, long y) {
+    return x > y ? ++x : ++y;
+}
+
+long cread(long *xp) {
+    return xp ? *xp : 0;
+}
