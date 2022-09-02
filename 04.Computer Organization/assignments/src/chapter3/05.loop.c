@@ -18,7 +18,7 @@ loop:
 }
 
 /* csapp 3rd edition - P260 while version of factorial program */
-long fact_while(long n) { // actually neither "jump middle" nor "guarded do" version with gcc -Og
+long fact_while(long n) { // actually neither jump-to-middle nor guarded-do translation with gcc -Og
     long result = 1;
     while (n > 1) {
         result *= n;
@@ -27,7 +27,7 @@ long fact_while(long n) { // actually neither "jump middle" nor "guarded do" ver
     return result;
 }
 
-long fact_while_jm_goto(long n) { // P260 jump middle version
+long fact_while_jm_goto(long n) { // P260 jump-to-middle translation
     long result = 1;
     goto test;
 loop:
@@ -38,7 +38,7 @@ test:
     return result;
 }
 
-long fact_while_gd_goto(long n) { // P263 guarded do version
+long fact_while_gd_goto(long n) { // P263 guarded-do translation
     long result = 1;
     if (n <= 1) goto done;
 loop:
