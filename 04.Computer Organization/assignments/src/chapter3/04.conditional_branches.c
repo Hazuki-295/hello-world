@@ -67,5 +67,5 @@ long foo(long x, long y) {
 }
 
 long cread(long *xp) {
-    return xp ? *xp : 0;
+    return xp ? *xp : 0; // statement that could not be implemented with conditional moves
 }
