@@ -18,7 +18,7 @@ loop:
 }
 
 /* csapp 3rd edition - P260 while loop version of factorial program */
-long fact_while(long n) { // actually neither jump-to-middle nor guarded-do translation with gcc -Og
+long fact_while(long n) { // the arrangement of conditional and unconditional jump has changed (with gcc option -Og)
     long result = 1;
     while (n > 1) {
         result *= n;
