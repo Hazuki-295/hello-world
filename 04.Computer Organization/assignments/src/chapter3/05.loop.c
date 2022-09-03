@@ -27,7 +27,7 @@ long fact_while(long n) { // the arrangement of conditional and unconditional ju
     return result;
 }
 
-long fact_while_jm_goto(long n) { // P260 jump-to-middle translation
+long fact_while_jm_goto(long n) { // P260 jump-to-middle translation, with gcc option -Og
     long result = 1;
     goto test;
 loop:
@@ -38,7 +38,7 @@ test:
     return result;
 }
 
-long fact_while_gd_goto(long n) { // P263 guarded-do translation, using gcc option -O1
+long fact_while_gd_goto(long n) { // P263 guarded-do translation, with gcc option -O1
     long result = 1;
     if (n <= 1) goto done;
 loop:
