@@ -26,9 +26,26 @@ void proc(long a1, long *a1p,
     *a4p += a4;
 }
 
-long call_proc() {
+long call_proc() { // P286
     long  x1 = 1; int  x2 = 2;
     short x3 = 3; char x4 = 4;
     proc(x1, &x1, x2, &x2, x3, &x3, x4, &x4);
     return (x1 + x2) * (x3 - x4);
+}
+
+/* csapp 3rd edition - P285 Example of procedure definition and call */
+long swap_add(long *xp, long *yp) {
+    long x = *xp;
+    long y = *yp;
+    *xp = y;
+    *yp = x;
+    return x + y;
+}
+
+long caller() {
+    long arg1 = 534;
+    long arg2 = 1057;
+    long sum = swap_add(&arg1, &arg2);
+    long diff = arg1 - arg2;
+    return sum * diff;
 }
