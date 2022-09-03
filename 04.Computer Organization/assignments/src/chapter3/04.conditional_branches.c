@@ -70,7 +70,7 @@ long cread(long *xp) {
     return xp ? *xp : 0; // statement that could not be implemented with conditional moves
 }
 
-/* csapp 3rd edition - P270 Example switch statement */
+/* csapp 3rd edition - P270 Example switch statement and its translation into extended C */
 void switch_eg(long x, long n, long *dest) {
     long val = x;
     switch (n) {
