@@ -49,3 +49,12 @@ long caller() {
     long diff = arg1 - arg2;
     return sum * diff;
 }
+
+/* csapp 3rd edition - P288 Code demonstrating use of callee-saved registers */
+long Q(long a);
+
+long P(long x, long y) {
+    long u = Q(y);
+    long v = Q(x);
+    return u + v;
+}
