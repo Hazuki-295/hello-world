@@ -26,7 +26,7 @@ void proc(long a1, long *a1p,
     *a4p += a4;
 }
 
-long call_proc() { // P286
+long call_proc() { // P286, In order to disable stack-guard check, using gcc option -fno-stack-protector
     long  x1 = 1; int  x2 = 2;
     short x3 = 3; char x4 = 4;
     proc(x1, &x1, x2, &x2, x3, &x3, x4, &x4);
@@ -57,4 +57,14 @@ long P(long x, long y) {
     long u = Q(y);
     long v = Q(x);
     return u + v;
+}
+
+/* csapp 3rd edition - P290 Code for recursive factorial program */
+long rfact(long n) {
+    long result;
+    if (n <= 1)
+        result = 1;
+    else
+        result = n * rfact(n - 1);
+    return result;
 }
