@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 /* csapp 3rd edition - P301 Structures */
 struct rec {
     int i;     /* offset 0  */
@@ -59,4 +61,29 @@ double uu2double(unsigned word0, unsigned word1) {
     temp.u[0] = word0;
     temp.u[1] = word1;
     return temp.d;
+}
+
+/* csapp 3rd edition - P310 Data Alignment */
+struct S1 {
+    int i;  /* offset 0 */
+    char c; /* offset 4 */
+    int j;  /* offset 8 */
+};
+
+int test_S1(struct S1 *p) {
+    int sum = p->i + p->c + p->j;
+    size_t size = sizeof(struct S1);
+    return sum + size;
+}
+
+struct S2 {
+    int i;  /* offset 0 */
+    int j;  /* offset 4 */
+    char c; /* offset 8 */
+};
+
+int test_S2(struct S2 *p) {
+    int sum = p->i + p->j + p->c;
+    size_t size = sizeof(struct S2);
+    return sum + size;
 }
