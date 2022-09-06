@@ -6,6 +6,9 @@ PROGRAMS = mstore
 all: $(PROGRAMS)
 
 mstore: mstore.c main.c
+# run the preprocessor, expand the source code main.c - main.i
+	$(CC) $(CFLAGS) -E main.c > main.i
+
 # run the compiler, generate assembly code - mstore.s
 	$(CC) $(CFLAGS) -S mstore.c
 
@@ -25,4 +28,4 @@ highlight: mstore
 	mv prog.64d prog_d.asm
 
 clean:
-	rm -f prog *.s *.o *.64d *.asm
+	rm -f prog *.i *.s *.o *.64d *.asm
