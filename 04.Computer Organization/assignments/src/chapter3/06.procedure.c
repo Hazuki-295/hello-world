@@ -42,7 +42,7 @@ long swap_add(long *xp, long *yp) {
     return x + y;
 }
 
-long caller() {
+long caller() { // In order to disable stack-guard check, using gcc option -fno-stack-protector
     long arg1 = 534;
     long arg2 = 1057;
     long sum = swap_add(&arg1, &arg2);
