@@ -43,6 +43,10 @@ struct node_t {
 }; // 24 bytes
 
 /* csapp 3rd edition - P307 Unions, use unions to assess the bit patterns of different types */
+unsigned long double2ulong(double d) {
+    return (unsigned long) d;
+};
+
 unsigned long double2bits(double d) {
     union {
         double d;
@@ -52,7 +56,7 @@ unsigned long double2bits(double d) {
     return temp.u;
 }
 
-double uu2double(unsigned word0, unsigned word1) {
+double uu2double(unsigned word0, unsigned word1) { // P308
     union {
         double d;
         unsigned u[2];
