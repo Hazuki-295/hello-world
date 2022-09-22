@@ -14,9 +14,9 @@ PROGRAMS = sum
 all: $(PROGRAMS)
 
 sum: main.c sum.c
-# run the C preprocessor (cpp), expand the source code - main.i, sum.i
 	mkdir -p tmp
 
+# run the C preprocessor (cpp), expand the source code - main.i, sum.i
 	cpp main.c ./tmp/main.i
 	cpp sum.c ./tmp/sum.i
 
