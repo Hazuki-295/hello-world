@@ -3,8 +3,6 @@ CFLAGS = -Og -m64 -Wall
 
 .PHONY: foobar1 foobar2 foobar3 foobar4 foobar5 foobar6
 
-###################################################
-# These following are supposed to fail at link time
 linkerror: linkerror.c
 # Expected to fail
 	$(CC) $(CFLAGS) -o linkerror linkerror.c
@@ -18,7 +16,6 @@ foobar2: foobar2/foo2.c foobar2/bar2.c
 # Expected to fail
 	cd foobar2 && \
 	$(CC) $(CFLAGS) -o foobar2 foo2.c bar2.c
-###################################################
 
 foobar3: foobar3/foo3.c foobar3/bar3.c
 	cd foobar3 && \
