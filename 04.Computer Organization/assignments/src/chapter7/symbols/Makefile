@@ -9,7 +9,7 @@ main: main.c
 # backup the Makefile
 	mv Makefile Makefile.bak
 # a confusing operation
-	cp ../sum/relocatable/Makefile ./ && make
+	cp ../relocatable/Makefile ./ && make
 # restore the Makefile
 	rm Makefile && mv Makefile.bak Makefile
 
