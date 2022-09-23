@@ -2,12 +2,12 @@
 
 void f();
 
-int y = 15212;
+int y = 15212; /* defined first, but higher address */
 int x = 15213;
 
 typedef struct {
     int x;
-    int y;
+    int y; /* higher address */
 } internal;
 
 internal double2ints(double d) {
