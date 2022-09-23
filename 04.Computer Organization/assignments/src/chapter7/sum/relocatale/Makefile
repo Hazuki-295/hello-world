@@ -5,9 +5,9 @@ PROGRAMS = relocatable
 
 all: $(PROGRAMS)
 
-relocatable: main.c
+relocatable: ../main.c
 # run the compiler and assembler, generate relocatable object file - main.o
-	gcc -c main.c
+	gcc -c ../main.c
 # print the size of main.o (in bytes)
 	wc -c main.o
 # display all non-empty sections

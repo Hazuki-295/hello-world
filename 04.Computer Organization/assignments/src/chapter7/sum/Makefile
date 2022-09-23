@@ -9,11 +9,11 @@ SYSTEM-OBJECT-FILES = /usr/lib/x86_64-linux-gnu/crt1.o \
 /usr/lib/gcc/x86_64-linux-gnu/9/crtend.o \
 /usr/lib/x86_64-linux-gnu/crtn.o
 
-PROGRAMS = sum
+PROGRAMS = prog
 
 all: $(PROGRAMS)
 
-sum: main.c sum.c
+prog: main.c sum.c
 	mkdir -p tmp
 
 # run the C preprocessor (cpp), expand the source code - main.i, sum.i
