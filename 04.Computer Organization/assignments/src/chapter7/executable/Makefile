@@ -6,7 +6,7 @@ PROGRAMS = executable
 all: $(PROGRAMS)
 
 executable: main.c sum.c
-# run the compile driver, generate executable object file - prog
+# run the compiler driver, generate executable object file - prog
 	$(CC) $(CFLAGS) -o prog main.c sum.c
 # display all non-empty sections
 	objdump -s -d -x --wide prog > 00.Disassemble.txt
