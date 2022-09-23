@@ -1,11 +1,11 @@
 CC = gcc
 CFLAGS = -Og -m64 -Wall
 
-PROGRAMS = main
+PROGRAMS = relocatable
 
 all: $(PROGRAMS)
 
-main: main.c
+relocatable: main.c
 # backup the Makefile
 	mv Makefile Makefile.bak
 # a confusing operation
@@ -13,5 +13,15 @@ main: main.c
 # restore the Makefile
 	rm Makefile && mv Makefile.bak Makefile
 
+executable: main.c sum.c
+# backup the Makefile
+	mv Makefile Makefile.bak
+# a confusing operation
+	cp ../executable/Makefile ./ && make
+# restore the Makefile
+	rm Makefile && mv Makefile.bak Makefile
+# run prog
+	./prog
+
 clean:
-	rm -rf *.o *.txt
+	rm -rf prog *.o *.txt
