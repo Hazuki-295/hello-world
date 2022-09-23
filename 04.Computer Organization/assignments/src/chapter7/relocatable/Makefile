@@ -20,5 +20,6 @@ relocatable: main.c
 	readelf -S main.o --wide > 02.Section_headers.txt
 # 03.display the symbol table (.symtab section)
 	readelf -s main.o > 03.Symbol_table.txt
+
 clean:
 	rm -rf *.o *.txt
