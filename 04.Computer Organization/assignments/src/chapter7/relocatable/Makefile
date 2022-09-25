@@ -11,7 +11,7 @@ relocatable: main.c
 # print the size of main.o (in bytes)
 	wc -c main.o
 # display all non-empty sections
-	objdump -s -d -r --wide main.o > 00.Disassemble.txt
+	objdump --full-contents -d --reloc --wide main.o > 00.Disassemble.txt
 # display information about the ELF file main.o
 	readelf -a main.o --wide > 00.Readelf_all.txt
 # 01.display the ELF header

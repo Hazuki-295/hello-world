@@ -9,7 +9,7 @@ executable: main.c sum.c
 # run the compiler driver, generate executable object file - prog
 	$(CC) $(CFLAGS) -o prog main.c sum.c
 # display all non-empty sections
-	objdump -s -d -x --wide prog > 00.Disassemble.txt
+	objdump --full-contents -d -x --wide prog > 00.Disassemble.txt
 # display information about the ELF file prog
 	readelf -a prog --wide > 00.Readelf_all.txt
 # 01.display the ELF header
