@@ -15,21 +15,17 @@ all: $(PROGRAMS)
 
 prog: main.c sum.c
 	mkdir -p tmp
-
 # run the C preprocessor (cpp), expand the source code - main.i, sum.i
-	cpp main.c ./tmp/main.i
-	cpp sum.c ./tmp/sum.i
-
+	cpp main.c tmp/main.i
+	cpp sum.c tmp/sum.i
 # run the C compiler (cc1), generate assembly-language file - main.s, sum.s
-	cc1 ./tmp/main.i -Og -o ./tmp/main.s
-	cc1 ./tmp/sum.i -Og -o ./tmp/sum.s
-
+	cc1 tmp/main.i -Og -o tmp/main.s
+	cc1 tmp/sum.i -Og -o tmp/sum.s
 # run the assembler (as), generate binary relocatable object file - main.o, sum.o
-	as ./tmp/main.s -o ./tmp/main.o
-	as ./tmp/sum.s -o ./tmp/sum.o
-
+	as tmp/main.s -o tmp/main.o
+	as tmp/sum.s -o tmp/sum.o
 # run the linker program (ld), generate binary executable object file - prog
-	ld -static -o prog ./tmp/main.o ./tmp/sum.o $(SYSTEM-OBJECT-FILES)
+	ld -static -o prog tmp/main.o tmp/sum.o $(SYSTEM-OBJECT-FILES)
 
 clean:
 	rm -rf prog tmp
