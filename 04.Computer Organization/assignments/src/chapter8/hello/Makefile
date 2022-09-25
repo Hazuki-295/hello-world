@@ -13,7 +13,9 @@ hello: hello.c
 
 hello-asm64: hello-asm64.s
 # hello-asm64.s is a handwritten asm program for syscalls using the x86-64 convention
-	$(CC) -m64 -static -o hello-asm64 hello-asm64.s
+	$(CC) -m64 -no-pie -o hello-asm64 hello-asm64.s
+# disassemble the hello-asm64 executeable
+	objdump -d hello-asm64 > hello-asm64.64d
 # run hello-asm64
 	./hello-asm64
 
