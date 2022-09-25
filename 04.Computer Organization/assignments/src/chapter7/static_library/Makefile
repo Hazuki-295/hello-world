@@ -20,4 +20,4 @@ prog: addvec.c multvec.c main.c
 	./prog
 
 clean:
-	rm -r prog *.o *.a
+	rm -r prog *.o *.a *.txt
