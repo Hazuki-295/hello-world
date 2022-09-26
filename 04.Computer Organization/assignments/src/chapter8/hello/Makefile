@@ -3,6 +3,8 @@ CFLAGS = -Og -m64 -Wall
 
 PROGRAMS = hello
 
+all: $(PROGRAMS)
+
 hello: hello.c
 # hello program written using the write system-level function instead of printf
 	$(CC) $(CFLAGS) -o hello hello.c
