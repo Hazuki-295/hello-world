@@ -2,7 +2,11 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[], char *envp[]) {
-    printf("Command-line arguments:\n");
+    char *pwd = getenv("PWD");
+    printf("Print working directory:\n");
+    printf("    %s\n\n", pwd);
+
+    printf("Command-line arguments (argc = %d):\n", argc);
     for (int i = 0; argv[i] != NULL; i++) {
         printf("    argv[%2d]: %s\n", i, argv[i]);
     }
