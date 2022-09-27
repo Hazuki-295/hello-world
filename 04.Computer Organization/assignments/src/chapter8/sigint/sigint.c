@@ -5,14 +5,20 @@
 #include <string.h>
 #include <unistd.h>
 
-void unix_error(char *msg) {  /* Unix-style error */
+void unix_error(char *msg) { /* Unix-style error */
     fprintf(stderr, "%s: %s\n", msg, strerror(errno));
     exit(0);
 }
 
 void sigint_handler(int sig) { /* SIGINT handler */
-    printf("Caught SIGINT!\n");
-    exit(0);
+    printf("\rCaught SIGINT!\n");
+    return;
+}
+
+unsigned int snooze(unsigned int secs) {
+    unsigned int rc = sleep(secs);
+    printf("Slept for %d of %d secs.\n", secs - rc, secs);
+    return rc;
 }
 
 int main() {
@@ -21,7 +27,9 @@ int main() {
         unix_error("signal error");
     }
 
-    pause(); /* Wait for the receipt of a signal */
+    unsigned int rc = snooze(10); /* Wait for the receipt of a signal */
+
+    if (!rc) printf("Where is mine SIGINT?\n"); /* No signal received */
 
     return 0;
 }
