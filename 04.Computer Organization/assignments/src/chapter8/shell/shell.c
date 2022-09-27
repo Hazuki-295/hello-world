@@ -67,6 +67,13 @@ void eval(const char *cmdline) {
 
 /* If first arg is a builtin command, run it and return true */
 int builtin_command(char **argv) {
+    if (!strcmp(argv[0], "pwd")) {  /* pwd command */
+        char *pwd = getenv("PWD");
+        if (pwd != NULL) {
+            printf("%s\n", pwd);
+        }
+        return 1;
+    }
     if (!strcmp(argv[0], "quit")) /* quit command */
         exit(0);
     if (!strcmp(argv[0], "&"))    /* Ignore singleton & */
