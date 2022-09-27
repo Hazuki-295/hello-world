@@ -3,10 +3,12 @@
 
 int main(int argc, char *argv[], char *envp[]) {
     char *pwd = getenv("PWD");
-    printf("Print working directory:\n");
-    printf("    %s\n\n", pwd);
+    if (pwd != NULL) {
+        printf("Print working directory:\n");
+        printf("    %s\n\n", pwd);
+    }
 
-    printf("Command-line arguments (argc = %d):\n", argc);
+    printf("Command-line arguments: (argc = %d)\n", argc);
     for (int i = 0; argv[i] != NULL; i++) {
         printf("    argv[%2d]: %s\n", i, argv[i]);
     }
