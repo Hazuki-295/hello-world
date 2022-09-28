@@ -8,20 +8,27 @@
 #define MAXLINE 8192 /* Max text line length */
 #define MAXARGS 128  /* Max argument number */
 
-extern char **environ;     /* Defined by libc */
-volatile sig_atomic_t pid; /* global variable pid */
+extern char **environ;           /* Defined by libc */
+volatile sig_atomic_t pid;       /* global variable pid */
+volatile sig_atomic_t pid_fore;
+volatile sig_atomic_t pid_back;
 
 /* Function prototypes */
 void eval(const char *cmdline); // Evaluate a command line
 int parseline(char *buffer, char *argv[]); // Parse the command line
-int builtin_command(char *argv[]);
 
 void unix_error(char *msg);
 
 void sigchld_handler(int s) { /* SIGCHLD handler */
-    int olderrno = errno;
-    pid = waitpid(-1, NULL, 0);
-    errno = olderrno;
+    int status, r_pid;
+    r_pid = waitpid(-1, &status, 0);
+    if (WIFEXITED(status)) {
+        if (r_pid == pid_fore) {
+            printf("%d foreground done\n", pid); /* Would not occur due to the previous waitpid */
+        } else if (r_pid == pid_back) {
+            printf("%d background done\n", pid_back);
+        }
+    }
 }
 
 void sigint_handler(int sig) { /* SIGINT handler */
@@ -30,19 +37,14 @@ void sigint_handler(int sig) { /* SIGINT handler */
 }
 
 int main() {
-    sigset_t mask, prev;
+    char cmdline[MAXLINE]; /* Command line */
 
     signal(SIGCHLD, sigchld_handler);
     signal(SIGINT, sigint_handler);
-    sigemptyset(&mask);
-    sigaddset(&mask, SIGCHLD);
-
-    char cmdline[MAXLINE]; /* Command line */
 
     while (1) {
         /* Print a command-line prompt */
         printf("> ");
-        fflush(stdout);
 
         /* Read: read a command line from the user */
         fgets(cmdline, MAXLINE, stdin);
@@ -79,9 +81,7 @@ int parseline(char *buffer, char **argv) {
     argv[argc] = NULL;  /* Terminate the argv array */
 
     /* Ignore blank line, because of the following reference *argv[argc - 1] */
-    if (argc == 0) {
-        return 1;
-    }
+    if (argc == 0) return 0;
 
     /* Should the job run in the background? */
     if ((background = (*argv[argc - 1] == '&'))) {
@@ -91,6 +91,11 @@ int parseline(char *buffer, char **argv) {
 }
 
 void execute(const char *filename, char *argv[], int background) {
+    sigset_t mask, prev;
+    sigemptyset(&mask);
+    sigaddset(&mask, SIGCHLD);
+
+    sigprocmask(SIG_BLOCK, &mask, &prev);  /* Block SIGCHLD */
     if ((pid = fork()) == 0) {  /* Child runs user job */
         if (execve(filename, argv, environ) < 0) {
             printf("%s: Command not found.\n", argv[0]);
@@ -98,13 +103,16 @@ void execute(const char *filename, char *argv[], int background) {
         }
     }
 
-    /* Parent waits for foreground job to terminate */
+    /* Parent */
+    sigprocmask(SIG_SETMASK, &prev, NULL);  /* Unblock SIGCHLD */
     if (!background) {
+        pid_fore = pid;
         int status;
-        if (waitpid(pid, &status, 0) < 0)
+        if (waitpid(pid, &status, 0) < 0)  /* waits for foreground job to terminate */
             unix_error("error: waitpid error");
     } else {
-        printf("%d %s", pid, filename);
+        pid_back = pid;
+        printf("%d %s\n", pid_back, filename);
     }
 }
 
@@ -113,7 +121,6 @@ void eval(const char *cmdline) {
     char *argv[MAXARGS];  /* Argument list execve() */
     char buffer[MAXLINE]; /* Holds modified command line */
     int background;       /* Should the job run in background or foreground? */
-    pid_t pid;            /* Process id */
 
     strcpy(buffer, cmdline);
     background = parseline(buffer, argv);
