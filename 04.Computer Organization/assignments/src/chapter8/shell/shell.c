@@ -15,6 +15,7 @@ volatile sig_atomic_t pid_back;
 /* Function prototypes */
 void eval(const char *cmdline); // Evaluate a command line
 int parseline(char *buffer, char *argv[]); // Parse the command line
+void execute(const char *filename, char *argv[], int background); // Run programs
 
 void sigchld_handler(int sig) { /* SIGCHLD handler, reap the children */
     int status;
@@ -55,8 +56,33 @@ int main() {
     }
 }
 
+/* eval - Evaluate a command line */
+void eval(const char *cmdline) {
+    char *argv[MAXARGS];  /* Argument list execve() */
+    char buffer[MAXLINE]; /* Holds modified command line */
+    int background;       /* Should the job run in background or foreground? */
+
+    strcpy(buffer, cmdline);
+    background = parseline(buffer, argv);
+    if (argv[0] == NULL || !strcmp(argv[0], "&")) {  /* Ignore empty lines and singleton & */
+        return;
+    }
+
+    if (!strcmp(argv[0], "quit")) {  /* quit command */
+        printf("Good bye\n");
+        exit(0);
+    }
+
+    char builtin[MAXLINE] = "/bin/";
+    if (access(strcat(builtin, argv[0]), F_OK) == 0) {  /* If first arg is a builtin command */
+        execute(builtin, argv, background);
+    } else {
+        execute(argv[0], argv, background);
+    }
+}
+
 /* parseline - Parse the command line and build the argv array */
-int parseline(char *buffer, char **argv) {
+int parseline(char *buffer, char *argv[]) {
     char *start = buffer; /* Points to start index of the token */
     char *delim;          /* Points to first space delimiter */
     int argc = 0;         /* Number of args */
@@ -88,6 +114,7 @@ int parseline(char *buffer, char **argv) {
     return background;
 }
 
+/* execute - Run programs on behalf of the user */
 void execute(const char *filename, char *argv[], int background) {
     sigset_t mask, prev;
     sigemptyset(&mask);
@@ -114,29 +141,4 @@ void execute(const char *filename, char *argv[], int background) {
         printf("[1] %d %s\n", pid_back, argv[0]);
     }
     sigprocmask(SIG_SETMASK, &prev, NULL);  /* Unblock SIGCHLD */
-}
-
-/* eval - Evaluate a command line */
-void eval(const char *cmdline) {
-    char *argv[MAXARGS];  /* Argument list execve() */
-    char buffer[MAXLINE]; /* Holds modified command line */
-    int background;       /* Should the job run in background or foreground? */
-
-    strcpy(buffer, cmdline);
-    background = parseline(buffer, argv);
-    if (argv[0] == NULL || !strcmp(argv[0], "&")) {  /* Ignore empty lines and singleton & */
-        return;
-    }
-
-    if (!strcmp(argv[0], "quit")) {  /* quit command */
-        printf("Good bye\n");
-        exit(0);
-    }
-
-    char builtin[MAXLINE] = "/bin/";
-    if (access(strcat(builtin, argv[0]), F_OK) == 0) {  /* If first arg is a builtin command */
-        execute(builtin, argv, background);
-    } else {
-        execute(argv[0], argv, background);
-    }
 }
