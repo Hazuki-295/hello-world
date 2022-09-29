@@ -103,17 +103,17 @@ void execute(const char *filename, char *argv[], int background) {
 
     /* Parent */
     pid_t pid_backup = pid;
-    pid = 0;
-    sigprocmask(SIG_SETMASK, &prev, NULL);  /* Unblock SIGCHLD */
+    pid = 0;  /* SIGCHLD is blocked at this point, which avoid the race between parent and child */
     if (!background) {
-        pid_fore = pid_backup;
+        pid_fore = pid_backup; /* Same as pid, avoid the race */
         while (!pid) {
-            sigsuspend(&prev);  /* waits for foreground job to terminate */
+            sigsuspend(&prev);  /* Temporarily unblock the SIGCHLD */
         }
     } else {
         pid_back = pid_backup;
         printf("[1] %d %s\n", pid_back, argv[0]);
     }
+    sigprocmask(SIG_SETMASK, &prev, NULL);  /* Unblock SIGCHLD */
 }
 
 /* eval - Evaluate a command line */
