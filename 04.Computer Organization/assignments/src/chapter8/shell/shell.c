@@ -102,15 +102,16 @@ void execute(const char *filename, char *argv[], int background) {
     }
 
     /* Parent */
+    pid_t pid_backup = pid;
+    pid = 0;
     sigprocmask(SIG_SETMASK, &prev, NULL);  /* Unblock SIGCHLD */
     if (!background) {
-        pid_fore = pid;
-        pid = 0;
+        pid_fore = pid_backup;
         while (!pid) {
             sigsuspend(&prev);  /* waits for foreground job to terminate */
         }
     } else {
-        pid_back = pid;
+        pid_back = pid_backup;
         printf("[1] %d %s\n", pid_back, argv[0]);
     }
 }
