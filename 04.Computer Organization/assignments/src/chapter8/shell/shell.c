@@ -19,7 +19,7 @@ int parseline(char *buffer, char *argv[]); // Parse the command line
 
 void unix_error(char *msg);
 
-void sigchld_handler(int s) { /* SIGCHLD handler */
+void sigchld_handler(int sig) { /* SIGCHLD handler */
     int status, r_pid;
     r_pid = waitpid(-1, &status, 0);
     if (WIFEXITED(status)) {
@@ -39,7 +39,7 @@ void sigint_handler(int sig) { /* SIGINT handler */
 int main() {
     char cmdline[MAXLINE]; /* Command line */
 
-    signal(SIGCHLD, sigchld_handler);
+    signal(SIGCHLD, sigchld_handler);  /* Install signal handlers */
     signal(SIGINT, sigint_handler);
 
     while (1) {
