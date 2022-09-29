@@ -18,13 +18,13 @@ void eval(const char *cmdline); // Evaluate a command line
 int parseline(char *buffer, char *argv[]); // Parse the command line
 
 void sigchld_handler(int sig) { /* SIGCHLD handler */
-    int status, r_pid;
-    r_pid = waitpid(-1, &status, 0);
+    int status;
+    pid = waitpid(-1, &status, 0);
     if (WIFEXITED(status)) {
-        if (r_pid == pid_fore) {
-            printf("%d foreground done\n", pid); /* Would not occur due to the previous waitpid */
-        } else if (r_pid == pid_back) {
-            printf("%d background done\n", pid_back);
+        if (pid == pid_fore) {
+            printf("Message: %d Foreground job done\n", pid_fore);
+        } else if (pid == pid_back) {
+            printf("Message: %d Background job done\n", pid_back);
         }
     }
 }
@@ -105,10 +105,13 @@ void execute(const char *filename, char *argv[], int background) {
     sigprocmask(SIG_SETMASK, &prev, NULL);  /* Unblock SIGCHLD */
     if (!background) {
         pid_fore = pid;
-        waitpid(pid, NULL, 0);  /* waits for foreground job to terminate */
+        pid = 0;
+        while (!pid) {
+            sigsuspend(&prev);  /* waits for foreground job to terminate */
+        }
     } else {
         pid_back = pid;
-        printf("%d %s\n", pid_back, filename);
+        printf("[1] %d %s\n", pid_back, filename);
     }
 }
 
