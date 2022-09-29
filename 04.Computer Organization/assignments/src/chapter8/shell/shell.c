@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <errno.h>
 #include <sys/wait.h>
 
 #define MAXLINE 8192 /* Max text line length */
@@ -17,7 +16,7 @@ volatile sig_atomic_t pid_back;
 void eval(const char *cmdline); // Evaluate a command line
 int parseline(char *buffer, char *argv[]); // Parse the command line
 
-void sigchld_handler(int sig) { /* SIGCHLD handler */
+void sigchld_handler(int sig) { /* SIGCHLD handler, reap the children */
     int status;
     pid = waitpid(-1, &status, 0);
     if (WIFEXITED(status)) {
@@ -111,7 +110,7 @@ void execute(const char *filename, char *argv[], int background) {
         }
     } else {
         pid_back = pid;
-        printf("[1] %d %s\n", pid_back, filename);
+        printf("[1] %d %s\n", pid_back, argv[0]);
     }
 }
 
@@ -127,8 +126,10 @@ void eval(const char *cmdline) {
         return;
     }
 
-    if (!strcmp(argv[0], "quit")) /* quit command */
+    if (!strcmp(argv[0], "quit")) {  /* quit command */
+        printf("Good bye\n");
         exit(0);
+    }
 
     char builtin[MAXLINE] = "/bin/";
     if (access(strcat(builtin, argv[0]), F_OK) == 0) {  /* If first arg is a builtin command */
