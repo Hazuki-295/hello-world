@@ -18,12 +18,13 @@ int parseline(char *buffer, char *argv[]); // Parse the command line
 
 void sigchld_handler(int sig) { /* SIGCHLD handler, reap the children */
     int status;
-    pid = waitpid(-1, &status, 0);
-    if (WIFEXITED(status)) {
-        if (pid == pid_fore) {
-            printf("Message: %d Foreground job done\n", pid_fore);
-        } else if (pid == pid_back) {
-            printf("Message: %d Background job done\n", pid_back);
+    while ((pid = waitpid(-1, &status, 0)) > 0) {
+        if (WIFEXITED(status)) {
+            if (pid == pid_fore) {
+                printf("Message: %d Foreground job done\n", pid_fore);
+            } else if (pid == pid_back) {
+                printf("Message: %d Background job done\n", pid_back);
+            }
         }
     }
 }
