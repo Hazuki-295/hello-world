@@ -17,8 +17,6 @@ volatile sig_atomic_t pid_back;
 void eval(const char *cmdline); // Evaluate a command line
 int parseline(char *buffer, char *argv[]); // Parse the command line
 
-void unix_error(char *msg);
-
 void sigchld_handler(int sig) { /* SIGCHLD handler */
     int status, r_pid;
     r_pid = waitpid(-1, &status, 0);
@@ -33,7 +31,7 @@ void sigchld_handler(int sig) { /* SIGCHLD handler */
 
 void sigint_handler(int sig) { /* SIGINT handler */
     printf("\nHave a nice day!\n");
-    exit(0);
+    _exit(0);
 }
 
 int main() {
@@ -107,9 +105,7 @@ void execute(const char *filename, char *argv[], int background) {
     sigprocmask(SIG_SETMASK, &prev, NULL);  /* Unblock SIGCHLD */
     if (!background) {
         pid_fore = pid;
-        int status;
-        if (waitpid(pid, &status, 0) < 0)  /* waits for foreground job to terminate */
-            unix_error("error: waitpid error");
+        waitpid(pid, NULL, 0);  /* waits for foreground job to terminate */
     } else {
         pid_back = pid;
         printf("%d %s\n", pid_back, filename);
@@ -137,9 +133,4 @@ void eval(const char *cmdline) {
     } else {
         execute(argv[0], argv, background);
     }
-}
-
-void unix_error(char *msg) {  /* Unix-style error */
-    fprintf(stderr, "%s: %s\n", msg, strerror(errno));
-    exit(0);
 }
