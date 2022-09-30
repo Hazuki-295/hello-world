@@ -8,32 +8,20 @@
 
 #define N 10
 
-void unix_error(char *msg) {  /* Unix-style error */
-    fprintf(stderr, "%s: %s\n", msg, strerror(errno));
-    exit(0);
-}
-
-pid_t Fork(void) {
-    pid_t pid;
-    if ((pid = fork()) < 0) {
-        unix_error("Fork error");
-    }
-    return pid;
-}
+void unix_error(char *msg);
 
 int main() {
-    int status, i;
     pid_t pid[N], retpid;
 
     /* Parent creates N children */
-    for (i = 0; i < N; i++) {
-        if ((pid[i] = Fork()) == 0) {  /* Child */
+    for (int i = 0; i < N; i++) {
+        if ((pid[i] = fork()) == 0) {  /* Child */
             exit(100 + i);
         }
     }
 
     /* Parent reaps N children in order */
-    i = 0;
+    int i = 0, status;
     while ((retpid = waitpid(pid[i++], &status, 0)) > 0) {
         if (WIFEXITED(status)) {
             printf("child %d terminated normally with exit status=%d\n",
@@ -48,5 +36,10 @@ int main() {
         unix_error("waitpid error");
     }
 
+    exit(0);
+}
+
+void unix_error(char *msg) {  /* Unix-style error */
+    fprintf(stderr, "%s: %s\n", msg, strerror(errno));
     exit(0);
 }
