@@ -10,10 +10,10 @@ echo: echoserverp.c echoclient.c
 	$(CC) $(CFLAGS) -o echoclient echoclient.c $(CSAPP) -pthread
 	$(CC) $(CFLAGS) -o echoserverp echoserverp.c $(CSAPP) -pthread
 
-run-server: echo
+run-server:
 	./echoserverp 8080
 
-run-client: echo
+run-client:
 	./echoclient localhost 8080
 
 clean:
