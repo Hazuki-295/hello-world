@@ -6,8 +6,8 @@ PROGRAMS = echo
 
 all: $(PROGRAMS)
 
-echo: echoserverp.c echoclient.c
-	$(CC) $(CFLAGS) -o echoclient echoclient.c $(CSAPP) -pthread
+echo: echoserverp.c ../src/echoclient.c
+	$(CC) $(CFLAGS) -o echoclient ../src/echoclient.c $(CSAPP) -pthread
 	$(CC) $(CFLAGS) -o echoserverp echoserverp.c $(CSAPP) -pthread
 
 run-server:

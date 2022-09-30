@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Og -m64 -Wall
 
-PROGRAMS = echo
+PROGRAMS = hello
 
 all: $(PROGRAMS)
 
