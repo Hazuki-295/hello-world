@@ -19,7 +19,7 @@ int main() {
     for (i = 0; i < N; i++) {
         pthread_create(&tid, NULL, thread, (void *) i);
     }
-    pthread_exit(NULL);
+    pthread_exit(NULL);  /* Called by main thread, waiting for other peer threads to terminate */
 }
 
 void *thread(void *vargp) {
