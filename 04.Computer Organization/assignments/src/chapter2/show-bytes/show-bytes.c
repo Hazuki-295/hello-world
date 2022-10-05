@@ -24,16 +24,16 @@ void show_pointer(void *x) {
     show_bytes((byte_pointer) &x, sizeof(void *));
 }
 
-void test_show_bytes(int val) {
+void test_show_bytes(long val) {
     int ival = val;
     float fval = (float) ival;
     int *pval = &ival;
-    printf("Byte representations for %d:\n", val);
-    printf("show_int(%d) \t -> \t", val);
+    printf("Byte representations for %ld:\n", val);
+    printf("show_int(%d) \t -> \t", ival);
     show_int(ival);
-    printf("show_float(%d) \t -> \t", val);
+    printf("show_float(%f) \t -> \t", fval);
     show_float(fval);
-    printf("show_pointer(%d) \t -> \t", val);
+    printf("show_pointer(%p) \t -> \t", pval);
     show_pointer(pval);
 }
 
@@ -86,7 +86,7 @@ void show_twocomp() {  /* Two's complement */
 }
 
 int main(int argc, char *argv[]) {
-    int val = 12345;
+    long val = 12345;
 
     if (argc > 1) {
         if (argc > 1) {
