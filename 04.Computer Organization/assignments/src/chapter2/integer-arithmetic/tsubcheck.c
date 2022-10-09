@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     int y = argc > 1 ? atoi(argv[2]) : INT_MIN;
     int ok = tsub_ok(x, y);
     int tok = test_tsub_ok(x, y);
-    printf("x = %d, y = %d, x + y = %d\n", x, y, x + y);
+    printf("x = %d, y = %d, x - y = %d\n", x, y, x - y);
     if (ok == tok)
         printf("tsub_ok = %d, test_tsub_ok = %d\n", ok, tok);
     return 0;
