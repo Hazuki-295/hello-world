@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-/* This program forks a separate process using the fork()/exec() system calls. */
+/* This program forks a separate process using the fork()/exec() system calls. (Figure 3.08) */
 int main() {
     pid_t pid;
 
