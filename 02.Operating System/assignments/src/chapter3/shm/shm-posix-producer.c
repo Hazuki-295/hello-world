@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <sys/mman.h>
 
@@ -25,13 +26,16 @@ int main() {
     shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
 
     /* configure the size of the shared memory segment */
-    ftruncate(shm_fd, SIZE);
+    if (ftruncate(shm_fd, SIZE) == -1) {
+        printf("Truncate failed\n");
+        exit(-1);
+    }
 
     /* now map the shared memory segment in the address space of the process */
     ptr = mmap(NULL, SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
     if (ptr == MAP_FAILED) {
         printf("Map failed\n");
-        return -1;
+        exit(-1);
     }
 
     /* write to the shared memory region */

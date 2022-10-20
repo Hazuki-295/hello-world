@@ -20,7 +20,7 @@ int main() {
     /* open the shared memory segment */
     shm_fd = shm_open(name, O_RDONLY, 0666);
     if (shm_fd == -1) {
-        printf("shared memory failed\n");
+        printf("Shared memory failed\n");
         exit(-1);
     }
 

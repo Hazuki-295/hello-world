@@ -9,7 +9,7 @@ shm: shm-posix-producer.c shm-posix-consumer.c
 	$(CC) $(CFLAGS) -o shm-posix-producer shm-posix-producer.c -lrt
 	$(CC) $(CFLAGS) -o shm-posix-consumer shm-posix-consumer.c -lrt
 
-run:
+run: shm
 	./shm-posix-producer
 	./shm-posix-consumer
 
