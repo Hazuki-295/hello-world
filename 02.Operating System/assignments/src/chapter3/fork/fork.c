@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+/* This program forks a separate process using the fork()/exec() system calls. */
 int main() {
     pid_t pid;
 
