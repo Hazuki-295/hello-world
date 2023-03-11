@@ -4,11 +4,11 @@
 using namespace std;
 
 // Function to compute the score for a pair of groups for a given game
-size_t computeScore(int a, int b, size_t points) {
-    return points * (a + b);
+size_t computeScore(int a, int b, int point) {
+    return (size_t) point * (a + b);
 }
 
-// Function to find the pair of groups with the highest score for the next game
+// Function to find the pair of groups with the highest score for the next game (not used)
 pair<int, int> findNextGame(vector<int> &groups, int *points, int index) {
     size_t maxScore = 0;
     pair<int, int> nextGame = {0, 1};
@@ -30,7 +30,8 @@ size_t maxPoints(int n, int *points) {
 
     size_t totalPoints = 0;
     for (int i = 0; i < n - 1; i++) {
-        pair<int, int> nextGame = findNextGame(groups, points, i);
+        //pair<int, int> nextGame = findNextGame(groups, points, i);
+        pair<int, int> nextGame = make_pair(n - (i + 2), n - (i + 1)); // Greedy
         totalPoints += computeScore(groups[nextGame.first], groups[nextGame.second], points[i]);
         int mergedGroup = groups[nextGame.first] + groups[nextGame.second];
         groups.erase(groups.begin() + nextGame.second);
@@ -45,10 +46,8 @@ int main() {
     scanf("%d", &n);
 
     int *points = new int[n - 1];
-    int point;
     for (int i = 0; i < n - 1; i++) {
-        scanf("%d", &point);
-        points[i] = point;
+        scanf("%d", &points[i]);
     }
 
     size_t maxPointsResult = maxPoints(n, points);
