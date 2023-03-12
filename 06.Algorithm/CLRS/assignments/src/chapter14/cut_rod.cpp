@@ -82,7 +82,7 @@ public:
         auto result = extended_bottom_up_cut_rod(price, n);
         vector<int> remember = result.first;
         vector<int> sizes = result.second;
-        printf("r%d = %2d from solution %d = ", n, remember[n], n);
+        printf("r%d = %d from solution %d = ", n, remember[n], n);
         stringstream output;
         while (n > 0) {
             output << sizes[n] << " + "; // cut location for length n
