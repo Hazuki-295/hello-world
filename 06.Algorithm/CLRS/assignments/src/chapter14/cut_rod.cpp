@@ -45,9 +45,9 @@ int bottom_up_cut_rod(vector<int> &prices, int n) {
     vector<int> remember(n + 1);
 
     remember[0] = 0;
-    for (int j = 1; j <= n; j++) { // for increasing rod length j
+    for (int j = 1; j <= n; j++) { // solve each sub-problem of size j in order of increasing size
         int q = -1;
-        for (int i = 1; i <= j; i++) {
+        for (int i = 1; i <= j; i++) { // same approach as memoized cut rod, but directly references array entry
             q = max(q, prices[i] + remember[j - i]);
         }
         remember[j] = q;
