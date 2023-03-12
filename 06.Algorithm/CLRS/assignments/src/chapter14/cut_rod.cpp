@@ -40,6 +40,21 @@ public:
     }
 };
 
+/* Bottom-up implementation of cut_rod. */
+int bottom_up_cut_rod(vector<int> &prices, int n) {
+    vector<int> remember(n + 1);
+
+    remember[0] = 0;
+    for (int j = 1; j <= n; j++) { // for increasing rod length j
+        int q = -1;
+        for (int i = 1; i <= j; i++) {
+            q = max(q, prices[i] + remember[j - i]);
+        }
+        remember[j] = q;
+    }
+    return remember[n];
+}
+
 
 int main() {
     /* Textbook example. */
@@ -53,6 +68,10 @@ int main() {
     cout << "Memoized cut rod:\n";
     cout << Memoized_Cut_Rod::memoized_cut_rod(prices, 4) << '\n';   // should be 10
     cout << Memoized_Cut_Rod::memoized_cut_rod(prices, 10) << '\n';  // should be 30
+    // Bottom up cut rod.
+    cout << "Bottom up cut rod:\n";
+    cout << bottom_up_cut_rod(prices, 4) << '\n';   // should be 10
+    cout << bottom_up_cut_rod(prices, 10) << '\n';  // should be 30
 
     cout << endl;
 
@@ -82,6 +101,10 @@ int main() {
     cout << "Memoized cut rod:\n";
     cout << Memoized_Cut_Rod::memoized_cut_rod(prices, 18) << '\n';
     cout << Memoized_Cut_Rod::memoized_cut_rod(prices, prices.size()) << '\n';
+    // Bottom up cut rod.
+    cout << "Bottom up cut rod:\n";
+    cout << bottom_up_cut_rod(prices, 18) << '\n';
+    cout << bottom_up_cut_rod(prices, prices.size()) << '\n';
 
     return 0;
 }
