@@ -47,7 +47,7 @@ int bottom_up_cut_rod(vector<int> &prices, int n) {
     remember[0] = 0;
     for (int j = 1; j <= n; j++) { // solve each sub-problem of size j in order of increasing size
         int q = -1;
-        for (int i = 1; i <= j; i++) { // same approach as memoized cut rod, but directly references array entry
+        for (int i = 1; i <= j; i++) { // same approach as cut rod, except that now directly reference array entry
             q = max(q, prices[i] + remember[j - i]);
         }
         remember[j] = q;
@@ -55,6 +55,39 @@ int bottom_up_cut_rod(vector<int> &prices, int n) {
     return remember[n];
 }
 
+/* Compute maximum revenue and optimal size of first piece cut off. */
+class Extended_Bottom_Up_Cut_Rod {
+public:
+    static pair<vector<int>, vector<int>> extended_bottom_up_cut_rod(vector<int> &price, int n) {
+        vector<int> remember(n + 1);
+        vector<int> solution(n + 1); // optimal sizes, solution[0] not used
+
+        remember[0] = 0;
+        for (int j = 1; j <= n; j++) { // for increasing rod length j
+            int q = -1;
+            for (int i = 1; i <= j; i++) { // i is the position of the first cut
+                if (q < price[i] + remember[j - i]) {
+                    q = price[i] + remember[j - i];
+                    solution[j] = i; // best cut location so far for length j
+                }
+            }
+            remember[j] = q; // remember the solution value for length j
+        }
+        return make_pair(remember, solution);
+    }
+
+    /* Print how far apart to cut. */
+    static void print_cut_rod_solution(vector<int> &price, int n) {
+        auto result = extended_bottom_up_cut_rod(price, n);
+        vector<int> remember = result.first;
+        vector<int> solution = result.second;
+        while (n > 0) {
+            cout << solution[n] << ' '; // cut location for length n
+            n -= solution[n]; // length of the remainder of the rod
+        }
+        cout << endl;
+    }
+};
 
 int main() {
     /* Textbook example. */
@@ -72,6 +105,10 @@ int main() {
     cout << "Bottom up cut rod:\n";
     cout << bottom_up_cut_rod(prices, 4) << '\n';   // should be 10
     cout << bottom_up_cut_rod(prices, 10) << '\n';  // should be 30
+    // Extended bottom up cut rod.
+    cout << "Extended bottom up cut rod:\n";
+    Extended_Bottom_Up_Cut_Rod::print_cut_rod_solution(prices, 4);  // should be 2, 2
+    Extended_Bottom_Up_Cut_Rod::print_cut_rod_solution(prices, 10); // should be 10
 
     cout << endl;
 
@@ -105,6 +142,10 @@ int main() {
     cout << "Bottom up cut rod:\n";
     cout << bottom_up_cut_rod(prices, 18) << '\n';
     cout << bottom_up_cut_rod(prices, prices.size()) << '\n';
+    // Extended bottom up cut rod.
+    cout << "Extended bottom up cut rod:\n";
+    Extended_Bottom_Up_Cut_Rod::print_cut_rod_solution(prices, 18);
+    Extended_Bottom_Up_Cut_Rod::print_cut_rod_solution(prices, prices.size());
 
     return 0;
 }
