@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <sstream>
 #include <vector>
 
 using namespace std;
@@ -81,11 +82,15 @@ public:
         auto result = extended_bottom_up_cut_rod(price, n);
         vector<int> remember = result.first;
         vector<int> sizes = result.second;
+        printf("r%d = %2d from solution %d = ", n, remember[n], n);
+        stringstream output;
         while (n > 0) {
-            cout << sizes[n] << ' '; // cut location for length n
+            output << sizes[n] << " + "; // cut location for length n
             n -= sizes[n]; // length of the remainder of the rod
         }
-        cout << endl;
+        string solution = output.str();
+        solution = solution.substr(0, solution.length() - 3);
+        cout << solution << endl;
     }
 };
 
@@ -108,6 +113,7 @@ int main() {
     // Extended bottom up cut rod.
     cout << "Extended bottom up cut rod:\n";
     Extended_Bottom_Up_Cut_Rod::print_cut_rod_solution(prices, 4);  // should be 2, 2
+    Extended_Bottom_Up_Cut_Rod::print_cut_rod_solution(prices, 7);  // should be 1, 6 or 2, 2, 3
     Extended_Bottom_Up_Cut_Rod::print_cut_rod_solution(prices, 10); // should be 10
 
     cout << endl;
