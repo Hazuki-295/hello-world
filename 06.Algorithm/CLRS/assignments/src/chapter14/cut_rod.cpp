@@ -60,7 +60,7 @@ class Extended_Bottom_Up_Cut_Rod {
 public:
     static pair<vector<int>, vector<int>> extended_bottom_up_cut_rod(vector<int> &price, int n) {
         vector<int> remember(n + 1);
-        vector<int> solution(n + 1); // optimal sizes, solution[0] not used
+        vector<int> sizes(n + 1); // optimal cut locations, solution[0] is not used
 
         remember[0] = 0;
         for (int j = 1; j <= n; j++) { // for increasing rod length j
@@ -68,22 +68,22 @@ public:
             for (int i = 1; i <= j; i++) { // i is the position of the first cut
                 if (q < price[i] + remember[j - i]) {
                     q = price[i] + remember[j - i];
-                    solution[j] = i; // best cut location so far for length j
+                    sizes[j] = i; // best cut location so far for length j
                 }
             }
             remember[j] = q; // remember the solution value for length j
         }
-        return make_pair(remember, solution);
+        return make_pair(remember, sizes);
     }
 
-    /* Print how far apart to cut. */
+    /* Print how far apart to cut, which is an optimal solution to rod-cutting problem with rod length n. */
     static void print_cut_rod_solution(vector<int> &price, int n) {
         auto result = extended_bottom_up_cut_rod(price, n);
         vector<int> remember = result.first;
-        vector<int> solution = result.second;
+        vector<int> sizes = result.second;
         while (n > 0) {
-            cout << solution[n] << ' '; // cut location for length n
-            n -= solution[n]; // length of the remainder of the rod
+            cout << sizes[n] << ' '; // cut location for length n
+            n -= sizes[n]; // length of the remainder of the rod
         }
         cout << endl;
     }
