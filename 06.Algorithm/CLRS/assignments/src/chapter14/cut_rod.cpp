@@ -19,70 +19,71 @@ int cut_rod(vector<int> &prices, int n) {
 /* Recursive top-down with memoization implementation of cut_rod. */
 class Memoized_Cut_Rod {
 public:
+    /* r is a list of revenues where r[i] is the maximum revenue for selling a rod of length i, and r[0] = 0. */
     static int memoized_cut_rod(vector<int> &prices, int n) {
-        vector<int> remember(n + 1, -1); // will remember solution values in r
-        return memoized_cut_rod_aux(prices, n, remember);
+        vector<int> revenues(n + 1, -1); // will remember solution values in r
+        return memoized_cut_rod_aux(prices, n, revenues);
     }
 
-    static int memoized_cut_rod_aux(vector<int> &prices, int n, vector<int> &remember) {
-        if (remember[n] >= 0) { // already have a solution for length n?
-            return remember[n];
+    static int memoized_cut_rod_aux(vector<int> &prices, int n, vector<int> &revenues) {
+        if (revenues[n] >= 0) { // already have a solution for length n?
+            return revenues[n];
         }
 
         /* Compute q like in cut_rod. */
-        if (n == 0) return 0; // Base case.
+        if (n == 0) return 0;
 
         int q = -1;
         for (int i = 1; i <= n; i++) { // i is the position of the first cut
-            q = max(q, prices[i] + memoized_cut_rod_aux(prices, n - i, remember));
+            q = max(q, prices[i] + memoized_cut_rod_aux(prices, n - i, revenues));
         }
-        remember[n] = q; // remember the solution value for length n
+        revenues[n] = q; // remember the solution value for length n
         return q;
     }
 };
 
 /* Bottom-up implementation of cut_rod. */
 int bottom_up_cut_rod(vector<int> &prices, int n) {
-    vector<int> remember(n + 1);
+    vector<int> revenues(n + 1);
 
-    remember[0] = 0;
+    revenues[0] = 0;
     for (int j = 1; j <= n; j++) { // solve each sub-problem of size j in order of increasing size
         int q = -1;
         for (int i = 1; i <= j; i++) { // same approach as cut rod, except that now directly reference array entry
-            q = max(q, prices[i] + remember[j - i]);
+            q = max(q, prices[i] + revenues[j - i]);
         }
-        remember[j] = q;
+        revenues[j] = q;
     }
-    return remember[n];
+    return revenues[n];
 }
 
 /* Compute maximum revenue and optimal size of first piece cut off. */
 class Extended_Bottom_Up_Cut_Rod {
 public:
     static pair<vector<int>, vector<int>> extended_bottom_up_cut_rod(vector<int> &price, int n) {
-        vector<int> remember(n + 1);
+        vector<int> revenues(n + 1);
         vector<int> sizes(n + 1); // optimal cut locations, solution[0] is not used
 
-        remember[0] = 0;
+        revenues[0] = 0;
         for (int j = 1; j <= n; j++) { // for increasing rod length j
             int q = -1;
             for (int i = 1; i <= j; i++) { // i is the position of the first cut
-                if (q < price[i] + remember[j - i]) {
-                    q = price[i] + remember[j - i];
+                if (q < price[i] + revenues[j - i]) {
+                    q = price[i] + revenues[j - i];
                     sizes[j] = i; // best cut location so far for length j
                 }
             }
-            remember[j] = q; // remember the solution value for length j
+            revenues[j] = q; // remember the solution value for length j
         }
-        return make_pair(remember, sizes);
+        return make_pair(revenues, sizes);
     }
 
     /* Print how far apart to cut, which is an optimal solution to rod-cutting problem with rod length n. */
     static void print_cut_rod_solution(vector<int> &price, int n) {
         auto result = extended_bottom_up_cut_rod(price, n);
-        vector<int> remember = result.first;
+        vector<int> revenues = result.first;
         vector<int> sizes = result.second;
-        printf("r%d = %d from solution %d = ", n, remember[n], n);
+        printf("r%d = %d from solution %d = ", n, revenues[n], n);
         stringstream output;
         while (n > 0) {
             output << sizes[n] << " + "; // cut location for length n
