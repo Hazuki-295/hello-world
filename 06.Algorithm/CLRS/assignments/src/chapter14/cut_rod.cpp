@@ -60,16 +60,16 @@ int bottom_up_cut_rod(vector<int> &prices, int n) {
 /* Compute maximum revenue and optimal size of first piece cut off. */
 class Extended_Bottom_Up_Cut_Rod {
 public:
-    static pair<vector<int>, vector<int>> extended_bottom_up_cut_rod(vector<int> &price, int n) {
+    static pair<vector<int>, vector<int>> extended_bottom_up_cut_rod(vector<int> &prices, int n) {
         vector<int> revenues(n + 1);
-        vector<int> sizes(n + 1); // optimal cut locations, solution[0] is not used
+        vector<int> sizes(n + 1); // optimal sizes, sizes[0] is not used
 
         revenues[0] = 0;
         for (int j = 1; j <= n; j++) { // for increasing rod length j
             int q = -1;
             for (int i = 1; i <= j; i++) { // i is the position of the first cut
-                if (q < price[i] + revenues[j - i]) {
-                    q = price[i] + revenues[j - i];
+                if (q < prices[i] + revenues[j - i]) {
+                    q = prices[i] + revenues[j - i];
                     sizes[j] = i; // best cut location so far for length j
                 }
             }
@@ -79,8 +79,8 @@ public:
     }
 
     /* Print how far apart to cut, which is an optimal solution to rod-cutting problem with rod length n. */
-    static void print_cut_rod_solution(vector<int> &price, int n) {
-        auto result = extended_bottom_up_cut_rod(price, n);
+    static void print_cut_rod_solution(vector<int> &prices, int n) {
+        auto result = extended_bottom_up_cut_rod(prices, n);
         vector<int> revenues = result.first;
         vector<int> sizes = result.second;
         printf("r%d = %d from solution %d = ", n, revenues[n], n);
