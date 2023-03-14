@@ -9,11 +9,11 @@ using namespace std;
 int cut_rod(vector<int> &prices, int n) {
     if (n == 0) return 0; // Base case.
 
-    int q = -1;
+    int max_value = -1;
     for (int i = 1; i <= n; i++) {
-        q = max(q, prices[i] + cut_rod(prices, n - i));
+        max_value = max(max_value, prices[i] + cut_rod(prices, n - i));
     }
-    return q;
+    return max_value;
 }
 
 /* Recursive top-down with memoization implementation of cut_rod. */
@@ -30,15 +30,15 @@ public:
             return revenues[n];
         }
 
-        /* Compute q like in cut_rod. */
-        if (n == 0) return 0;
+        /* Compute max_value like in cut_rod. */
+        if (n == 0) return revenues[0] = 0;
 
-        int q = -1;
+        int max_value = -1;
         for (int i = 1; i <= n; i++) { // i is the position of the first cut
-            q = max(q, prices[i] + memoized_cut_rod_aux(prices, n - i, revenues));
+            max_value = max(max_value, prices[i] + memoized_cut_rod_aux(prices, n - i, revenues));
         }
-        revenues[n] = q; // remember the solution value for length n
-        return q;
+        revenues[n] = max_value; // remember the solution value for length n
+        return max_value;
     }
 };
 
@@ -48,11 +48,11 @@ int bottom_up_cut_rod(vector<int> &prices, int n) {
 
     revenues[0] = 0;
     for (int j = 1; j <= n; j++) { // solve each sub-problem of size j in order of increasing size
-        int q = -1;
+        int max_value = -1;
         for (int i = 1; i <= j; i++) { // same approach as cut rod, except that now directly reference array entry
-            q = max(q, prices[i] + revenues[j - i]);
+            max_value = max(max_value, prices[i] + revenues[j - i]);
         }
-        revenues[j] = q;
+        revenues[j] = max_value;
     }
     return revenues[n];
 }
@@ -66,14 +66,14 @@ public:
 
         revenues[0] = 0;
         for (int j = 1; j <= n; j++) { // for increasing rod length j
-            int q = -1;
+            int max_value = -1;
             for (int i = 1; i <= j; i++) { // i is the position of the first cut
-                if (q < prices[i] + revenues[j - i]) {
-                    q = prices[i] + revenues[j - i];
+                if (max_value < prices[i] + revenues[j - i]) {
+                    max_value = prices[i] + revenues[j - i];
                     sizes[j] = i; // best cut location so far for length j
                 }
             }
-            revenues[j] = q; // remember the solution value for length j
+            revenues[j] = max_value; // remember the solution value for length j
         }
         return make_pair(revenues, sizes);
     }
