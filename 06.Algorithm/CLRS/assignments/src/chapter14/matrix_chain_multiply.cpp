@@ -37,11 +37,14 @@ void print_table(vector<vector<T>> &vec, int start_i, int end_i, int start_j, in
 /* Determine the optimal number of scalar multiplications needed to compute the matrix chain product A[1] * A[2] * ... * A[n]. */
 class Matrix_Chain_Order {
 private:
+    vector<int> p; // array of dimensions of matrices, matrix i has dimensions p[i - 1] x p[i]
+    int n; // number of matrices, p has entries indexed 0 to n
+
     vector<vector<int>> m; // array with m[i, j] as the lowest number of scalar multiplications to compute A(i..j).
     vector<vector<int>> s; // array that records which position to split an optimal solution to a sub-problem of m[i, j].
 
 public:
-    Matrix_Chain_Order(vector<int> &p, int n) {
+    Matrix_Chain_Order(vector<int> &p, int n) : p(p), n(n) {
         m = vector<vector<int>>(n + 1, vector<int>(n + 1)); // using indices m[1:n, 1:n], i <= j
         s = vector<vector<int>>(n + 1, vector<int>(n + 1)); // using indices s[1:n-1, 2:n], i < j
 
@@ -76,7 +79,7 @@ public:
         }
     }
 
-    void print_solution(int n) {
+    void print_solution() {
         cout << "Optimal Parenthesization:\n";
         print_optimal_parens(1, n);
         cout << "\n\n";
@@ -96,7 +99,7 @@ int main() {
     vector<int> dimensions = {30, 35, 15, 5, 10, 20, 25};
     int n = dimensions.size() - 1;
     auto solution = Matrix_Chain_Order(dimensions, n);
-    solution.print_solution(n);
+    solution.print_solution();
 
     return 0;
 }
