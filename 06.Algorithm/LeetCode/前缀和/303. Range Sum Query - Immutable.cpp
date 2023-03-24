@@ -12,10 +12,12 @@ public:
         /* preprocessing, calculating prefix sums */
         for (int i = 0; i < n; i++) {
             prefixSums[i + 1] = prefixSums[i] + nums[i];
+            // prefixSums[i] = prefixSums[i - 1] + nums[i] (for array index 1:n)
         }
     }
 
     int sumRange(int left, int right) {
-        return prefixSums[right + 1] - prefixSums[left]; // sum of right - left + 1 numbers
+        return prefixSums[right + 1] - prefixSums[left];
+        // prefixSums[right] - prefixSums[left - 1] (for array index 1:n)
     }
 };
