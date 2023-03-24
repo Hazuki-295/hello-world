@@ -19,8 +19,8 @@ public:
         }
     }
 
-    int sumRegion(int row1, int col1, int row2, int col2) {
-        return prefixSums[row2 + 1][col2 + 1] - prefixSums[row1][col2 + 1] - prefixSums[row2 + 1][col1] + prefixSums[row1][col1];
-        // prefixSums[row2][col2] - prefixSums[row1 - 1][col2] - prefixSums[row2][col1 - 1] + prefixSums[row1 - 1][col1 - 1] (for array index 1:n)
+    int sumRegion(int x1, int y1, int x2, int y2) {
+        return prefixSums[x2 + 1][y2 + 1] - prefixSums[x1][y2 + 1] - prefixSums[x2 + 1][y1] + prefixSums[x1][y1];
+        // prefixSums[x2][y2] - prefixSums[x1 - 1][y2] - prefixSums[x2][y1 - 1] + prefixSums[x1 - 1][y1 - 1] (for array index 1:n)
     }
 };
