@@ -5,9 +5,9 @@ using namespace std;
 class Solution {
 public:
     bool carPooling(vector<vector<int>> &trips, int capacity) {
-        int maxDistance = 1e3 + 1;
+        int maxDistance = 1e3;
         vector<int> overhead(maxDistance + 1); // overhead of the car at distance[i], initial all 0
-        vector<int> diff(maxDistance + 1);     // difference array of overhead
+        vector<int> diff(maxDistance + 2);     // difference array of overhead
 
         for (auto trip: trips) {
             int numPassenger = trip[0];
