@@ -38,7 +38,7 @@ int main() {
     /* Perform m interval queries on the array. */
     for (int i = 1; i <= m; i++) {
         int left = read(), right = read();
-        int s = Log2[right - left + 1]; // Interval of length 2^(s + 1) must cover the interval being queried.
+        int s = Log2[right - left + 1]; // Tow intervals of length 2^s must cover the interval being queried.
         printf("%d\n", max(f[left][s], f[right - (1 << s) + 1][s]));
     }
 

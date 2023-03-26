@@ -45,7 +45,7 @@ public:
     int query(int left, int right) {
         int s = Log2[right - left + 1];
         return max(f[left][s], f[right - (1 << s) + 1][s]);
-    } // Interval of length 2^(s + 1) must cover the interval being queried.
+    } // Tow intervals of length 2^s must cover the interval being queried.
 };
 
 int main() {
