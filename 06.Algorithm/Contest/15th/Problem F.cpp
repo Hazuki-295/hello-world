@@ -12,20 +12,29 @@ int main() {
             values[i][j] = values[i - 1][j] + values[i][j - 1] - values[i - 1][j - 1] + matrix[i][j];
         }
     }
+
+    int rangeSum[n + 1][m + 1][n + 1][m + 1];
+    for (int x1 = 1; x1 <= n; x1++) {
+        for (int y1 = 1; y1 <= m; y1++) {
+            for (int x2 = x1; x2 <= n; x2++) {
+                for (int y2 = y1; y2 <= m; y2++) {
+                    rangeSum[x1][y1][x2][y2] =
+                            values[x2][y2] - values[x2][y1 - 1] - values[x1 - 1][y2] + values[x1 - 1][y1 - 1];
+                }
+            }
+        }
+    }
+
     int abs_last_ans = 0;
     for (int i = 0; i < query; i++) {
         int x1, y1, x2, y2;
         scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
-        x1 = (x1 ^ abs_last_ans) % (n + 1);
-        y1 = (y1 ^ abs_last_ans) % (m + 1);
-        x2 = (x2 ^ abs_last_ans) % (n + 1);
-        y2 = (y2 ^ abs_last_ans) % (m + 1);
-        for (int row = x1; row <= x2; row++) {
-            for (int col = y1; col <= y2; col++) {
+        x1 = x1 ^ abs_last_ans;
+        y1 = y1 ^ abs_last_ans;
+        x2 = x2 ^ abs_last_ans;
+        y2 = y2 ^ abs_last_ans;
 
-            }
-        }
-        int ans = values[x2][y2] - values[x2][y1 - 1] - values[x1 - 1][y2] + values[x1 - 1][y1 - 1];
+        int ans;
         printf("%d\n", ans);
         abs_last_ans = abs(ans);
     }
