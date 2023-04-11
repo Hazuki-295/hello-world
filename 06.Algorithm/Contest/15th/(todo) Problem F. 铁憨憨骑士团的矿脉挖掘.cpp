@@ -5,9 +5,9 @@ using namespace std;
 int main() {
     int n, m, query;
     scanf("%d%d%d", &n, &m, &query);
+
     int matrix[n + 1][m + 1];
     int prefixSum[n + 1][m + 1];
-
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= m; j++) {
             scanf("%d", &matrix[i][j]);
