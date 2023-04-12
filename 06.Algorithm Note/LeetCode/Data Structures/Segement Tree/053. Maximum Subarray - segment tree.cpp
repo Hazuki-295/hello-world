@@ -6,8 +6,8 @@ class Solution {
 public:
     /* For the array interval [left, right], maintain the following information. */
     struct Status {
-        int leftSum;  // Maximum subarray sum, but restricts a[left] is the left endpoint of the subarray.
-        int rightSum; // Similarly, restrict a[right] as the right endpoint.
+        int leftSum;  // Maximum subarray sum, but restricts that a[left] is the left endpoint of the subarray.
+        int rightSum; // Similarly, maximum subarray sum with the restriction that a[right] is the right endpoint.
         int maxSum;   // Maximum subarray sum of the whole interval.
         int intervalSum;
     };
