@@ -7,6 +7,7 @@ public:
     int fib(int n) {
         if (n == 0 || n == 1) return n;
 
+        /* dp[i] is the i_th fibonacci number */
         vector<int> dp(n + 1);
         dp[0] = 0;
         dp[1] = 1;
