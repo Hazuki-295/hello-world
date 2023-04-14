@@ -11,20 +11,7 @@ int main() {
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= m; j++) {
             scanf("%d", &matrix[i][j]);
-            prefixSum[i][j] = prefixSum[i - 1][j] + prefixSum[i][j - 1] - prefixSum[i - 1][j - 1] + matrix[i][j];
-        }
-    }
-
-    int rangeSum[n + 1][m + 1][n + 1][m + 1];
-    for (int x1 = 1; x1 <= n; x1++) {
-        for (int y1 = 1; y1 <= m; y1++) {
-            for (int x2 = x1; x2 <= n; x2++) {
-                for (int y2 = y1; y2 <= m; y2++) {
-                    rangeSum[x1][y1][x2][y2] =
-                            prefixSum[x2][y2] - prefixSum[x1 - 1][y2] - prefixSum[x2][y1 - 1] +
-                            prefixSum[x1 - 1][y1 - 1];
-                }
-            }
+            prefixSum[i][j] = prefixSum[i][j - 1] + matrix[i][j];
         }
     }
 
@@ -38,13 +25,20 @@ int main() {
         y2 = y2 ^ abs_last_ans;
 
         int ans = numeric_limits<int>::min();
-        for (int i = x1; i <= x2; i++) {
-            for (int j = y1; j <= y2; j++) {
-                for (int p = i; p <= x2; p++) {
-                    for (int q = j; q <= y2; q++) {
-                        if (rangeSum[i][j][p][q] > ans) {
-                            ans = rangeSum[i][j][p][q];
+        for (int row1 = x1; row1 <= x2; row1++) {
+            for (int row2 = row1; row2 <= x2; row2++) {
+                for (int col1 = y1; col1 <= y2; col1++) {
+                    for (int col2 = col1; col2 <= y2; col2++) {
+                        int pre = numeric_limits<int>::min();
+                        for (int i = row1; i <= row2; i++) {
+                            int current = prefixSum[i][col2] - prefixSum[i][col1 - 1];
+                            if (pre >= 0) {
+                                pre += current;
+                            } else {
+                                pre = current;
+                            }
                         }
+                        ans = max(pre, ans);
                     }
                 }
             }
